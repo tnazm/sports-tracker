@@ -1,8 +1,6 @@
 from django.shortcuts import render
-from .models import Games
+from .models import Game
 
-# Create your views here.
-def _dashboard_(request):
-    game=Games.objects.all().order_ny("-Date played")
-    return render(request, 'tracker/admin__dashboard.html',{'games':game})
-    
+def admin_dashboard(request):
+    games = Game.objects.all().order_by("-date_game_played")
+    return render(request, "tracker/admin_dashboard.html", {"games": games})
