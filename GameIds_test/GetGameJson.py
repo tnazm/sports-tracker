@@ -13,7 +13,7 @@ def Get_Game_Info(Gameid):
         'x-rapidapi-key': KEY
         }
 
-    conn.request("GET", f"/games/statistics/teams?id={Gameid}", headers=headers)
+    conn.request("GET", f"/games/events/teams?id={Gameid}", headers=headers)
 
     res = conn.getresponse()
     data = res.read()
