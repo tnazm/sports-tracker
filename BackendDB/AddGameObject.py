@@ -3,16 +3,18 @@ import django
 import sys
 import json
 
-
+## path to be able to acces Django models
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'sportstracker.settings')
 django.setup()
 
-## CREATE GAME OBJECTS IN DATABASE
+## IMPORT THE MODELS
 from sportstracker_app.models import Game, HoldIDs
 from BackendDB.GetGameJson import Get_Game_Info
+
+## GRAB all the IDS from thre HoldIDs database
 ids = HoldIDs.objects.all().values_list('GameID')
 list(ids)
 for id in ids:
