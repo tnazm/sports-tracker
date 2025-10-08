@@ -8,11 +8,13 @@ import sys
 load_dotenv()
 KEY=os.getenv("API_KEY")
 Today = date.today()
-
+## PATH TO BE ABLE TO ACCESS DJANGO MODELS
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'sportstracker.settings')
 django.setup()
+#import Hold ID mode to make sure we are not adding duplicate IDS
 from sportstracker_app.models import HoldIDs
+## function to get all the game IDS for today and add them to the HoldIDs database (GameID, week, date)
 def GamesToday():
     conn = http.client.HTTPSConnection("v1.american-football.api-sports.io")
 

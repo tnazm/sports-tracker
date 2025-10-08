@@ -6,7 +6,7 @@ load_dotenv()
 KEY=os.getenv("API_KEY")
 
 
-## JUST A FUNCTION TO GET THE JSON FOR A SPECIFIC GAME ID
+## JUST A FUNCTION TO GET BASIC INFO FROM A GAME ID
 def Get_Game_Info(Gameid):
     conn = http.client.HTTPSConnection("v1.american-football.api-sports.io")
 
@@ -26,3 +26,4 @@ def Get_Game_Info(Gameid):
     return parsed["response"][0]
 
 
+        ## sends json data back

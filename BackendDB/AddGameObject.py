@@ -17,7 +17,8 @@ from BackendDB.GetGameJson import Get_Game_Info
 ## GRAB all the IDS from thre HoldIDs database
 ids = HoldIDs.objects.all().values_list('GameID')
 list(ids)
-for id in ids:
+for id in ids: # loop to add each game based on ID to the data base
+    ## MOST LIKELY WILL NEED TO CHANGE TO CHECK FOR WEEK
     if not Game.objects.filter(GameID=id).exists():
         gameid = id[0]
         week=id[1]
