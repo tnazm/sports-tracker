@@ -1,14 +1,18 @@
 import http.client
 import json
 from datetime import date
-Today = date.today()
 from dotenv import load_dotenv
 import os
+import django
+import sys
 load_dotenv()
 KEY=os.getenv("API_KEY")
+Today = date.today()
 
-NFL_Gamesid=[] # array to hold (Game ID)
-# funciton that gets all NFL games today
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'sportstracker.settings')
+django.setup()
+from sportstracker_app.models import HoldIDs
 def GamesToday():
     conn = http.client.HTTPSConnection("v1.american-football.api-sports.io")
 
@@ -26,18 +30,16 @@ def GamesToday():
     parsed_live_games = json.loads(live_games) # make json readable
 
     for game in parsed_live_games["response"]:
+        if not HoldIDs.objects.filter(GameID=game["game"]["id"]).exists():
+            HoldIDs.objects.create(GameID=game["game"]["id"],week=game["game"]["week"],date =game["game"]["date"]["date"])
+        ## ADDS GAME IDS TO DATABASE HAS TO BE RAN EVERYDAY
 
-        NFL_Gamesid.append(game["game"]["id"])
-        ## add the game id to the array
+
 
 GamesToday()
-## drop the array of games today into the Live_games file
-with open("Games_This_Week", "r") as f: ## Write TO DATABASE????, ##WOULD BE CLEARED EVERY WEEK
-    games=json.load(f)
-## reading array from file then adding all the games today to that array
-for game in NFL_Gamesid:
-    if game not in games:
-        games.append(game)
 
-with open("Games_This_Week", "w") as f:
-    json.dump(games, f, indent=4)
+
+
+
+
+
