@@ -1,3 +1,12 @@
+<div class="flex justify-center overflow-x-auto py-4">
+<ul class = "flex gap-5 list-none p-15">{% for Week in Weeks %}
+  <li>
+    <button class ="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded shadow-lg dark:shadow-lg">
+      <a href="/week {{Week}}">Week {{Week}}</a>
+    </button></li>
+  {% endfor %}
+</ul>
+</div>
 <!DOCTYPE html>
 <html lang="en">
 <head>
