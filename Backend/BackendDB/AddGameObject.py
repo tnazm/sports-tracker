@@ -4,7 +4,7 @@ import sys
 import json
 
 ## path to be able to acces Django models
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'sportstracker.settings')

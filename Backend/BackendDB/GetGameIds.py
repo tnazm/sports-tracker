@@ -9,7 +9,8 @@ load_dotenv()
 KEY=os.getenv("API_KEY")
 Today = date.today()
 ## PATH TO BE ABLE TO ACCESS DJANGO MODELS
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'sportstracker.settings')
 django.setup()
 #import Hold ID mode to make sure we are not adding duplicate IDS
