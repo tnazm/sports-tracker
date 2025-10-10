@@ -1,31 +1,60 @@
 
-</ul>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   <title>HALF-TIME - American Football Analytics</title>
 </head>
+<body class="bg-[#1e4d6e]">
+<a href="{% url 'home' %}">
+  <h1 class="mb-4 text-8xl font-extrabold tracking-tight leading-none text-orange-500 md:text-8xl lg:text-8xl">HALF-TIME</h1>
 
 
-  <div class="container mx-auto px-4 py-4 grid grid-cols-4 gap-3"">
-  {% for Game in Games %}
+
+</a>
+  <div class="flex justify-center overflow-x-auto py-10 scroll-snap-x-mandatory scroll-smooth">
+    <ul class = "flex gap-3 list-none p-40 min-w-max">{% for Week in Weeks %}
+      <li>
+        <a href="/week {{Week}}">
+          <button class =" text-sm font-serif bg-orange-400 hover:bg-green-700 text-white font-bold py-2 px-4 border-b-4 border-black hover:border-gray-800 rounded shadow-md dark:shadow-lg drop-shadow-[0_5px_5px_rgba(0,0,0,0.5)]">
+            Week {{Week}}
+          </button>
+      </li>
+      </a>
+      {% endfor %}
+    </ul>
+    </div>
+  <h1 class=" text-center items-center text-bold text-orange-500 text-8xl py-8 font-serif"> Week {{week_number}}</h1>
+  <div class="container mx-auto py-20">
+    
+  <div class=" bg-gradient-to-b from-orange-400 to-orange-700 p-4 rounded-xl block mx-auto">
+
+      <div class=" grid grid-cols-4 gap-3">
+              {% for Game in Games %}
   
-  <div class="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 h-40">
-<div class="flex justify-between items-center">
-    <p class="text-white text-left"> {{Game.AwayTeam}}</p>
-    <p class="text-white text-right"> {{Game.HomeTeam}}</p>
+              <div class="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 h-40">
+                      <div class="flex justify-between items-center">
+                        <p class="text-white text-left font-serif"> {{Game.AwayTeam}}</p>
+                        <p class="text-white text-right font-serif"> {{Game.HomeTeam}}</p>
 
-  </div>
-  <div class="flex justify-between items-center">
+                </div>
+                <div class="flex justify-between items-center mt-4">
    
-    <h1 class="text-white text-xl text-bold mt-10 text-left"> {{Game.AwayScore}}</h1>
-    <p class="text-white text-center text-middle text-bold mt-10"> {{Game.date}}</p>
-    <h1 class="text-white text-xl text-bold mt-10 text-right"> {{Game.HomeScore}}</h1>
+                      <h1 class="text-white text-xl font-serif text-bold mt-10 text-left"> {{Game.AwayScore}}</h1>
+                      <p class="text-white text-center font-serif text-middle text-bold mt-10"> {{Game.date}}</p>
+                      <h1 class="text-white text-xl font-serif text-bold mt-10 text-right"> {{Game.HomeScore}}</h1>
 
-  </div>
-</div>
+                </div>
+             
+          
+            </div>
   
       {% endfor %}
-    </div>
+      </div>
+
+</div>
+  </div>
+</body>
 </html>
