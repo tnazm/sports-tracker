@@ -1,6 +1,6 @@
 import http.client
 import json
-from datetime import date
+from datetime import date,timedelta
 from dotenv import load_dotenv
 import os
 import django
@@ -43,6 +43,7 @@ GamesToday()
 
 
 
-
+Today =  Today + timedelta(days=1)    
+GamesToday()
 
 
