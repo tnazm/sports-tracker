@@ -9,8 +9,8 @@ class Game(models.Model):
     result = models.CharField(
         max_length=10,
         choices=[
-            ('Win', 'Win'),
-            ('Lose', 'Lose'),
+            ('Win', 'lose'),
+            ('Lose', 'win'),
             ('Draw', 'Draw'),
         ]
     )

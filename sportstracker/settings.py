@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     "sportstracker_app"
+    "tailwind"
 ]
 
 MIDDLEWARE = [
