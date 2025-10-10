@@ -34,21 +34,50 @@
       <div class=" grid grid-cols-4 gap-3">
               {% for Game in Games %}
   
-              <div class="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 h-40">
+              <div class=" group block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 h-40">
                       <div class="flex justify-between items-center">
-                        <p class="text-white text-left font-serif"> {{Game.AwayTeam}}</p>
-                        <p class="text-white text-right font-serif"> {{Game.HomeTeam}}</p>
-
+                        {% if Game.AwayScore > Game.HomeScore %}
+                             <p class=" group-hover:text-green-600 text-white text-left font-serif"> {{Game.AwayTeam}}</p>
+                             <h1 class="text-center"> @</h1>
+                            <p class="text-white text-right font-serif"> {{Game.HomeTeam}}</p>
+                        {% elif Game.AwayScore < Game.HomeScore %}
+                            <p class="text-white text-left font-serif"> {{Game.AwayTeam}}</p> 
+                            <h1 class="text-center"> @</h1>
+                                 <p class=" group-hover:text-green-600 text-white text-right font-serif"> {{Game.HomeTeam}}</p>
+                                
+                        {% else %}
+                            <p class=" group-hover:text-green-600 text-white text-left font-serif"> {{Game.AwayTeam}}</p>
+                            <h1 class="text-center"> @</h1>
+                            <p class=" group-hover:text-green-600 text-white text-left font-serif"> {{Game.HomeTeam}}</p>
+                       {% endif %}
                 </div>
+
+                {% if Game.AwayScore > Game.HomeScore %}
                 <div class="flex justify-between items-center mt-4">
    
-                      <h1 class="text-white text-xl font-serif text-bold mt-10 text-left"> {{Game.AwayScore}}</h1>
-                      <p class="text-white text-center font-serif text-middle text-bold mt-10"> {{Game.date}}</p>
-                      <h1 class="text-white text-xl font-serif text-bold mt-10 text-right"> {{Game.HomeScore}}</h1>
+                      <h1 class="text-white  text-xl font-serif group-hover:text-green-600 text-bold mt-10 text-left"> {{Game.AwayScore}}</h1>
+                      <p class="text-white  text-center font-serif text-middle text-bold mt-10"> {{Game.date}}</p>
+                      <h1 class="text-white  text-xl font-serif text-bold mt-10 text-right"> {{Game.HomeScore}}</h1>
 
                 </div>
+                {% elif Game.AwayScore < Game.HomeScore %}
+                    <div class="flex justify-between items-center mt-4">
+   
+                      <h1 class="text-white  text-xl font-serif  text-bold mt-10 text-left"> {{Game.AwayScore}}</h1>
+                      <p class="text-white  text-center font-serif text-middle text-bold mt-10"> {{Game.date}}</p>
+                      <h1 class="text-white  text-xl font-serif group-hover:text-green-600 text-bold mt-10 text-right"> {{Game.HomeScore}}</h1>
+
+                        </div>
+                {% else %}
+                  <div class="flex justify-between items-center mt-4">
+    
+                    <h1 class="text-white  text-xl font-serif group-hover:text-green-600 text-bold mt-10 text-left"> {{Game.AwayScore}}</h1>
+                    <p class="text-white  text-center font-serif text-middle text-bold mt-10"> {{Game.date}}</p>
+                    <h1 class="text-white  text-xl font-serif group-hover:text-green-600 text-bold mt-10 text-right"> {{Game.HomeScore}}</h1>
              
-          
+                  </div>
+                {% endif %}
+
             </div>
   
       {% endfor %}
