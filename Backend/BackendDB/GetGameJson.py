@@ -5,6 +5,8 @@ import os
 load_dotenv()
 KEY=os.getenv("API_KEY")
 
+
+## JUST A FUNCTION TO GET BASIC INFO FROM A GAME ID
 def Get_Game_Info(Gameid):
     conn = http.client.HTTPSConnection("v1.american-football.api-sports.io")
 
@@ -13,7 +15,7 @@ def Get_Game_Info(Gameid):
         'x-rapidapi-key': KEY
         }
 
-    conn.request("GET", f"/games/statistics/teams?id={Gameid}", headers=headers)
+    conn.request("GET", f"/games?id={Gameid}", headers=headers)
 
     res = conn.getresponse()
     data = res.read()
@@ -21,6 +23,7 @@ def Get_Game_Info(Gameid):
     decoded =data.decode("utf-8")
     parsed = json.loads(decoded)
 
-    return parsed
-## GO TO DATABASE ???
+    return parsed["response"][0]
 
+
+        ## sends json data back
