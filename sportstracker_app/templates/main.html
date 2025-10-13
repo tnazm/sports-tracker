@@ -1,152 +1,83 @@
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>HALF TIME - American Football Analytics</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding: 0;
-            background: linear-gradient(135deg, #0d2b4a 0%, #1e4d6e 100%);
-            color: white;
-            min-height: 100vh;
-        }
+   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <title>HALF-TIME - American Football Analytics</title>
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
+<section class="bg-center bg-no-repeat bg-[url('https://flowbite.s3.amazonaws.com/docs/jumbotron/conference.jpg')] bg-gray-700 bg-blend-multiply">
+  <div class="px-4 mx-auto max-w-screen-xl text-center py-24 lg:py-56">
+      <h1 class="mb-4 text-[12rem] font-extrabold tracking-tight leading-none text-white md:text-14[rem] lg:text-16[rem]">HALF-TIME</h1>
+      <p class="mb-8 text-xl font-normal text-gray-300 lg:text-xl sm:px-16 lg:px-48">Just pick a week below and it will show all games for that week.</p>
+      <div class="flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-y-0">
+      </div>
+  </div>
+</section>
 
-        .header {
-            text-align: center;
-            margin-bottom: 40px;
-            padding: 30px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            backdrop-filter: blur(10px);
-        }
 
-        .halftime-title {
-            font-size: 4rem;
-            font-weight: bold;
-            margin: 0;
-            background: linear-gradient(45deg, #ff6b35, #f7931e);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
 
-        .subtitle {
-            font-size: 1.2rem;
-            opacity: 0.9;
-            margin-top: 10px;
-        }
 
-        .content-section {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 25px;
-            border-radius: 10px;
-            margin-bottom: 30px;
-            border-left: 4px solid #ff6b35;
-        }
 
-        .section-title {
-            font-size: 2rem;
-            margin-bottom: 20px;
-            color: #ff6b35;
-            border-bottom: 2px solid #ff6b35;
-            padding-bottom: 10px;
-        }
+<div class="flex justify-center overflow-x-auto py-4 scroll-snap-x-mandatory scroll-smooth">
+<ul class = "flex gap-3 list-none p-15 min-w-max">{% for Week in Weeks %}
+  <li>
+    <a href="/week {{Week}}">
+      <button class =" text-sm font-serif bg-orange-400 hover:bg-green-700 text-white font-bold py-2 px-4 border-b-4 border-black hover:border-gray-800 rounded shadow-md dark:shadow-lg drop-shadow-[0_5px_5px_rgba(0,0,0,0.5)]">
+        Week {{Week}}
+      </button>
+  </li>
+  </a>
+  {% endfor %}
+</ul>
+</div>
+  <style>
+    
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #0d2b4a, #1e4d6e);
+      color: white;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
 
-        .matches-grid, .stats-grid {
-            display: grid;
-            gap: 15px;
-        }
+    h1 {
+      color: #ff6b35;
+      font-size: 3rem;
+      margin-top: 40px;
+    }
 
-        .match-card, .stat-card {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 15px;
-            border-radius: 8px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
+    p {
+      font-size: 1.2rem;
+      opacity: 0.9;
+    }
 
-        .teams {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-            font-weight: bold;
-        }
+    .box {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      margin: 40px auto;
+      padding: 20px;
+      width: 80%;
+      max-width: 600px;
+    }
 
-        .score {
-            font-size: 1.3rem;
-            color: #ff6b35;
-            font-weight: bold;
-        }
-
-        .construction-notice {
-            text-align: center;
-            background: rgba(255, 107, 53, 0.2);
-            padding: 20px;
-            border-radius: 10px;
-            margin: 30px 0;
-            border: 2px dashed #ff6b35;
-        }
-
-        .construction-image {
-            max-width: 300px;
-            border-radius: 10px;
-            margin: 20px auto;
-            display: block;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-        }
-
-        @media (max-width: 768px) {
-            .halftime-title {
-                font-size: 2.5rem;
-            }
-            
-            .teams {
-                flex-direction: column;
-                gap: 10px;
-                text-align: center;
-            }
-        }
-    </style>
+    img {
+      width: 250px;
+      border-radius: 10px;
+      margin-top: 20px;
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Main Header -->
-        <div class="header">
-            <h1 class="halftime-title">HALF TIME</h1>
-            <p class="subtitle">American Football Analytics</p>
-        </div>
+  <h1>HALF-TIME</h1>
+  <p>American Football Analytics</p>
 
-        <!-- Under Construction Notice -->
-        <div class="construction-notice">
-            <h2>🚧 Website Under Construction 🚧</h2>
-            <p>This is the first page of our website under construction.</p>
-            {% load static %}
-            <img src="{% static 'images/under_construction.jpg' %}" alt="Under construction jpeg" class="construction-image">
+  <div class="box">
+    <h2>🚧 Website Under Construction 🚧</h2>
+    <p>This page is currently being built. Stay tuned for updates!</p>
 
-        <!--Test button for click-->
-        <button 1
-            clickable_button="window.location.href='{& url 'games' %}'"
-            style='
-                background-color:"ff6b35;
-                border:none;
-                color: white;
-                padding: 12px 25px;
-                border-radius:8px;
-                cursor: pointer;
-                font-size: 1rem;
-                margin-top: 15px;
-            '>
-            View games
-        </button>
-                    
-        </div>
-    </div>
+    {% load static %}
+    <img src="{% static 'images/under_construction.jpg' %}" alt="Under Construction">
+  </div>
 </body>
 </html>
