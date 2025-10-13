@@ -208,3 +208,6 @@ __marimo__/
 
 .env
 node_modules
+/bin/
+/lib64
+*.bak
