@@ -15,11 +15,10 @@ django.setup()
 from sportstracker_app.models import Game, HoldIDs
 from GetGameJson import Get_Game_Info
 ## GRAB all the IDS from thre HoldIDs database
-ids = HoldIDs.objects.all().values_list('GameID')
-list(ids)
+ids = HoldIDs.objects.all().values_list('GameID',flat=True)
+
 for id in ids: # loop to add each game based on ID to the data base
     ## MOST LIKELY WILL NEED TO CHANGE TO CHECK FOR WEEK
-    print(id)
     if not Game.objects.filter(GameID=id).exists():
         Game_Info = Get_Game_Info(id[0])
         gameid = id[0]
