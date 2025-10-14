@@ -13,7 +13,7 @@
       </div>
   </div>
 </section>
-
+s
 
 
 
@@ -30,6 +30,11 @@
   {% endfor %}
 </ul>
 </div>
+{% if Games %}
+  <p class="text-sm text-gray-300 mt-2 text-center italic">
+    Last updated: {{ Games.first.updated_at|date:"F j, Y, g:i a" }}
+  </p>
+{% endif %}
   <style>
     
     body {

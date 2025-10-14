@@ -8,6 +8,8 @@ class Game(models.Model):
     AwayScore = models.IntegerField()
     Week = models.CharField(max_length=15)
     date = models.CharField(max_length=15)
+    updated_at = models.DateTimeField(auto_now=True, null=True)
+
 
 
 
@@ -18,7 +20,7 @@ class Game(models.Model):
 class HoldIDs(models.Model):
     GameID = models.CharField(max_length=50)
     week = models.CharField(max_length=15)
-    date= models.CharField(max_length=15)
+    date = models.DateField()
 
     def __str__(self):
         return self.GameID
