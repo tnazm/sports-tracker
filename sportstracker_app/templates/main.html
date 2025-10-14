@@ -32,8 +32,15 @@
 {% if Games %}
   <p class="text-sm text-gray-300 mt-2 text-center italic">
     Last updated: {{ Games.first.updated_at|date:"F j, Y, g:i a" }}
+    
   </p>
 {% endif %}
+<form method="POST" action="/refresh/" class="text-center mt-4">
+  {% csrf_token %}
+  <button type="submit" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded shadow-md">
+    🔄 Refresh Scores
+  </button>
+</form>
   <style>
     
     body {
