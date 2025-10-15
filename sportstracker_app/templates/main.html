@@ -1,39 +1,75 @@
+{% extends "base.html" %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-  <title>HALF-TIME - American Football Analytics</title>
+{% block title %}
+HALF-TIME - American Football Analytics
+{% endblock %}
 
+{% block style %}
+<style>
+      body {
+	  font-family: Arial, sans-serif;
+	  background: linear-gradient(135deg, #0d2b4a, #1e4d6e);
+	  color: white;
+	  text-align: center;
+	  margin: 0;
+	  padding: 0;
+      }
+
+      h1 {
+	  color: #ff6b35;
+	  font-size: 3rem;
+	  margin-top: 40px;
+      }
+
+      p {
+	  font-size: 1.2rem;
+	  opacity: 0.9;
+      }
+
+      .box {
+	  background: rgba(255, 255, 255, 0.1);
+	  border-radius: 10px;
+	  margin: 40px auto;
+	  padding: 20px;
+	  width: 80%;
+	  max-width: 600px;
+      }
+
+      img {
+	  width: 250px;
+	  border-radius: 10px;
+	  margin-top: 20px;
+      }
+</style>
+{% endblock %}
+
+{% block body %}
 <section class="bg-center bg-no-repeat bg-[url('https://flowbite.s3.amazonaws.com/docs/jumbotron/conference.jpg')] bg-gray-700 bg-blend-multiply">
   <div class="px-4 mx-auto max-w-screen-xl text-center py-24 lg:py-56">
-      <h1 class="mb-4 text-[12rem] font-extrabold tracking-tight leading-none text-white md:text-14[rem] lg:text-16[rem]">HALF-TIME</h1>
-      <p class="mb-8 text-xl font-normal text-gray-300 lg:text-xl sm:px-16 lg:px-48">Just pick a week below and it will show all games for that week.</p>
-      <div class="flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-y-0">
-      </div>
+    <h1 class="mb-4 text-[12rem] font-extrabold tracking-tight leading-none text-white md:text-14[rem] lg:text-16[rem]">HALF-TIME</h1>
+    <p class="mb-8 text-xl font-normal text-gray-300 lg:text-xl sm:px-16 lg:px-48">Just pick a week below and it will show all games for that week.</p>
+    <div class="flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-y-0">
+    </div>
   </div>
 </section>
 
-
-
-
 <div class="flex justify-center overflow-x-auto py-4 scroll-snap-x-mandatory scroll-smooth">
-<ul class = "flex gap-3 list-none p-15 min-w-max">{% for Week in Weeks %}
-  <li>
-    <a href="/week/{{Week}}/">
-      <button class =" text-sm font-serif bg-orange-400 hover:bg-green-700 text-white font-bold py-2 px-4 border-b-4 border-black hover:border-gray-800 rounded shadow-md dark:shadow-lg drop-shadow-[0_5px_5px_rgba(0,0,0,0.5)]">
-        Week {{Week}}
-      </button>
-  </li>
-  </a>
-  {% endfor %}
-</ul>
+  <ul class = "flex gap-3 list-none p-15 min-w-max">{% for Week in Weeks %}
+    <li>
+      <a href="/week/{{Week}}/">
+	<button class =" text-sm font-serif bg-orange-400 hover:bg-green-700 text-white font-bold py-2 px-4 border-b-4 border-black hover:border-gray-800 rounded shadow-md dark:shadow-lg drop-shadow-[0_5px_5px_rgba(0,0,0,0.5)]">
+          Week {{Week}}
+	</button>
+    </li>
+    </a>
+    {% endfor %}
+  </ul>
 </div>
 {% if Games %}
-  <p class="text-sm text-gray-300 mt-2 text-center italic">
-    Last updated: {{ Games.first.updated_at|date:"F j, Y, g:i a" }}
-    
-  </p>
+<p class="text-sm text-gray-300 mt-2 text-center italic">
+  Last updated: {{ Games.first.updated_at|date:"F j, Y, g:i a" }}
+  
+</p>
 {% endif %}
 <form method="POST" action="/refresh/" class="text-center mt-4">
   {% csrf_token %}
@@ -41,54 +77,15 @@
     🔄 Refresh Scores
   </button>
 </form>
-  <style>
-    
-    body {
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #0d2b4a, #1e4d6e);
-      color: white;
-      text-align: center;
-      margin: 0;
-      padding: 0;
-    }
 
-    h1 {
-      color: #ff6b35;
-      font-size: 3rem;
-      margin-top: 40px;
-    }
+<h1>HALF-TIME</h1>
+<p>American Football Analytics</p>
 
-    p {
-      font-size: 1.2rem;
-      opacity: 0.9;
-    }
+<div class="box">
+  <h2>🚧 Website Under Construction 🚧</h2>
+  <p>This page is currently being built. Stay tuned for updates!</p>
 
-    .box {
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 10px;
-      margin: 40px auto;
-      padding: 20px;
-      width: 80%;
-      max-width: 600px;
-    }
-
-    img {
-      width: 250px;
-      border-radius: 10px;
-      margin-top: 20px;
-    }
-  </style>
-</head>
-<body>
-  <h1>HALF-TIME</h1>
-  <p>American Football Analytics</p>
-
-  <div class="box">
-    <h2>🚧 Website Under Construction 🚧</h2>
-    <p>This page is currently being built. Stay tuned for updates!</p>
-
-    {% load static %}
-    <img src="{% static 'images/under_construction.jpg' %}" alt="Under Construction">
-  </div>
-</body>
-</html>
+  {% load static %}
+  <img src="{% static 'images/under_construction.jpg' %}" alt="Under Construction">
+</div>
+{% endblock %}
