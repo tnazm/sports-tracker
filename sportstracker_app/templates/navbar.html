@@ -1,0 +1,19 @@
+<nav class="flex flex-col lg:flex-row p-3 space-x-3 py-2 bg-indigo-900
+	    text-gray-100 text-lg lg:text-sm">
+  <ul>
+    <li><strong>Half-Time</strong></li>
+  </ul>
+  <ul class="flex flex-col lg:flex-row space-x-3 justify-content-center">
+    <li><a href="#">Home</a></li>
+    <li><div class="dropdown"><a href="#">Weeks</a>
+	<div class="bg-indigo-800 dropdown-content">
+	  {% for Week in Weeks %}
+	  <a class="text-gray-300 hover:bg-indigo-400 hover:text-gray-900"
+	  href="/week/{{Week}}/">Week {{Week}}</a> {% endfor %}
+	</div>
+    </div></li>
+    <li><a href="#">Teams</a></li>
+    <li><a href="#">Register</a></li>
+    <li><a href="#">Login</a></li>
+  </ul>
+</nav>
