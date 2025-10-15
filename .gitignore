@@ -211,3 +211,4 @@ node_modules
 /bin/
 /lib64
 *.bak
+.vscode/
