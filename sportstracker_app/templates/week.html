@@ -14,25 +14,10 @@ HALF-TIME - American Football Analytics
 {% endblock %}
 
 {% block body %}
-<a href="{% url 'home' %}">
-  <h1 class="mb-4 text-8xl font-extrabold tracking-tight leading-none text-orange-500 md:text-8xl lg:text-8xl">HALF-TIME</h1>
 
-</a>
-<div class="flex justify-center overflow-x-auto py-4 scroll-snap-x-mandatory scroll-smooth">
-  <ul class = "flex gap-3 list-none min-w-max">
-    {% for Week in Weeks %}
-    <li>
-      <a href="/week/{{Week}}/">
-        <button class =" text-sm font-serif bg-orange-400 hover:bg-green-700 text-white font-bold py-2 px-4 border-b-4 border-black hover:border-gray-800 rounded shadow-md dark:shadow-lg drop-shadow-[0_5px_5px_rgba(0,0,0,0.5) ">
-          Week {{Week}}
-        </button>
-    </li>
-    </a>
-    {% endfor %}
-  </ul>
-</div>
-<div class="bg-gradient-to-b from bg-black to-gray-500 py-4 rounded-lg shadow-lg mx-auto w-fit px-8">
-  <h1 class="text-center text-8xl font-extrabold font-serif py-8 bg-gradient-to-r from-orange-400 via-yellow-500 to-orange-600 text-transparent bg-clip-text drop-shadow-[0_4px_8px_rgba(0,0,0,0.5)]">
+
+<div class="bg-gradient-to-b from bg-black to-gray-500 py-4 rounded-lg shadow-lg mx-auto w-fit px-8 mt-4">
+  <h1 class="text-center text-8xl font-extrabold font-serif py-8 bg-gradient-to-r from-orange-400 via-yellow-500 to-orange-600 text-transparent bg-clip-text drop-shadow-[0_4px_8px_rgba(0,0,0,0.5)] ">
     Week {{week_number}}
   </h1>
 </div>

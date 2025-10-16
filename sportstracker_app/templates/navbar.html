@@ -4,7 +4,7 @@
     <li><strong>Half-Time</strong></li>
   </ul>
   <ul class="flex flex-col lg:flex-row space-x-3 justify-content-center">
-    <li><a href="#">Home</a></li>
+    <li><a href="{% url 'home' %}">Home</a></li>
     <li><div class="dropdown"><a href="#">Weeks</a>
 	<div class="bg-indigo-800 dropdown-content">
 	  {% for Week in Weeks %}
