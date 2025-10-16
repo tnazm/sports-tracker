@@ -1,75 +1,19 @@
-<nav class="bg-indigo-900 text-gray-100 px-4 py-3 shadow-md">
-  <div class="flex justify-between items-center">
-    <!-- Logo / Site Name -->
-    <a href="{% url 'home' %}" class="text-2xl font-bold tracking-wider text-orange-400 hover:text-orange-500">
-      HALF-TIME
-    </a>
-
-    <!-- Mobile menu toggle -->
-    <button id="menu-btn" class="lg:hidden text-gray-100 focus:outline-none">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M4 6h16M4 12h16m0 6H4" />
-      </svg>
-    </button>
-  </div>
-
-  <!-- Navigation Links -->
-  <div id="menu" class="hidden lg:flex flex-col lg:flex-row mt-3 lg:mt-0 lg:space-x-6 text-lg lg:text-base">
-    <a href="{% url 'home' %}" class="hover:text-orange-400 py-2 lg:py-0">Home</a>
-
-    <!-- Dropdown -->
-    <div class="relative group">
-      <button class="flex items-center hover:text-orange-400 py-2 lg:py-0">
-        Weeks
-        <svg class="w-4 h-4 ml-1 mt-[2px]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-        </svg>
-      </button>
-      <!-- Dropdown Content -->
-      <div
-        class="absolute hidden group-hover:block bg-indigo-800 rounded-md mt-1 shadow-lg w-32 z-20">
-        {% for Week in Weeks %}
-        <a href="/week/{{Week}}/"
-           class="block px-4 py-2 text-gray-300 hover:bg-indigo-400 hover:text-gray-900 rounded-md transition">
-          Week {{Week}}
-        </a>
-        {% endfor %}
-      </div>
-    </div>
-
-    <a href="#" class="hover:text-orange-400 py-2 lg:py-0">Teams</a>
-    <a href="#" class="hover:text-orange-400 py-2 lg:py-0">Register</a>
-    <a href="#" class="hover:text-orange-400 py-2 lg:py-0">Login</a>
-  </div>
-
-  <!-- Mobile Menu (Dropdown for small screens) -->
-  <div id="mobile-menu" class="hidden flex-col space-y-2 mt-3 text-lg lg:hidden">
-    <a href="{% url 'home' %}" class="block hover:text-orange-400">Home</a>
-
-    <details class="bg-indigo-800 rounded-md">
-      <summary class="px-3 py-2 cursor-pointer hover:text-orange-400">Weeks</summary>
-      <div class="pl-4 pb-2">
-        {% for Week in Weeks %}
-        <a href="/week/{{Week}}/"
-           class="block py-1 text-gray-300 hover:text-orange-300 transition">
-          Week {{Week}}
-        </a>
-        {% endfor %}
-      </div>
-    </details>
-
-    <a href="#" class="block hover:text-orange-400">Teams</a>
-    <a href="#" class="block hover:text-orange-400">Register</a>
-    <a href="#" class="block hover:text-orange-400">Login</a>
-  </div>
-
-  <!-- Toggle Script -->
-  <script>
-    const menuBtn = document.getElementById('menu-btn');
-    const mobileMenu = document.getElementById('mobile-menu');
-    menuBtn.addEventListener('click', () => {
-      mobileMenu.classList.toggle('hidden');
-    });
-  </script>
+<nav class="flex flex-col lg:flex-row p-3 space-x-3 py-2 bg-indigo-900
+	    text-gray-100 text-lg lg:text-sm">
+  <ul>
+    <li><strong>Half-Time</strong></li>
+  </ul>
+  <ul class="flex flex-col lg:flex-row space-x-3 justify-content-center">
+    <li><a href="{% url 'home' %}">Home</a></li>
+    <li><div class="dropdown"><a href="#">Weeks</a>
+	<div class="bg-indigo-800 dropdown-content">
+	  {% for Week in Weeks %}
+	  <a class="text-gray-300 hover:bg-indigo-400 hover:text-gray-900"
+	  href="/week/{{Week}}/">Week {{Week}}</a> {% endfor %}
+	</div>
+    </div></li>
+    <li><a href="#">Teams</a></li>
+    <li><a href="#">Register</a></li>
+    <li><a href="#">Login</a></li>
+  </ul>
 </nav>
