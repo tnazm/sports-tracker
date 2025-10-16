@@ -5,7 +5,7 @@
       HALF-TIME
     </a>
 
-    <!-- Mobile menu toggle -->
+    <!-- Mobile menu toggle toggle -->
     <button id="menu-btn" class="lg:hidden text-gray-100 focus:outline-none">
       <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -14,7 +14,7 @@
     </button>
   </div>
 
-  <!-- Navigation Links -->
+  <!-- Desktop Navigation Links -->
   <div id="menu" class="hidden lg:flex flex-col lg:flex-row mt-3 lg:mt-0 lg:space-x-6 text-lg lg:text-base">
     <a href="{% url 'home' %}" class="hover:text-orange-400 py-2 lg:py-0">Home</a>
 
@@ -27,20 +27,24 @@
         </svg>
       </button>
       <!-- Dropdown Content -->
-      <div
-        class="absolute hidden group-hover:block bg-indigo-800 rounded-md mt-1 shadow-lg w-32 z-20">
-        {% for Week in Weeks %}
-        <a href="/week/{{Week}}/"
-           class="block px-4 py-2 text-gray-300 hover:bg-indigo-400 hover:text-gray-900 rounded-md transition">
-          Week {{Week}}
-        </a>
-        {% endfor %}
-      </div>
-    </div>
 
-    <a href="#" class="hover:text-orange-400 py-2 lg:py-0">Teams</a>
-    <a href="#" class="hover:text-orange-400 py-2 lg:py-0">Register</a>
-    <a href="#" class="hover:text-orange-400 py-2 lg:py-0">Login</a>
+      <div
+    class="absolute invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-all duration-200 bg-indigo-800 rounded-md mt-1 shadow-lg w-32 z-20"
+  >
+    <div class="py-1">
+      {% for Week in Weeks %}
+      <a href="/week/{{Week}}/"
+         class="block px-4 py-2 text-gray-300 hover:bg-indigo-400 hover:text-gray-900 rounded-md transition">
+        Week {{Week}}
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+  <a href="#" class="hover:text-orange-400 py-2 lg:py-0">Teams</a>
+  <a href="#" class="hover:text-orange-400 py-2 lg:py-0">Register</a>
+  <a href="#" class="hover:text-orange-400 py-2 lg:py-0">Login</a>
   </div>
 
   <!-- Mobile Menu (Dropdown for small screens) -->
@@ -68,8 +72,33 @@
   <script>
     const menuBtn = document.getElementById('menu-btn');
     const mobileMenu = document.getElementById('mobile-menu');
+    const weekDropdown = document.getElementById('week-dropdown');
+    const weekMenu = document.getElementById('week-menu');
+
+
+
     menuBtn.addEventListener('click', () => {
       mobileMenu.classList.toggle('hidden');
+    });
+
+    // Mobile menu toggle
+    menuBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+
+    // Dropdown hover delay logic
+    let dropdownTimeout;
+    weekDropdown.addEventListener('mouseenter', () => {
+      clearTimeout(dropdownTimeout);
+      weekMenu.classList.remove('invisible', 'opacity-0');
+      weekMenu.classList.add('visible', 'opacity-100');
+    });
+
+    weekDropdown.addEventListener('mouseleave', () => {
+      dropdownTimeout = setTimeout(() => {
+        weekMenu.classList.remove('visible', 'opacity-100');
+        weekMenu.classList.add('invisible', 'opacity-0');
+      }, 200); // small delay for smooth hover
     });
   </script>
 </nav>
