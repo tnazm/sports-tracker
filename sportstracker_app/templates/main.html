@@ -4,75 +4,50 @@
 HALF-TIME - American Football Analytics
 {% endblock %}
 
-{% block style %}
-<style>
-      body {
-	  background: linear-gradient(135deg, #0d2b4a, #1e4d6e);
-	  color: white;
-	  text-align: center;
-	  margin: 0;
-	  padding: 0;
-      }
-
-      h1 {
-	  color: #ff6b35;
-	  font-size: 3rem;
-	  margin-top: 40px;
-      }
-
-      p {
-	  font-size: 1.2rem;
-	  opacity: 0.9;
-      }
-
-      .box {
-	  background: rgba(255, 255, 255, 0.1);
-	  border-radius: 10px;
-	  margin: 40px auto;
-	  padding: 20px;
-	  width: 80%;
-	  max-width: 600px;
-      }
-
-      img {
-	  width: 250px;
-	  border-radius: 10px;
-	  margin-top: 20px;
-      }
-</style>
-{% endblock %}
-
 {% block body %}
-<section class="bg-center bg-no-repeat bg-[url('https://flowbite.s3.amazonaws.com/docs/jumbotron/conference.jpg')] bg-gray-700 bg-blend-multiply">
-  <div class="px-4 mx-auto max-w-screen-xl text-center py-24 lg:py-56">
-    <h1 class="mb-4 text-[12rem] font-extrabold tracking-tight leading-none text-white md:text-14[rem] lg:text-16[rem]">HALF-TIME</h1>
-    <p class="mb-8 text-xl font-normal text-gray-300 lg:text-xl sm:px-16 lg:px-48">Just pick a week below and it will show all games for that week.</p>
-    <div class="flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-y-0">
-    </div>
-  </div>
-</section>
-
-{% if Games %}
-<p class="text-sm text-gray-300 mt-2 text-center italic">
-  Last updated: {{ Games.first.updated_at|date:"F j, Y, g:i a" }}
+<section class="relative bg-gradient-to-br from-[#0d2b4a] to-[#1e4d6e] text-white text-center min-h-screen flex flex-col items-center justify-center px-4">
   
-</p>
-{% endif %}
-<form method="POST" action="/refresh/" class="text-center mt-4">
-  {% csrf_token %}
-  <button type="submit" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded shadow-md">
-    🔄 Refresh Scores
-  </button>
-</form>
+  <!-- Main Title -->
+  <div class="max-w-5xl mx-auto py-12">
+    <h1 class="text-5xl sm:text-7xl md:text-8xl font-extrabold text-[#ff6b35] mb-6 tracking-tight">
+      HALF-TIME
+    </h1>
+    <p class="text-lg sm:text-xl text-gray-200 max-w-2xl mx-auto">
+      Just pick a week below and it will show all games for that week.
+    </p>
+  </div>
 
-<h1>HALF-TIME</h1>
-<p>American Football Analytics</p>
+  <!-- Refresh Button -->
+  <form method="POST" action="/refresh/" class="mt-6">
+    {% csrf_token %}
+    <button 
+      type="submit" 
+      class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg shadow-lg transition-all duration-300">
+      🔄 Refresh Scores
+    </button>
+  </form>
 
-<div class="box">
-  <h2>🚧 Website Under Construction 🚧</h2>
-  <p>This page is currently being built. Stay tuned for updates!</p>
+  <!-- Last Updated -->
+  {% if Games %}
+  <p class="text-sm text-gray-300 mt-4 italic">
+    Last updated: {{ Games.first.updated_at|date:"F j, Y, g:i a" }}
+  </p>
+  {% endif %}
 
-  {% load static %}
-  <img src="{% static 'images/under_construction.jpg' %}" alt="Under Construction">
-</div>
+  <!-- Under Construction Box -->
+  <div class="bg-white/10 rounded-2xl mt-12 p-8 w-full max-w-lg mx-auto backdrop-blur-sm">
+    <h2 class="text-2xl font-semibold text-[#ff6b35] mb-4">
+      🚧 Website Under Construction 🚧
+    </h2>
+    <p class="text-gray-200 mb-6">
+      This page is currently being built. Stay tuned for updates!
+    </p>
+
+    {% load static %}
+    <img src="{% static 'images/under_construction.jpg' %}" 
+         alt="Under Construction" 
+         class="w-60 sm:w-72 mx-auto rounded-xl shadow-md">
+  </div>
+
+</section>
 {% endblock %}

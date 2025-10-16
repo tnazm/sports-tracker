@@ -7,91 +7,76 @@ HALF-TIME - American Football Analytics
 {% block style %}
 <style>
   body {
-      background: #1e4d6e;
+    background: #0d2546ff;
   }
 </style>
-<!-- class="bg-[#1e4d6e]" -->
 {% endblock %}
 
 {% block body %}
+<!-- HEADER -->
 <a href="{% url 'home' %}">
-  <h1 class="mb-4 text-8xl font-extrabold tracking-tight leading-none text-orange-500 md:text-8xl lg:text-8xl">HALF-TIME</h1>
-
+  <h1 class="text-5xl sm:text-6xl md:text-8xl font-extrabold tracking-tight text-blue-500 text-center mt-8">
+    HALF-TIME
+  </h1>
 </a>
-<div class="flex justify-center overflow-x-auto py-4 scroll-snap-x-mandatory scroll-smooth">
-  <ul class = "flex gap-3 list-none min-w-max">
-    {% for Week in Weeks %}
-    <li>
-      <a href="/week/{{Week}}/">
-        <button class =" text-sm font-serif bg-orange-400 hover:bg-green-700 text-white font-bold py-2 px-4 border-b-4 border-black hover:border-gray-800 rounded shadow-md dark:shadow-lg drop-shadow-[0_5px_5px_rgba(0,0,0,0.5) ">
-          Week {{Week}}
-        </button>
-    </li>
+
+<!-- Week Select Start -->
+<div class="flex flex-wrap md:flex-nowrap justify-center md:justify-start overflow-x-auto md:overflow-x-scroll gap-2 py-4 px-3 mb-8 sm:mb-14 scroll-smooth">
+  {% for Week in Weeks %}
+    <a href="/week/{{Week}}/">
+      <button class="text-xs sm:text-sm font-serif bg-red-400 hover:bg-green-700 text-white font-bold py-2 px-3 sm:px-4 border-b-4 border-black hover:border-gray-800 rounded shadow-md flex-shrink-0">
+        Week {{Week}}
+      </button>
     </a>
-    {% endfor %}
-  </ul>
+  {% endfor %}
 </div>
-<div class="bg-gradient-to-b from bg-black to-gray-500 py-4 rounded-lg shadow-lg mx-auto w-fit px-8">
-  <h1 class="text-center text-8xl font-extrabold font-serif py-8 bg-gradient-to-r from-orange-400 via-yellow-500 to-orange-600 text-transparent bg-clip-text drop-shadow-[0_4px_8px_rgba(0,0,0,0.5)]">
+
+<!--Week select end-->
+
+
+<!-- WEEK TITLE -->
+<div class="bg-gradient-to-b from-black to-gray-700 py-4 rounded-lg shadow-lg mx-auto w-[90%] sm:w-fit px-4 sm:px-8 text-center">
+  <h1 class="text-5xl sm:text-6xl md:text-7xl font-extrabold font-serif py-6 bg-gradient-to-r from-orange-400 via-yellow-500 to-orange-600 text-transparent bg-clip-text drop-shadow-[0_4px_8px_rgba(0,0,0,0.5)]">
     Week {{week_number}}
   </h1>
 </div>
-<div class="container mx-auto py-20">
-  
-  <div class=" bg-gradient-to-b from-black-400  to-orange-700 p-4 rounded-xl block mx-auto">
 
-    <div class=" grid grid-cols-4 gap-3">
+<!-- GAMES GRID -->
+<div class="container mx-auto py-10 px-4">
+  <div class="bg-gradient-to-b from-black to-orange-700 p-4 sm:p-6 rounded-xl">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
       {% for Game in Games %}
-      
-      <div class=" group   block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 h-50">
-        <div class="flex justify-between items-center">
-          {% if Game.AwayScore > Game.HomeScore %}
-          <p class="  transition-colors duration-500 ease-in-out delay-50 group-hover:text-green-600 text-white text-left font-serif"> {{Game.AwayTeam}}</p>
-          <h1 class="text-center w-12   text-middle text-white px-3"> @</h1>
-          <p class="text-white text-right font-serif"> {{Game.HomeTeam}}</p>
-          {% elif Game.AwayScore < Game.HomeScore %}
-				   <p class="text-white text-left font-serif "> {{Game.AwayTeam}}</p> 
-				   <h1 class="text-center w-12 text-middle px-3 text-white"> @</h1>
-          <p class="transition-colors duration-500 ease-in-out delay-50  group-hover:text-green-600 text-white text-right font-serif"> {{Game.HomeTeam}}</p>
-          
-          {% else %}
-          <p class="transition-colors duration-500 ease-in-out delay-50  group-hover:text-green-600 text-white text-left font-serif"> {{Game.AwayTeam}}</p>
-          <h1 class="text-center px-3 w-12 text-middle text-white"> @</h1>
-          <p class="transition-colors duration-500 ease-in-out delay-50  group-hover:text-green-600 text-white text-left font-serif"> {{Game.HomeTeam}}</p>
-          {% endif %}
-        </div>
-        
-        {% if Game.AwayScore > Game.HomeScore %}
-            <div class="flex justify-between items-center mt-4">
-	      
-              <h1 class=" transition-colors duration-500 ease-in-out delay-50 text-white  text-xl font-serif group-hover:text-green-600 text-bold mt-10 text-left"> {{Game.AwayScore}}</h1>
-              <p class="text-white  text-center font-serif text-middle text-bold mt-10"> {{Game.date}}</p>
-              <h1 class="text-white  text-xl font-serif text-bold mt-10 text-right"> {{Game.HomeScore}}</h1>
-
-            </div>
+        <div class="group p-4 bg-gray-800 border border-gray-700 rounded-lg shadow-md hover:bg-gray-700 transition duration-300">
+          <!-- TEAMS -->
+          <div class="flex justify-between items-center text-white text-sm sm:text-base">
+            {% if Game.AwayScore > Game.HomeScore %}
+              <p class="group-hover:text-green-400 font-serif">{{Game.AwayTeam}}</p>
+              <h1 class="px-2">@</h1>
+              <p class="font-serif">{{Game.HomeTeam}}</p>
             {% elif Game.AwayScore < Game.HomeScore %}
-				     <div class="flex justify-between items-center mt-4">
-				       
-				       <h1 class="text-white  text-xl font-serif  text-bold mt-10 text-left"> {{Game.AwayScore}}</h1>
-				       <p class="text-white  text-center font-serif text-middle text-bold mt-10"> {{Game.date}}</p>
-				       <h1 class="text-white transition-colors duration-500 ease-in-out delay-50  text-xl font-serif group-hover:text-green-600 text-bold mt-10 text-right"> {{Game.HomeScore}}</h1>
+              <p class="font-serif">{{Game.AwayTeam}}</p>
+              <h1 class="px-2">@</h1>
+              <p class="group-hover:text-green-400 font-serif">{{Game.HomeTeam}}</p>
+            {% else %}
+              <p class="group-hover:text-green-400 font-serif">{{Game.AwayTeam}}</p>
+              <h1 class="px-2">@</h1>
+              <p class="group-hover:text-green-400 font-serif">{{Game.HomeTeam}}</p>
+            {% endif %}
+          </div>
 
-				     </div>
-				     {% else %}
-				     <div class="flex justify-between items-center mt-4">
-				       
-				       <h1 class="text-white  text-xl font-serif transition-colors duration-500 ease-in-out delay-50  group-hover:text-green-600 text-bold mt-10 text-left"> {{Game.AwayScore}}</h1>
-				       <p class="text-white  text-center font-serif text-middle text-bold mt-10"> {{Game.date}}</p>
-				       <h1 class="text-white transition-colors duration-500 ease-in-out delay-50  text-xl font-serif group-hover:text-green-600 text-bold mt-10 text-right"> {{Game.HomeScore}}</h1>
-				       
-				     </div>
-				     {% endif %}
-
+          <!-- SCORES -->
+          <div class="flex justify-between items-center mt-4 text-white text-xl sm:text-2xl">
+            <h1 class="{% if Game.AwayScore > Game.HomeScore %}group-hover:text-green-400{% endif %} font-serif font-bold">
+              {{Game.AwayScore}}
+            </h1>
+            <p class="text-center text-sm sm:text-base font-serif">{{Game.date}}</p>
+            <h1 class="{% if Game.HomeScore > Game.AwayScore %}group-hover:text-green-400{% endif %} font-serif font-bold">
+              {{Game.HomeScore}}
+            </h1>
+          </div>
         </div>
-	
-	{% endfor %}
-      </div>
-
+      {% endfor %}
     </div>
   </div>
-  {% endblock body %}}
+</div>
+{% endblock %}
