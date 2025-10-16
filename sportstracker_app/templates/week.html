@@ -4,13 +4,26 @@
 HALF-TIME - American Football Analytics
 {% endblock %}
 
+
+
+<!--Included Hidden Scrollbar-->
 {% block style %}
 <style>
   body {
     background: #0d2546ff;
   }
+
+  /*To hide scrollbar for webkit browsers*/
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-hide {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
 </style>
 {% endblock %}
+
 
 {% block body %}
 <!-- HEADER -->
@@ -20,18 +33,86 @@ HALF-TIME - American Football Analytics
   </h1>
 </a>
 
-<!-- Week Select Start -->
-<div class="flex flex-wrap md:flex-nowrap justify-center md:justify-start overflow-x-auto md:overflow-x-scroll gap-2 py-4 px-3 mb-8 sm:mb-12 scroll-smooth">
-  {% for Week in Weeks %}
-    <a href="/week/{{Week}}/">
-      <button class="text-xs sm:text-sm font-serif bg-orange-400 hover:bg-green-700 text-white font-bold py-2 px-3 sm:px-4 border-b-4 border-black hover:border-gray-800 rounded shadow-md flex-shrink-0">
+<!--Netflix-Style Scroll wheel-->
+<div class="relative w-full mt-8 mb-12">
+  <!--Left Arrow-->
+  <button 
+    id="scroll-left"
+    onmousedown="startScroll(-1)"
+    onmouseup="stopScroll()"
+    onmouseleave="stopScroll()"
+    ontouchstart="startScroll(-1)"
+    ontouchend="stopScroll()"
+    class="absolute left-2 top-1/2 transform -translate-y-1/2 bg-gray-800 bg-opacity-50 hover:bg-opacity-75 text-white rounded-full p-2 z-10">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+    </svg>
+  </button>
+
+
+  <!--Scrollable Weeks-->
+
+<div id="week-scroll"
+       class="overflow-x-auto scroll-smooth snap-x snap-mandatory flex space-x-3 sm:space-x-5 px-6 sm:px-10 py-4 scrollbar-hide">
+    {% for Week in Weeks %}
+      <a href="/week/{{Week}}/"
+         class="snap-start shrink-0 w-28 sm:w-36 md:w-40 text-center bg-orange-400 hover:bg-green-600 text-white font-bold py-3 px-4 border-b-4 border-black hover:border-gray-800 rounded-lg shadow-md transition-all duration-300 ease-in-out hover:scale-105">
         Week {{Week}}
-      </button>
-    </a>
-  {% endfor %}
+      </a>
+    {% endfor %}
+  </div>
+
+  <!-- Right arrow -->
+ <button 
+    id="scroll-right"
+    onmousedown="startScroll(1)"
+    onmouseup="stopScroll()"
+    onmouseleave="stopScroll()"
+    ontouchstart="startScroll(1)"
+    ontouchend="stopScroll()"
+    class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-gray-800 bg-opacity-50 hover:bg-opacity-75 text-white rounded-full p-2 z-10">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+    </svg>
+  </button>
 </div>
 
-<!--Week select end-->
+<!-- JavaScript for Continuous Scroll -->
+<script>
+  let scrollInterval;
+
+  function startScroll(direction) {
+    const container = document.getElementById('week-scroll');
+    stopScroll(); // Prevent multiple intervals
+    scrollInterval = setInterval(() => {
+      container.scrollBy({ left: direction * 10, behavior: 'smooth' });
+    }, 16); // ~60fps for smooth scroll
+  }
+
+  function stopScroll() {
+    clearInterval(scrollInterval);
+  }
+</script>
+
+
+
+
+
+<script>
+  function scrollLeft() {
+    document.getElementById('week-scroll').scrollBy({ left: -300, behavior: 'smooth' });
+  }
+  function scrollRight() {
+    document.getElementById('week-scroll').scrollBy({ left: 300, behavior: 'smooth' });
+  }
+</script>
+
+<!--Week Scroll Script end-->
+
+
+
+
+
 
 
 <!-- WEEK TITLE -->
