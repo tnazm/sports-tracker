@@ -2,7 +2,7 @@ import sys
 from pathlib import Path
 from django.conf import settings
 
-# Point Python at: <project>/Backend/BackendDB
+#Point Python at: <project>/Backend/BackendDB
 BACKEND_PATH = Path(settings.BASE_DIR) / "Backend" / "BackendDB"
 if str(BACKEND_PATH) not in sys.path:
     sys.path.insert(0, str(BACKEND_PATH))
@@ -41,3 +41,4 @@ def refresh_scores(request):
         except Exception as e:
             print("Error refreshing scores:", e)
     return redirect('home')
+

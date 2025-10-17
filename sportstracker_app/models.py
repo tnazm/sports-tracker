@@ -6,7 +6,7 @@ class Game(models.Model):
     AwayTeam = models.CharField(max_length=75)
     HomeScore = models.IntegerField()
     AwayScore = models.IntegerField()
-    Week = models.CharField(max_length=15)
+    Week = models.CharField(max_length=15,null=True,blank=True,default="missing")
     date = models.CharField(max_length=15)
     updated_at = models.DateTimeField(auto_now=True, null=True)
 

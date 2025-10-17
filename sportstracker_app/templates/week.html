@@ -123,6 +123,7 @@ HALF-TIME - American Football Analytics
   <div class="bg-gradient-to-b from-black to-orange-700 p-4 sm:p-6 rounded-xl">
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
       {% for Game in Games %}
+      <button type="button" onclick="alert('Working')">
         <div class="group p-4 bg-gray-800 border border-gray-700 rounded-lg shadow-md hover:bg-gray-700 transition duration-300">
           <!-- TEAMS -->
           <div class="flex justify-between items-center text-white text-sm sm:text-base">
@@ -152,7 +153,10 @@ HALF-TIME - American Football Analytics
             </h1>
           </div>
         </div>
+        
+      </button>
       {% endfor %}
+      
     </div>
   </div>
 </div>
