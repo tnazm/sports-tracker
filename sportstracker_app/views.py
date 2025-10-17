@@ -1,11 +1,19 @@
 import sys
 from pathlib import Path
 from django.conf import settings
+import json
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import http.client,os
+from dotenv import load_dotenv
+load_dotenv()
+KEY = os.getenv("API_KEY")
 
-# Point Python at: <project>/Backend/BackendDB
 BACKEND_PATH = Path(settings.BASE_DIR) / "Backend" / "BackendDB"
-if str(BACKEND_PATH) not in sys.path:
-    sys.path.insert(0, str(BACKEND_PATH))
+BACKEND_PATH_STR = str(BACKEND_PATH.resolve())
+
+if BACKEND_PATH_STR not in sys.path:
+    sys.path.insert(0, BACKEND_PATH_STR)
 
 from django.shortcuts import render, redirect
 from .models import Game
@@ -41,3 +49,60 @@ def refresh_scores(request):
         except Exception as e:
             print("Error refreshing scores:", e)
     return redirect('home')
+
+
+
+
+
+
+
+def GameSummary(Gameid):
+    Ganeid=str(Gameid)
+    conn = http.client.HTTPSConnection("v1.american-football.api-sports.io")
+    print("Loaded API_KEY:", KEY)
+    headers = {
+        'x-rapidapi-host': "v1.american-football.api-sports.io",
+        'x-rapidapi-key': KEY
+        }
+
+    conn.request("GET", f"/games/statistics/teams?id={Gameid}", headers=headers)
+
+    res = conn.getresponse()
+    data = res.read()
+
+    decoded =data.decode("utf-8")
+    parsed = json.loads(decoded)
+
+    return (
+        
+        {"HomeTeam":parsed["response"][0],
+         
+         
+         "AwayTeam":parsed["response"][1]
+         
+         
+        }
+         )
+
+
+        ## sends json data back
+
+def load_game_summary(request):
+    if request.method == "POST":
+        data = json.loads(request.body.decode("utf-8"))
+        game_id = data.get("game_id")
+  
+
+        if not game_id:
+            return JsonResponse({"error": "Missing game_id"}, status=400)
+
+        try:
+            summary = GameSummary(game_id)
+    
+            return JsonResponse(summary)
+        except Exception as e:
+            print("❌ ERROR in load_game_summary:")
+
+            return JsonResponse({"error": str(e)}, status=500)
+
+    return JsonResponse({"error": "Invalid request"}, status=400)
