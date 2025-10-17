@@ -24,7 +24,16 @@ def GameSummary(Gameid):
     decoded =data.decode("utf-8")
     parsed = json.loads(decoded)
 
-    return (parsed["response"][0],parsed["response"][1])
+    return (
+        
+        {"HomeTeam":parsed["response"][0],
+         
+         
+         "AwayTeam":parsed["response"][1]
+         
+         
+        }
+         )
 
 
         ## sends json data back

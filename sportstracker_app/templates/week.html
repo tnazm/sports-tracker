@@ -107,7 +107,25 @@ HALF-TIME - American Football Analytics
 
 <!--Week Scroll Script end-->
 
+<!--Game button scrpit-->
 
+<script>
+  async function loadGameSummary(gameId) {
+    const response = await fetch("{% url 'load_game_summary' %}", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": "{{ csrf_token }}",
+      },
+      body: JSON.stringify({ game_id: gameId }),
+    });
+  
+    const data = await response.json();
+    return data;
+  
+  }
+  </script>
+  <!--END of game button scrpit-->
 
 
 <!-- WEEK TITLE -->
@@ -123,7 +141,7 @@ HALF-TIME - American Football Analytics
   <div class="bg-gradient-to-b from-black to-orange-700 p-4 sm:p-6 rounded-xl">
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
       {% for Game in Games %}
-      <button type="button" onclick="alert('Working')">
+      <button type="button" onclick="loadGameSummary('{{ Game.GameID }}')">
         <div class="group p-4 bg-gray-800 border border-gray-700 rounded-lg shadow-md hover:bg-gray-700 transition duration-300">
           <!-- TEAMS -->
           <div class="flex justify-between items-center text-white text-sm sm:text-base">

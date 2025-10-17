@@ -30,7 +30,6 @@ for id in ids:    # loop to add each game based on ID to the data base
         away_score=Game_Info["scores"]["away"]["total"]
         Game.objects.create(GameID=gameid, HomeTeam=home_team, AwayTeam=away_team, HomeScore=home_score, AwayScore=away_score, Week=week, date=date)
         print("Games added successfully!")
-    else:  
-        print("Skiped ",id )
+
 
 
