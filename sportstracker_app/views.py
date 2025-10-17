@@ -40,6 +40,12 @@ def week(request, num):
     Games = Game.objects.filter(Week=f"Week {num}")
     return render(request, 'week.html', {"Games": Games, "week_number": num, "Weeks": Weeks})
 
+def register(request):
+    return render(request, "register.html")
+
+def login(request):
+    return render(request, "login.html")
+
 def refresh_scores(request):
     """Manually refresh the NFL scores."""
     if request.method == "POST":
