@@ -121,11 +121,49 @@ HALF-TIME - American Football Analytics
     });
   
     const data = await response.json();
+    console.log(data);
     return data;
   
   }
   </script>
   <!--END of game button scrpit-->
+
+
+
+<script>
+  async function Load_Game(gameid) {
+    const data = await loadGameSummary(gameid);
+    openPopup(
+      data.HomeTeam.team.name + " vs " + data.AwayTeam.team.name,
+      "Final Score: " + data.HomeTeam.statistics.points_against.total + " - " + data.AwayTeam.statistics.points_against.total
+    );
+  }
+</script>
+
+
+
+<script>
+  function openPopup(title, bodyText) {
+    document.getElementById("popup-title").innerText = title;
+    document.getElementById("popup-body").innerText = bodyText;
+    document.getElementById("game-popup").classList.remove("hidden");
+  }
+
+  function closePopup() {
+    document.getElementById("game-popup").classList.add("hidden");
+  }
+</script>
+<!-- POPUP MODAL -->
+<div id="game-popup"
+     class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+  <div class="bg-gray-900 text-white rounded-lg p-6 max-w-md w-11/12 shadow-lg relative">
+    <button onclick="closePopup()" 
+            class="absolute top-2 right-3 text-gray-400 hover:text-white text-xl">&times;</button>
+
+    <h2 id="popup-title" class="text-2xl font-bold mb-2">Game Info</h2>
+    <p id="popup-body" class="text-gray-300">Loading...</p>
+  </div>
+</div>
 
 
 <!-- WEEK TITLE -->
@@ -141,7 +179,7 @@ HALF-TIME - American Football Analytics
   <div class="bg-gradient-to-b from-black to-sky-700 p-4 sm:p-6 rounded-xl">
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
       {% for Game in Games %}
-      <button type="button" onclick="loadGameSummary('{{ Game.GameID }}')">
+      <button type="button" onclick="Load_Game('{{ Game.GameID }}')">
         <div class="group p-4 bg-gray-800 border border-gray-700 rounded-lg shadow-md hover:bg-gray-700 transition duration-300">
           <!-- TEAMS -->
           <div class="flex justify-between items-center text-white text-sm sm:text-base">
