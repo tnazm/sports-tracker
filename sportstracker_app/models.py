@@ -24,3 +24,10 @@ class HoldIDs(models.Model):
 
     def __str__(self):
         return self.GameID
+    
+class GameData(models.Model):
+    GameID = models.CharField(max_length=50)
+    data = models.JSONField()
+
+    def __str__(self):
+        return f'GameData for GameID: {self.GameID}'    

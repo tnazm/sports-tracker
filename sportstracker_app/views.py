@@ -6,6 +6,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import http.client,os
 from dotenv import load_dotenv
+from sportstracker_app.models import GameData
 load_dotenv()
 KEY = os.getenv("API_KEY")
 
@@ -63,33 +64,49 @@ def refresh_scores(request):
 
 
 def GameSummary(Gameid):
-    Ganeid=str(Gameid)
-    conn = http.client.HTTPSConnection("v1.american-football.api-sports.io")
-    print("Loaded API_KEY:", KEY)
-    headers = {
-        'x-rapidapi-host': "v1.american-football.api-sports.io",
-        'x-rapidapi-key': KEY
-        }
 
-    conn.request("GET", f"/games/statistics/teams?id={Gameid}", headers=headers)
 
-    res = conn.getresponse()
-    data = res.read()
+    if not  GameData.objects.filter(GameID=Gameid).exists():
 
-    decoded =data.decode("utf-8")
-    parsed = json.loads(decoded)
+        Gameid=str(Gameid)
+        conn = http.client.HTTPSConnection("v1.american-football.api-sports.io")
+        print("Loaded API_KEY:", KEY)
+        headers = {
+            'x-rapidapi-host': "v1.american-football.api-sports.io",
+            'x-rapidapi-key': KEY
+            }
 
-    return (
+        conn.request("GET", f"/games/statistics/teams?id={Gameid}", headers=headers)
+
+        res = conn.getresponse()
+        data = res.read()
+
+        decoded =data.decode("utf-8")
+        parsed = json.loads(decoded)
+        GameData.objects.create(GameID=Gameid, data=parsed)
+        return (
+            
+            {"HomeTeam":parsed["response"][0],
+            
+            
+            "AwayTeam":parsed["response"][1]
+            
+            
+            }
+            )
+    else:  
+        data =  GameData.objects.get(GameID=Gameid).data
         
-        {"HomeTeam":parsed["response"][0],
-         
-         
-         "AwayTeam":parsed["response"][1]
-         
-         
-        }
-         )
-
+        return( 
+              
+            {"HomeTeam":data["response"][0],
+            
+            
+            "AwayTeam":data["response"][1]
+            }
+    )
+    
+ 
 
         ## sends json data back
 
