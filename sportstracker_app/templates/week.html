@@ -134,8 +134,8 @@ HALF-TIME - American Football Analytics
   async function Load_Game(gameid) {
     const data = await loadGameSummary(gameid);
     openPopup(
-      data.HomeTeam.team.name + " vs " + data.AwayTeam.team.name,
-      "Final Score: " + data.HomeTeam.statistics.points_against.total + " - " + data.AwayTeam.statistics.points_against.total
+     data.AwayTeam.team.name + "  FINAL  " +  data.HomeTeam.team.name,
+     data.AwayTeam.statistics.points_against.total + " - " +  data.HomeTeam.statistics.points_against.total
     );
   }
 </script>
@@ -155,7 +155,7 @@ HALF-TIME - American Football Analytics
 </script>
 <!-- POPUP MODAL -->
 <div id="game-popup"
-     class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+     class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center  z-50">
   <div class="bg-gray-900 text-white rounded-lg p-6 max-w-md w-11/12 shadow-lg relative">
     <button onclick="closePopup()" 
             class="absolute top-2 right-3 text-gray-400 hover:text-white text-xl">&times;</button>
