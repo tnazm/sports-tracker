@@ -212,3 +212,7 @@ node_modules
 /lib64
 *.bak
 .vscode/
+*~
+env
+*.env
+.DS_Store
