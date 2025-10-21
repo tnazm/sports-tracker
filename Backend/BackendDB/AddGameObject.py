@@ -17,11 +17,12 @@ from GetGameJson import Get_Game_Info
 ## GRAB all the IDS from thre HoldIDs database
 
 ids = HoldIDs.objects.all().values_list('GameID',flat=True)
+ # FOR TESTING PURPOSES ONLY
 for id in ids: # loop to add each game based on ID to the data base
     ## MOST LIKELY WILL NEED TO CHANGE TO CHECK FOR WEEK
     if not Game.objects.filter(GameID=id).exists():
         Game_Info = Get_Game_Info(id)
-        if Game_Info["game"]["status"]["long"]!="Finished":
+        if Game_Info["game"]["status"]["long"]!="Finished" and  Game_Info["game"]["status"]["long"]!="Final/OT":
             continue
         else:
             gameid = id
@@ -32,8 +33,8 @@ for id in ids: # loop to add each game based on ID to the data base
             home_score=Game_Info["scores"]["home"]["total"]
             away_score=Game_Info["scores"]["away"]["total"]
             Game.objects.create(GameID=gameid, HomeTeam=home_team, AwayTeam=away_team, HomeScore=home_score, AwayScore=away_score, Week=week, date=date)
-            print("Games added successfully!")
-        time.sleep(10)
+            print(f"{home_team} vs {away_team}    {week} added to database.")
+        time.sleep(6.5)
 
 
 
