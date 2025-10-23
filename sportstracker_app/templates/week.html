@@ -121,7 +121,7 @@ HALF-TIME - American Football Analytics
     });
   
     const data = await response.json();
-    console.log(data);
+    console.log(data);   // For debugging purposes
     return data;
   
   }
@@ -134,8 +134,19 @@ HALF-TIME - American Football Analytics
   async function Load_Game(gameid) {
     const data = await loadGameSummary(gameid);
     openPopup(
-     data.AwayTeam.team.name + "  FINAL  " +  data.HomeTeam.team.name,
-     data.AwayTeam.statistics.points_against.total + " - " +  data.HomeTeam.statistics.points_against.total
+     data.AwayTeam.team.name,
+     data.HomeTeam.team.name,
+     data.HomeTeam.statistics.points_against.total,
+     data.AwayTeam.statistics.points_against.total,
+     data.AwayTeam.statistics.first_downs.total,
+     data.HomeTeam.statistics.first_downs.total,
+     data.AwayTeam.statistics.interceptions.total,
+     data.HomeTeam.statistics.interceptions.total,
+     data.AwayTeam.statistics.turnovers.total,
+     data.HomeTeam.statistics.turnovers.total
+     
+
+
     );
   }
 </script>
@@ -143,9 +154,19 @@ HALF-TIME - American Football Analytics
 
 
 <script>
-  function openPopup(title, bodyText) {
-    document.getElementById("popup-title").innerText = title;
-    document.getElementById("popup-body").innerText = bodyText;
+  function openPopup(awayteam, hometeam, awayscore, homescore,awayfirstdowns,homefirstdowns,awayints,homeints,awayto,hometo) {  
+    document.getElementById("away-team").innerText = awayteam;
+    document.getElementById("home-team").innerText =hometeam;
+    document.getElementById("away-score").innerText = "Total-"+awayscore;
+    document.getElementById("home-score").innerText =homescore +"-Total" ;
+    document.getElementById("Away-First-Downs").innerText = "1st Downs-"+awayfirstdowns;
+    document.getElementById("Home-First-Downs").innerText =homefirstdowns +"-1st Downs" ;
+    document.getElementById("Away-Interceptions").innerText = "INTs-"+awayints;
+    document.getElementById("Home-Interceptions").innerText =homeints +"-INTs" ;
+    document.getElementById("Away-Turnovers").innerText="TO-" +awayto; 
+    document.getElementById("Home-Turnovers").innerText=hometo +"-TO" ;
+    
+    
     document.getElementById("game-popup").classList.remove("hidden");
   }
 
@@ -156,12 +177,33 @@ HALF-TIME - American Football Analytics
 <!-- POPUP MODAL -->
 <div id="game-popup"
      class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center  z-50">
-  <div class="bg-gray-900 text-white rounded-lg p-6 max-w-md w-11/12 shadow-lg relative">
+  <div class="bg-gray-900 text-white rounded-lg p-6 max-w-4xl h-auto w-11/12 overflow-y-auto shadow-lg  overflow-x-auto">
     <button onclick="closePopup()" 
             class="absolute top-2 right-3 text-gray-400 hover:text-white text-xl">&times;</button>
+            <div id="popup-body" class="text-gray-300 w-full">
+              <div class="flex justify-between text-4xl  font-bold mb-2">
+                <span id="away-team"></span>
+                <span id="home-team"></span>
+              </div>
+              <div class="flex justify-between text-xl font-semibold">
+                <span id="away-score"></span>
+                <span id="home-score"></span>
+              </div>
+              <div class="flex justify-between text-xl font-semibold">
+                <span id="Away-First-Downs"></span>
+                <span id="Home-First-Downs"></span>
+              </div>
 
-    <h2 id="popup-title" class="text-2xl font-bold mb-2">Game Info</h2>
-    <p id="popup-body" class="text-gray-300">Loading...</p>
+              <div class="flex justify-between text-xl font-semibold">
+                <span id="Away-Interceptions"></span>
+                <span id="Home-Interceptions"></span>
+              </div>
+              <div class="flex justify-between text-xl font-semibold">
+                <span id="Away-Turnovers"></span>
+                <span id="Home-Turnovers"></span>
+              </div>
+            </div>
+ 
   </div>
 </div>
 
