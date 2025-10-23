@@ -64,10 +64,11 @@ def login(request):
 
 
 def GameSummary(Gameid):
+   
 
 
     if not  GameData.objects.filter(GameID=Gameid).exists():
-
+        print("Fetching data from API for GameID:", Gameid)
         Gameid=str(Gameid)
         conn = http.client.HTTPSConnection("v1.american-football.api-sports.io")
         print("Loaded API_KEY:", KEY)
@@ -83,7 +84,11 @@ def GameSummary(Gameid):
 
         decoded =data.decode("utf-8")
         parsed = json.loads(decoded)
+        if parsed["results"]==0:
+           return ("CANT add game")
+        
         GameData.objects.create(GameID=Gameid, data=parsed)
+
         return (
             
             {"HomeTeam":parsed["response"][0],
@@ -95,6 +100,7 @@ def GameSummary(Gameid):
             }
             )
     else:  
+      
         data =  GameData.objects.get(GameID=Gameid).data
         
         return( 
