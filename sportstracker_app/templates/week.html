@@ -193,8 +193,8 @@ HALF-TIME - American Football Analytics
   homeplays) {   
     document.getElementById("away-team").innerText = awayteam;
     document.getElementById("home-team").innerText =hometeam;
-    document.getElementById("away-score").innerText ="FINAL:  "+awayscore;
-    document.getElementById("home-score").innerText =homescore+ "  :FINAL"  ;
+    document.getElementById("away-score").innerText =awayscore;
+    document.getElementById("home-score").innerText =homescore ;
     document.getElementById("Away-First-Downs").innerText = awayfirstdowns;
     document.getElementById("Home-First-Downs").innerText =homefirstdowns;
     document.getElementById("Away-Interceptions").innerText =awayints;
@@ -268,9 +268,15 @@ HALF-TIME - American Football Analytics
                 <span> @ </span>
                 <span id="home-team"></span>
               </div>
+
+
+
+            
+
               <div class="flex justify-between text-xl font-semibold" style="margin-bottom:50px;">
-                <span id="away-score"></span>
-                <span id="home-score"></span>
+                <h1 class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white"><span class="underline underline-offset-3 decoration-8 decoration-blue-400 dark:decoration-red-600" id="away-score"></span></h1>
+                <span class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white"> Final Score </span>
+                <h1 class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white"><span class="underline underline-offset-3 decoration-8 decoration-blue-400 dark:decoration-sky-600" id="home-score"></span></h1>
               </div>
 
 
@@ -286,8 +292,8 @@ HALF-TIME - American Football Analytics
               <span class="text-base font-medium text-blue-700 dark:text-white"> Plays </span>
               <span id="Home-plays" class="text-sm font-medium text-blue-700 dark:text-white"></span>
             </div>
-            <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-sky-600" style="margin-bottom: 20px;">
-              <div  id="playsbar" class="bg-red-600 h-2.5 rounded-full" style="width: 0%"></div>
+            <div class="w-full bg-gray-200 rounded-full h-3 dark:bg-sky-600" style="margin-bottom: 20px;">
+              <div  id="playsbar" class="bg-red-600 h-3 rounded-full" style="width: 0%"></div>
             </div>
 
               <!-- <div class="flex justify-between text-xl font-semibold">
@@ -300,8 +306,8 @@ HALF-TIME - American Football Analytics
                 <span class="text-base font-medium text-blue-700 dark:text-white"> First Downs </span>
                 <span id="Home-First-Downs" class="text-sm font-medium text-blue-700 dark:text-white"></span>
               </div>
-              <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-sky-600" style="margin-bottom: 20px;">
-                <div  id="firstdownbar" class="bg-red-600 h-2.5 rounded-full" style="width: 0%"></div>
+              <div class="w-full bg-gray-200 rounded-full h-3 dark:bg-sky-600" style="margin-bottom: 20px;">
+                <div  id="firstdownbar" class="bg-red-600 h-3 rounded-full" style="width: 0%"></div>
               </div>
   
 
@@ -317,8 +323,8 @@ HALF-TIME - American Football Analytics
                 <span class="text-base font-medium text-blue-700 dark:text-white"> Passing Yards </span>
                 <span id="Home-passing" class="text-sm font-medium text-blue-700 dark:text-white"></span>
               </div>
-              <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-sky-600" style="margin-bottom: 20px;">
-                <div  id="passingbar" class="bg-red-600 h-2.5 rounded-full" style="width: 0%"></div>
+              <div class="w-full bg-gray-200 rounded-full h-3 dark:bg-sky-600" style="margin-bottom: 20px;">
+                <div  id="passingbar" class="bg-red-600 h-3 rounded-full" style="width: 0%"></div>
               </div>
   
 
@@ -334,8 +340,8 @@ HALF-TIME - American Football Analytics
                 <span class="text-base font-medium text-blue-700 dark:text-white"> Rushing Yards </span>
                 <span id="Home-rushing" class="text-sm font-medium text-blue-700 dark:text-white"></span>
               </div>
-              <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-sky-600" style="margin-bottom: 20px;">
-                <div  id="rushingbar" class="bg-red-600 h-2.5 rounded-full" style="width: 0%"></div>
+              <div class="w-full bg-gray-200 rounded-full h-3 dark:bg-sky-600" style="margin-bottom: 20px;">
+                <div  id="rushingbar" class="bg-red-600 h-3 rounded-full" style="width: 0%"></div>
               </div>
   
 <!--         
@@ -350,8 +356,8 @@ HALF-TIME - American Football Analytics
                 <span class="text-base font-medium text-blue-700 dark:text-white">  Total Yards  </span>
                 <span id="Home-yards-total" class="text-sm font-medium text-blue-700 dark:text-white"></span>
               </div>
-              <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-sky-600" style="margin-bottom: 20px;">
-                <div  id="yardsbar" class="bg-red-600 h-2.5 rounded-full" style="width: 0%"></div>
+              <div class="w-full bg-gray-200 rounded-full h-3 dark:bg-sky-600" style="margin-bottom: 20px;">
+                <div  id="yardsbar" class="bg-red-600 h-3 rounded-full" style="width: 0%"></div>
               </div>
   
 
@@ -368,8 +374,8 @@ HALF-TIME - American Football Analytics
                 <span class="text-base font-medium text-blue-700 dark:text-white">  Total Sacks  </span>
                 <span id="Home-sacks" class="text-sm font-medium text-blue-700 dark:text-white"></span>
               </div>
-              <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-sky-600" style="margin-bottom: 20px;">
-                <div  id="sacksbar" class="bg-red-600 h-2.5 rounded-full" style="width: 0%"></div>
+              <div class="w-full bg-gray-200 rounded-full h-3 dark:bg-sky-600" style="margin-bottom: 20px;">
+                <div  id="sacksbar" class="bg-red-600 h-3 rounded-full" style="width: 0%"></div>
               </div>
   
 <!-- 
@@ -384,8 +390,8 @@ HALF-TIME - American Football Analytics
                 <span class="text-base font-medium text-blue-700 dark:text-white">  Fumbles  </span>
                 <span id="Home-fumbles" class="text-sm font-medium text-blue-700 dark:text-white"></span>
               </div>
-              <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-sky-600" style="margin-bottom: 20px;">
-                <div  id="fumblebar" class="bg-red-600 h-2.5 rounded-full" style="width: 0%"></div>
+              <div class="w-full bg-gray-200 rounded-full h-3 dark:bg-sky-600" style="margin-bottom: 20px;">
+                <div  id="fumblebar" class="bg-red-600 h-3 rounded-full" style="width: 0%"></div>
               </div>
 
               <!-- <div class="flex justify-between text-xl font-semibold">
@@ -400,8 +406,8 @@ HALF-TIME - American Football Analytics
                 <span class="text-base font-medium text-blue-700 dark:text-white"> Interceptions  </span>
                 <span id="Home-Interceptions" class="text-sm font-medium text-blue-700 dark:text-white"></span>
               </div>
-              <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-sky-600" style="margin-bottom: 20px;">
-                <div  id="interceptionsbar" class="bg-red-600 h-2.5 rounded-full" style="width: 0%"></div>
+              <div class="w-full bg-gray-200 rounded-full h-3 dark:bg-sky-600" style="margin-bottom: 20px;">
+                <div  id="interceptionsbar" class="bg-red-600 h-3 rounded-full" style="width: 0%"></div>
               </div>
               
               <!-- <div class="flex justify-between text-xl font-semibold">
@@ -416,8 +422,8 @@ HALF-TIME - American Football Analytics
                 <span class="text-base font-medium text-blue-700 dark:text-white"> Turnovers  </span>
                 <span id="Home-Turnovers" class="text-sm font-medium text-blue-700 dark:text-white"></span>
               </div>
-              <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-sky-600" style="margin-bottom: 20px;">
-                <div  id="turnoverbar" class="bg-red-600 h-2.5 rounded-full" style="width: 0%"></div>
+              <div class="w-full bg-gray-200 rounded-full h-3 dark:bg-sky-600" style="margin-bottom: 20px;">
+                <div  id="turnoverbar" class="bg-red-600 h-3 rounded-full" style="width: 0%"></div>
               </div>
               
            
