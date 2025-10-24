@@ -65,7 +65,7 @@ def login(request):
             return HttpResponse("<h1>Logged in!</h1>")
         else:
             messages.error(request, 'Invalid credentials')
-    return render(request, "login.html")
+    return render(request, "login.html",{"Weeks": Weeks})
 
 # def refresh_scores(request):
 #     """Manually refresh the NFL scores."""
