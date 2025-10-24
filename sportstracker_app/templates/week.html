@@ -140,10 +140,24 @@ HALF-TIME - American Football Analytics
      data.AwayTeam.statistics.points_against.total,
      data.AwayTeam.statistics.first_downs.total,
      data.HomeTeam.statistics.first_downs.total,
-     data.AwayTeam.statistics.interceptions.total,
-     data.HomeTeam.statistics.interceptions.total,
+     data.AwayTeam.statistics.turnovers.interceptions,
+     data.HomeTeam.statistics.turnovers.interceptions,
      data.AwayTeam.statistics.turnovers.total,
-     data.HomeTeam.statistics.turnovers.total
+     data.HomeTeam.statistics.turnovers.total,
+     data.AwayTeam.statistics.passing.total,
+     data.HomeTeam.statistics.passing.total,
+     data.AwayTeam.statistics.rushings.total,
+     data.HomeTeam.statistics.rushings.total,
+     data.AwayTeam.statistics.yards.total,
+     data.HomeTeam.statistics.yards.total,
+    data.AwayTeam.statistics.sacks.total,
+    data.HomeTeam.statistics.sacks.total,
+    data.AwayTeam.statistics.turnovers.lost_fumbles,
+    data.HomeTeam.statistics.turnovers.lost_fumbles,
+    data.AwayTeam.statistics.plays.total,
+    data.HomeTeam.statistics.plays.total
+
+
      
 
 
@@ -154,7 +168,29 @@ HALF-TIME - American Football Analytics
 
 
 <script>
-  function openPopup(awayteam, hometeam, awayscore, homescore,awayfirstdowns,homefirstdowns,awayints,homeints,awayto,hometo) {  
+  function openPopup(
+  awayteam, 
+  hometeam,
+  awayscore, 
+  homescore,
+  awayfirstdowns,
+  homefirstdowns,
+  awayints,
+  homeints,
+  awayto,
+  hometo,
+  awaypassing,
+  homepassing,
+  awayrushing, 
+  homerushing,
+  awayyardstotal,
+  homeyardstotal,
+  awaysacks,
+  homesacks,
+  awayfumbles,
+  homefumbles,
+  awayplays,
+  homeplays) {   
     document.getElementById("away-team").innerText = awayteam;
     document.getElementById("home-team").innerText =hometeam;
     document.getElementById("away-score").innerText = "Total-"+awayscore;
@@ -165,7 +201,19 @@ HALF-TIME - American Football Analytics
     document.getElementById("Home-Interceptions").innerText =homeints +"-INTs" ;
     document.getElementById("Away-Turnovers").innerText="TO-" +awayto; 
     document.getElementById("Home-Turnovers").innerText=hometo +"-TO" ;
-    
+    document.getElementById("Away-passing").innerText="Rassing yards-"+awaypassing ;
+    document.getElementById("Home-passing").innerText=homepassing+"-Rassing yards"  ;
+    document.getElementById("Away-rushing").innerText="Rushing yards-"+awayrushing ;
+    document.getElementById("Home-rushing").innerText=homerushing+"-Rushing yards"  ;
+    document.getElementById("Away-yards-total").innerText="Total Yards-"+awayyardstotal ;
+    document.getElementById("Home-yards-total").innerText=homeyardstotal+"-Total Yards"  ;
+    document.getElementById("Away-sacks").innerText="Sack(s)-"+awaysacks ;
+    document.getElementById("Home-sacks").innerText=homesacks+"-Sack(s)"  ;
+    document.getElementById("Away-fumbles").innerText = "Fumbles-"+awayfumbles;
+    document.getElementById("Home-fumbles").innerText = homefumbles+ "-Fumbles";
+    document.getElementById("Away-plays").innerText = "Plays-"+awayplays;
+    document.getElementById("Home-plays").innerText = homeplays+ "-Plays";
+
     
     document.getElementById("game-popup").classList.remove("hidden");
   }
@@ -179,29 +227,60 @@ HALF-TIME - American Football Analytics
      class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center  z-50">
   <div class="bg-gray-900 text-white rounded-lg p-6 max-w-4xl h-auto w-11/12 overflow-y-auto shadow-lg  overflow-x-auto">
     <button onclick="closePopup()" 
-            class="absolute top-2 right-3 text-gray-400 hover:text-white text-xl">&times;</button>
+            class="absolute top-4 right-4 text-gray-400 hover:text-white text-xl">&times;</button>
             <div id="popup-body" class="text-gray-300 w-full">
               <div class="flex justify-between text-4xl  font-bold mb-2">
+                
                 <span id="away-team"></span>
+                <span> @ </span>
                 <span id="home-team"></span>
               </div>
               <div class="flex justify-between text-xl font-semibold">
                 <span id="away-score"></span>
                 <span id="home-score"></span>
               </div>
+
+              <div class="flex justify-between text-xl font-semibold">
+                <span id="Away-plays"></span>
+                <span id="Home-plays"></span>
+              </div>
               <div class="flex justify-between text-xl font-semibold">
                 <span id="Away-First-Downs"></span>
                 <span id="Home-First-Downs"></span>
+              </div>
+            
+              <div class="flex justify-between text-xl font-semibold">
+                <span id="Away-passing"></span>
+                <span id="Home-passing"></span>
+              </div>
+              <div class="flex justify-between text-xl font-semibold">
+                <span id="Away-rushing"></span>
+                <span id="Home-rushing"></span>
+              </div>
+              <div class="flex justify-between text-xl font-semibold">
+                <span id="Away-yards-total"></span>
+                <span id="Home-yards-total"></span>
+              </div>
+              <div class="flex justify-between text-xl font-semibold">
+                <span id="Away-sacks"></span>
+                <span id="Home-sacks"></span>
+              </div>
+
+              <div class="flex justify-between text-xl font-semibold">
+                <span id="Away-fumbles"></span>
+                <span id="Home-fumbles"></span>
               </div>
 
               <div class="flex justify-between text-xl font-semibold">
                 <span id="Away-Interceptions"></span>
                 <span id="Home-Interceptions"></span>
               </div>
+              
               <div class="flex justify-between text-xl font-semibold">
                 <span id="Away-Turnovers"></span>
                 <span id="Home-Turnovers"></span>
               </div>
+           
             </div>
  
   </div>
