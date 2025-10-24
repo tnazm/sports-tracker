@@ -53,7 +53,7 @@ def register(request):
             return HttpResponse("<h1>Registered!</h1>")
     else:
         form = CustomUserCreationForm()
-    return render(request, "register.html", {'form': form})
+    return render(request, "register.html", {'form': form, "Weeks": Weeks})
 
 def login(request):
     if request.method == 'POST':
