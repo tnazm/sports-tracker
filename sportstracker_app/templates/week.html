@@ -121,7 +121,7 @@ HALF-TIME - American Football Analytics
     });
   
     const data = await response.json();
-    console.log(data);
+    console.log(data);   // For debugging purposes
     return data;
   
   }
@@ -134,8 +134,33 @@ HALF-TIME - American Football Analytics
   async function Load_Game(gameid) {
     const data = await loadGameSummary(gameid);
     openPopup(
-      data.HomeTeam.team.name + " vs " + data.AwayTeam.team.name,
-      "Final Score: " + data.HomeTeam.statistics.points_against.total + " - " + data.AwayTeam.statistics.points_against.total
+     data.AwayTeam.team.name,
+     data.HomeTeam.team.name,
+     data.HomeTeam.statistics.points_against.total,
+     data.AwayTeam.statistics.points_against.total,
+     data.AwayTeam.statistics.first_downs.total,
+     data.HomeTeam.statistics.first_downs.total,
+     data.AwayTeam.statistics.turnovers.interceptions,
+     data.HomeTeam.statistics.turnovers.interceptions,
+     data.AwayTeam.statistics.turnovers.total,
+     data.HomeTeam.statistics.turnovers.total,
+     data.AwayTeam.statistics.passing.total,
+     data.HomeTeam.statistics.passing.total,
+     data.AwayTeam.statistics.rushings.total,
+     data.HomeTeam.statistics.rushings.total,
+     data.AwayTeam.statistics.yards.total,
+     data.HomeTeam.statistics.yards.total,
+    data.AwayTeam.statistics.sacks.total,
+    data.HomeTeam.statistics.sacks.total,
+    data.AwayTeam.statistics.turnovers.lost_fumbles,
+    data.HomeTeam.statistics.turnovers.lost_fumbles,
+    data.AwayTeam.statistics.plays.total,
+    data.HomeTeam.statistics.plays.total
+
+
+     
+
+
     );
   }
 </script>
@@ -143,10 +168,87 @@ HALF-TIME - American Football Analytics
 
 
 <script>
-  function openPopup(title, bodyText) {
-    document.getElementById("popup-title").innerText = title;
-    document.getElementById("popup-body").innerText = bodyText;
+  function openPopup(
+  awayteam, 
+  hometeam,
+  awayscore, 
+  homescore,
+  awayfirstdowns,
+  homefirstdowns,
+  awayints,
+  homeints,
+  awayto,
+  hometo,
+  awaypassing,
+  homepassing,
+  awayrushing, 
+  homerushing,
+  awayyardstotal,
+  homeyardstotal,
+  awaysacks,
+  homesacks,
+  awayfumbles,
+  homefumbles,
+  awayplays,
+  homeplays) {   
+    document.getElementById("away-team").innerText = awayteam;
+    document.getElementById("home-team").innerText =hometeam;
+    document.getElementById("away-score").innerText =awayscore;
+    document.getElementById("home-score").innerText =homescore ;
+    document.getElementById("Away-First-Downs").innerText = awayfirstdowns;
+    document.getElementById("Home-First-Downs").innerText =homefirstdowns;
+    document.getElementById("Away-Interceptions").innerText =awayints;
+    document.getElementById("Home-Interceptions").innerText =homeints ;
+    document.getElementById("Away-Turnovers").innerText=awayto; 
+    document.getElementById("Home-Turnovers").innerText=hometo ;
+    document.getElementById("Away-passing").innerText=awaypassing ;
+    document.getElementById("Home-passing").innerText=homepassing ;
+    document.getElementById("Away-rushing").innerText=awayrushing ;
+    document.getElementById("Home-rushing").innerText=homerushing  ;
+    document.getElementById("Away-yards-total").innerText=awayyardstotal ;
+    document.getElementById("Home-yards-total").innerText=homeyardstotal  ;
+    document.getElementById("Away-sacks").innerText=awaysacks ;
+    document.getElementById("Home-sacks").innerText=homesacks ;
+    document.getElementById("Away-fumbles").innerText = awayfumbles;
+    document.getElementById("Home-fumbles").innerText = homefumbles;
+    document.getElementById("Away-plays").innerText = awayplays;
+    document.getElementById("Home-plays").innerText = homeplays;
+
+   const  playsbar =  (awayplays / (awayplays + homeplays)) * 100;
+    document.getElementById("playsbar").style.width= playsbar + "%";
+   
+
+  const firstdownbar = (awayfirstdowns /(awayfirstdowns + homefirstdowns)) * 100;
+    document.getElementById("firstdownbar").style.width= firstdownbar + "%";
+
+  const rushingbar =(awayrushing / (awayrushing + homerushing)) * 100;
+  document.getElementById("rushingbar").style.width= rushingbar + "%";
+
+
+  const passingbar = (awaypassing / (awaypassing + homepassing)) * 100;
+  document.getElementById("passingbar").style.width= passingbar + "%";
+
+  const yardsbar = (awayyardstotal / (awayyardstotal + homeyardstotal)) * 100;
+  document.getElementById("yardsbar").style.width= yardsbar + "%";
+
+  const sacksbar = (awaysacks / (awaysacks + homesacks)) * 100;
+  document.getElementById("sacksbar").style.width= sacksbar + "%";
+
+  const fumblebar = (awayfumbles / (awayfumbles + homefumbles)) * 100;
+  document.getElementById("fumblebar").style.width= fumblebar + "%";
+
+
+  const interceptionsbar = (awayints / (awayints + homeints)) * 100;
+  document.getElementById("interceptionsbar").style.width= interceptionsbar + "%";
+  
+
+  const turnoverbar = (awayto / (awayto + hometo)) * 100;
+  document.getElementById("turnoverbar").style.width= turnoverbar + "%";
+
+
     document.getElementById("game-popup").classList.remove("hidden");
+  
+  
   }
 
   function closePopup() {
@@ -155,13 +257,178 @@ HALF-TIME - American Football Analytics
 </script>
 <!-- POPUP MODAL -->
 <div id="game-popup"
-     class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-  <div class="bg-gray-900 text-white rounded-lg p-6 max-w-md w-11/12 shadow-lg relative">
+     class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center  z-50">
+  <div class="bg-gray-900 text-white rounded-lg p-6 max-w-4xl h-auto w-11/12 overflow-y-auto shadow-lg  overflow-x-auto">
     <button onclick="closePopup()" 
-            class="absolute top-2 right-3 text-gray-400 hover:text-white text-xl">&times;</button>
+            class="absolute top-4 right-4 text-gray-400 hover:text-white text-xl">&times;</button>
+            <div id="popup-body" class="text-gray-300 w-full">
+              <div class="flex justify-between text-4xl  font-bold mb-2" style="margin-bottom:50px;">
+                
+                <span id="away-team"></span>
+                <span> @ </span>
+                <span id="home-team"></span>
+              </div>
 
-    <h2 id="popup-title" class="text-2xl font-bold mb-2">Game Info</h2>
-    <p id="popup-body" class="text-gray-300">Loading...</p>
+
+
+            
+
+              <div class="flex justify-between text-xl font-semibold" style="margin-bottom:50px;">
+                <h1 class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white"><span class="underline underline-offset-3 decoration-8 decoration-blue-400 dark:decoration-red-600" id="away-score"></span></h1>
+                <span class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white"> Final Score </span>
+                <h1 class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white"><span class="underline underline-offset-3 decoration-8 decoration-blue-400 dark:decoration-sky-600" id="home-score"></span></h1>
+              </div>
+
+
+
+
+<!--   OLD code
+              <div class="flex justify-between text-xl font-semibold">
+                <span id="Away-plays"></span>
+                <span id="Home-plays"></span>
+              </div> -->
+            <div class="flex justify-between mb-1">
+              <span id="Away-plays"class="text-base font-medium text-blue-700 dark:text-white"></span>
+              <span class="text-base font-medium text-blue-700 dark:text-white"> Plays </span>
+              <span id="Home-plays" class="text-sm font-medium text-blue-700 dark:text-white"></span>
+            </div>
+            <div class="w-full bg-gray-200 rounded-full h-3 dark:bg-sky-600" style="margin-bottom: 20px;">
+              <div  id="playsbar" class="bg-red-600 h-3 rounded-full" style="width: 0%"></div>
+            </div>
+
+              <!-- <div class="flex justify-between text-xl font-semibold">
+                <span id="Away-First-Downs"></span>
+                <span id="Home-First-Downs"></span>
+              </div> -->
+
+              <div class="flex justify-between mb-1">
+                <span id="Away-First-Downs"class="text-base font-medium text-blue-700 dark:text-white"></span>
+                <span class="text-base font-medium text-blue-700 dark:text-white"> First Downs </span>
+                <span id="Home-First-Downs" class="text-sm font-medium text-blue-700 dark:text-white"></span>
+              </div>
+              <div class="w-full bg-gray-200 rounded-full h-3 dark:bg-sky-600" style="margin-bottom: 20px;">
+                <div  id="firstdownbar" class="bg-red-600 h-3 rounded-full" style="width: 0%"></div>
+              </div>
+  
+
+
+<!--             
+              <div class="flex justify-between text-xl font-semibold">
+                <span id="Away-passing"></span>
+                <span id="Home-passing"></span>
+              </div> -->
+
+              <div class="flex justify-between mb-1">
+                <span id="Away-passing"class="text-base font-medium text-blue-700 dark:text-white"></span>
+                <span class="text-base font-medium text-blue-700 dark:text-white"> Passing Yards </span>
+                <span id="Home-passing" class="text-sm font-medium text-blue-700 dark:text-white"></span>
+              </div>
+              <div class="w-full bg-gray-200 rounded-full h-3 dark:bg-sky-600" style="margin-bottom: 20px;">
+                <div  id="passingbar" class="bg-red-600 h-3 rounded-full" style="width: 0%"></div>
+              </div>
+  
+
+
+              <!-- <div class="flex justify-between text-xl font-semibold">
+                <span id="Away-rushing"></span>
+                <span id="Home-rushing"></span>
+              </div> -->
+
+
+              <div class="flex justify-between mb-1">
+                <span id="Away-rushing"class="text-base font-medium text-blue-700 dark:text-white"></span>
+                <span class="text-base font-medium text-blue-700 dark:text-white"> Rushing Yards </span>
+                <span id="Home-rushing" class="text-sm font-medium text-blue-700 dark:text-white"></span>
+              </div>
+              <div class="w-full bg-gray-200 rounded-full h-3 dark:bg-sky-600" style="margin-bottom: 20px;">
+                <div  id="rushingbar" class="bg-red-600 h-3 rounded-full" style="width: 0%"></div>
+              </div>
+  
+<!--         
+              <div class="flex justify-between text-xl font-semibold">
+                <span id="Away-yards-total"></span>
+                <span id="Home-yards-total"></span>
+              </div> -->
+
+
+              <div class="flex justify-between mb-1">
+                <span id="Away-yards-total"class="text-base font-medium text-blue-700 dark:text-white"></span>
+                <span class="text-base font-medium text-blue-700 dark:text-white">  Total Yards  </span>
+                <span id="Home-yards-total" class="text-sm font-medium text-blue-700 dark:text-white"></span>
+              </div>
+              <div class="w-full bg-gray-200 rounded-full h-3 dark:bg-sky-600" style="margin-bottom: 20px;">
+                <div  id="yardsbar" class="bg-red-600 h-3 rounded-full" style="width: 0%"></div>
+              </div>
+  
+
+<!-- 
+
+              <div class="flex justify-between text-xl font-semibold">
+                <span id="Away-sacks"></span>
+                <span id="Home-sacks"></span>
+              </div> -->
+
+
+              <div class="flex justify-between mb-1">
+                <span id="Away-sacks"class="text-base font-medium text-blue-700 dark:text-white"></span>
+                <span class="text-base font-medium text-blue-700 dark:text-white">  Total Sacks  </span>
+                <span id="Home-sacks" class="text-sm font-medium text-blue-700 dark:text-white"></span>
+              </div>
+              <div class="w-full bg-gray-200 rounded-full h-3 dark:bg-sky-600" style="margin-bottom: 20px;">
+                <div  id="sacksbar" class="bg-red-600 h-3 rounded-full" style="width: 0%"></div>
+              </div>
+  
+<!-- 
+              <div class="flex justify-between text-xl font-semibold">
+                <span id="Away-fumbles"></span>
+                <span id="Home-fumbles"></span>
+              </div> -->
+
+
+              <div class="flex justify-between mb-1">
+                <span id="Away-fumbles"class="text-base font-medium text-blue-700 dark:text-white"></span>
+                <span class="text-base font-medium text-blue-700 dark:text-white">  Fumbles  </span>
+                <span id="Home-fumbles" class="text-sm font-medium text-blue-700 dark:text-white"></span>
+              </div>
+              <div class="w-full bg-gray-200 rounded-full h-3 dark:bg-sky-600" style="margin-bottom: 20px;">
+                <div  id="fumblebar" class="bg-red-600 h-3 rounded-full" style="width: 0%"></div>
+              </div>
+
+              <!-- <div class="flex justify-between text-xl font-semibold">
+                <span id="Away-Interceptions"></span>
+                <span id="Home-Interceptions"></span>
+              </div> --> 
+
+
+
+              <div class="flex justify-between mb-1">
+                <span id="Away-Interceptions"class="text-base font-medium text-blue-700 dark:text-white"></span>
+                <span class="text-base font-medium text-blue-700 dark:text-white"> Interceptions  </span>
+                <span id="Home-Interceptions" class="text-sm font-medium text-blue-700 dark:text-white"></span>
+              </div>
+              <div class="w-full bg-gray-200 rounded-full h-3 dark:bg-sky-600" style="margin-bottom: 20px;">
+                <div  id="interceptionsbar" class="bg-red-600 h-3 rounded-full" style="width: 0%"></div>
+              </div>
+              
+              <!-- <div class="flex justify-between text-xl font-semibold">
+                <span id="Away-Turnovers"></span>
+                <span id="Home-Turnovers"></span>
+              </div>
+
+ -->
+
+              <div class="flex justify-between mb-1">
+                <span id="Away-Turnovers"class="text-base font-medium text-blue-700 dark:text-white"></span>
+                <span class="text-base font-medium text-blue-700 dark:text-white"> Turnovers  </span>
+                <span id="Home-Turnovers" class="text-sm font-medium text-blue-700 dark:text-white"></span>
+              </div>
+              <div class="w-full bg-gray-200 rounded-full h-3 dark:bg-sky-600" style="margin-bottom: 20px;">
+                <div  id="turnoverbar" class="bg-red-600 h-3 rounded-full" style="width: 0%"></div>
+              </div>
+              
+           
+            </div>
+ 
   </div>
 </div>
 

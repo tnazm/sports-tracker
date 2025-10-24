@@ -6,6 +6,6 @@ urlpatterns = [
     path('register/', views.register, name='register'),
     path('login/', views.login, name="login"),
     path('week/<int:num>/', views.week, name='week'),
-    path('refresh/', views.refresh_scores, name='refresh_scores'),
+    # path('refresh/', views.refresh_scores, name='refresh_scores'),
     # path("admin-dashboard/", views.admin_dashboard, name="dashboard"),
 ]

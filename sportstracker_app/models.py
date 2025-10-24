@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class Game(models.Model):
-    GameID = models.CharField(max_length=50)
+    GameID = models.CharField(max_length=50,unique=True)
     HomeTeam = models.CharField(max_length=75)
     AwayTeam = models.CharField(max_length=75)
     HomeScore = models.IntegerField()
@@ -16,7 +16,7 @@ class Game(models.Model):
 
 
 class HoldIDs(models.Model):
-    GameID = models.CharField(max_length=50)
+    GameID = models.CharField(max_length=50,unique=True)
     week = models.CharField(max_length=15)
     date = models.DateField()
 
