@@ -20,7 +20,8 @@ from sportstracker_app import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('sportstracker_app.urls')),
-    path("load-game-summary/", views.load_game_summary, name="load_game_summary")
+    path("load-game-summary/", views.load_game_summary, name="load_game_summary"),
+    path('', include('django.contrib.auth.urls')),
     
     #path('images/')
 ]

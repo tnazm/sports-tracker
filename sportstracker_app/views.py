@@ -3,6 +3,9 @@ from pathlib import Path
 from django.conf import settings
 import json
 from django.http import JsonResponse
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import authenticate, login
+from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
 import http.client,os
 from dotenv import load_dotenv
@@ -16,8 +19,9 @@ BACKEND_PATH_STR = str(BACKEND_PATH.resolve())
 if BACKEND_PATH_STR not in sys.path:
     sys.path.insert(0, BACKEND_PATH_STR)
 
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, HttpResponse
 from .models import Game
+from .forms import CustomUserCreationForm
 
 # Try to import backend scripts (don’t crash if they’re missing)
 try:
@@ -42,9 +46,25 @@ def week(request, num):
     return render(request, 'week.html', {"Games": Games, "week_number": num, "Weeks": Weeks})
 
 def register(request):
-    return render(request, "register.html")
+    if request.method == 'POST':
+        form = CustomUserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponse("<h1>Registered!</h1>")
+    else:
+        form = CustomUserCreationForm()
+    return render(request, "register.html", {'form': form})
 
 def login(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return HttpResponse("<h1>Logged in!</h1>")
+        else:
+            messages.error(request, 'Invalid credentials')
     return render(request, "login.html")
 
 def refresh_scores(request):

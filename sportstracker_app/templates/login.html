@@ -19,14 +19,23 @@ Login - HALF-TIME
     <h2 class="text-2xl font-semibold text-[#ff6b35] mb-4">
     <center>Login 🔑</center>
     </h2>
-    <p class="text-black-200 mb-6">
-      Login form here.
-    </p>
 
-    {% load static %}
-    <img src="{% static 'images/under_construction.jpg' %}" 
-         alt="Under Construction" 
-         class="w-60 sm:w-72 mx-auto rounded-xl shadow-md">
+    <form method="post">
+      {% csrf_token %}
+
+      {{form}}
+      <br>
+      
+      <button 
+        type="submit" 
+        class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg shadow-lg transition-all duration-300">
+        Login
+      </button>
+      <p class="text-black-200 mb-6">
+        Don't already have an account? Click <a href="{% url 'register' %}">here</a>.
+      </p>
+    </form>
+
   </div>
 </section>
 <p>This is the login page.</p>

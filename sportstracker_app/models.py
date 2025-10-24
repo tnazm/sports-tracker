@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 class Game(models.Model):
     GameID = models.CharField(max_length=50)
@@ -9,9 +10,6 @@ class Game(models.Model):
     Week = models.CharField(max_length=15,null=True,blank=True,default="missing")
     date = models.CharField(max_length=15)
     updated_at = models.DateTimeField(auto_now=True, null=True)
-
-
-
 
     def __str__(self):
         return f'{self.HomeTeam} vs {self.AwayTeam} on {self.date}'
@@ -30,4 +28,9 @@ class GameData(models.Model):
     data = models.JSONField()
 
     def __str__(self):
-        return f'GameData for GameID: {self.GameID}'    
+        return f'GameData for GameID: {self.GameID}'
+
+#This is for the user profile
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    bio = models.TextField(blank=True)    
