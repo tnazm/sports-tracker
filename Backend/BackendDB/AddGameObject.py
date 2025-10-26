@@ -17,7 +17,7 @@ from GetGameJson import Get_Game_Info
 ## GRAB all the IDS from thre HoldIDs database
 
 ids = HoldIDs.objects.all().values_list('GameID',flat=True)
- # FOR TESTING PURPOSES ONLY
+
 for id in ids: # loop to add each game based on ID to the data base
     ## MOST LIKELY WILL NEED TO CHANGE TO CHECK FOR WEEK
     if not Game.objects.filter(GameID=id).exists():

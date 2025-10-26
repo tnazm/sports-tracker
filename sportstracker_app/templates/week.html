@@ -134,28 +134,28 @@ HALF-TIME - American Football Analytics
   async function Load_Game(gameid) {
     const data = await loadGameSummary(gameid);
     openPopup(
-     data.AwayTeam.team.name,
-     data.HomeTeam.team.name,
-     data.HomeTeam.statistics.points_against.total,
-     data.AwayTeam.statistics.points_against.total,
-     data.AwayTeam.statistics.first_downs.total,
-     data.HomeTeam.statistics.first_downs.total,
-     data.AwayTeam.statistics.turnovers.interceptions,
-     data.HomeTeam.statistics.turnovers.interceptions,
-     data.AwayTeam.statistics.turnovers.total,
-     data.HomeTeam.statistics.turnovers.total,
-     data.AwayTeam.statistics.passing.total,
-     data.HomeTeam.statistics.passing.total,
-     data.AwayTeam.statistics.rushings.total,
-     data.HomeTeam.statistics.rushings.total,
-     data.AwayTeam.statistics.yards.total,
-     data.HomeTeam.statistics.yards.total,
-    data.AwayTeam.statistics.sacks.total,
-    data.HomeTeam.statistics.sacks.total,
-    data.AwayTeam.statistics.turnovers.lost_fumbles,
-    data.HomeTeam.statistics.turnovers.lost_fumbles,
-    data.AwayTeam.statistics.plays.total,
-    data.HomeTeam.statistics.plays.total
+      data.AwayTeam.team.name,
+      data.HomeTeam.team.name,
+      data.HomeTeam.statistics.points_against.total,
+      data.AwayTeam.statistics.points_against.total,
+      data.AwayTeam.statistics.first_downs.total,
+      data.HomeTeam.statistics.first_downs.total,
+      data.AwayTeam.statistics.turnovers.interceptions,
+      data.HomeTeam.statistics.turnovers.interceptions,
+      data.AwayTeam.statistics.turnovers.total,
+      data.HomeTeam.statistics.turnovers.total,
+      data.AwayTeam.statistics.passing.total,
+      data.HomeTeam.statistics.passing.total,
+      data.AwayTeam.statistics.rushings.total,
+      data.HomeTeam.statistics.rushings.total,
+      data.AwayTeam.statistics.yards.total,
+      data.HomeTeam.statistics.yards.total,
+      data.AwayTeam.statistics.sacks.total,
+      data.HomeTeam.statistics.sacks.total,
+      data.AwayTeam.statistics.turnovers.lost_fumbles,
+      data.HomeTeam.statistics.turnovers.lost_fumbles,
+      data.AwayTeam.statistics.plays.total,
+      data.HomeTeam.statistics.plays.total
 
 
      
@@ -312,11 +312,7 @@ HALF-TIME - American Football Analytics
   
 
 
-<!--             
-              <div class="flex justify-between text-xl font-semibold">
-                <span id="Away-passing"></span>
-                <span id="Home-passing"></span>
-              </div> -->
+                      <!-- Passing yards bar  -->
 
               <div class="flex justify-between mb-1">
                 <span id="Away-passing"class="text-base font-medium text-blue-700 dark:text-white"></span>
@@ -328,12 +324,7 @@ HALF-TIME - American Football Analytics
               </div>
   
 
-
-              <!-- <div class="flex justify-between text-xl font-semibold">
-                <span id="Away-rushing"></span>
-                <span id="Home-rushing"></span>
-              </div> -->
-
+                    <!-- Total Rushing bar  -->
 
               <div class="flex justify-between mb-1">
                 <span id="Away-rushing"class="text-base font-medium text-blue-700 dark:text-white"></span>
@@ -344,11 +335,7 @@ HALF-TIME - American Football Analytics
                 <div  id="rushingbar" class="bg-red-600 h-3 rounded-full" style="width: 0%"></div>
               </div>
   
-<!--         
-              <div class="flex justify-between text-xl font-semibold">
-                <span id="Away-yards-total"></span>
-                <span id="Home-yards-total"></span>
-              </div> -->
+                      <!-- Total yards bar  -->
 
 
               <div class="flex justify-between mb-1">
@@ -361,12 +348,7 @@ HALF-TIME - American Football Analytics
               </div>
   
 
-<!-- 
-
-              <div class="flex justify-between text-xl font-semibold">
-                <span id="Away-sacks"></span>
-                <span id="Home-sacks"></span>
-              </div> -->
+                      <!-- Total sacks bar  -->
 
 
               <div class="flex justify-between mb-1">
@@ -378,12 +360,7 @@ HALF-TIME - American Football Analytics
                 <div  id="sacksbar" class="bg-red-600 h-3 rounded-full" style="width: 0%"></div>
               </div>
   
-<!-- 
-              <div class="flex justify-between text-xl font-semibold">
-                <span id="Away-fumbles"></span>
-                <span id="Home-fumbles"></span>
-              </div> -->
-
+                      <!-- Total fumbles bar  -->
 
               <div class="flex justify-between mb-1">
                 <span id="Away-fumbles"class="text-base font-medium text-blue-700 dark:text-white"></span>
@@ -394,11 +371,7 @@ HALF-TIME - American Football Analytics
                 <div  id="fumblebar" class="bg-red-600 h-3 rounded-full" style="width: 0%"></div>
               </div>
 
-              <!-- <div class="flex justify-between text-xl font-semibold">
-                <span id="Away-Interceptions"></span>
-                <span id="Home-Interceptions"></span>
-              </div> --> 
-
+                      <!-- Total interceptions bar  -->
 
 
               <div class="flex justify-between mb-1">
@@ -410,13 +383,8 @@ HALF-TIME - American Football Analytics
                 <div  id="interceptionsbar" class="bg-red-600 h-3 rounded-full" style="width: 0%"></div>
               </div>
               
-              <!-- <div class="flex justify-between text-xl font-semibold">
-                <span id="Away-Turnovers"></span>
-                <span id="Home-Turnovers"></span>
-              </div>
-
- -->
-
+                      <!-- Total turnovers bar  --> 
+ 
               <div class="flex justify-between mb-1">
                 <span id="Away-Turnovers"class="text-base font-medium text-blue-700 dark:text-white"></span>
                 <span class="text-base font-medium text-blue-700 dark:text-white"> Turnovers  </span>
