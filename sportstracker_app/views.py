@@ -3,6 +3,9 @@ from pathlib import Path
 from django.conf import settings
 import json
 from django.http import JsonResponse
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import authenticate, login, logout
+from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
 import http.client,os
 from dotenv import load_dotenv
@@ -16,19 +19,20 @@ BACKEND_PATH_STR = str(BACKEND_PATH.resolve())
 if BACKEND_PATH_STR not in sys.path:
     sys.path.insert(0, BACKEND_PATH_STR)
 
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, HttpResponse
 from .models import Game
+from .forms import CustomUserCreationForm
 
 # Try to import backend scripts (don’t crash if they’re missing)
-try:
-    from AddGameObject import main as add_games
-    from GetGameIds import GamesToday
-except ImportError as e:
-    print("⚠️ Could not import backend scripts from Backend/BackendDB:", e)
-    def add_games(): 
-        pass
-    def GamesToday(): 
-        pass
+# try:
+#     from AddGameObject import main as add_games
+#     from GetGameIds import GamesToday
+# except ImportError as e:
+#     print("⚠️ Could not import backend scripts from Backend/BackendDB:", e)
+#     def add_games(): 
+#         pass
+#     def GamesToday(): 
+#         pass
 
 Weeks = ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18"]
 
@@ -42,20 +46,40 @@ def week(request, num):
     return render(request, 'week.html', {"Games": Games, "week_number": num, "Weeks": Weeks})
 
 def register(request):
-    return render(request, "register.html")
+    if request.method == 'POST':
+        form = CustomUserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponse("<h1>Registered!</h1>")
+    else:
+        form = CustomUserCreationForm()
+    return render(request, "register.html", {'form': form, "Weeks": Weeks})
 
-def login(request):
-    return render(request, "login.html")
+def login_view(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect("home")
+        else:
+            messages.error(request, 'Invalid credentials')
+    return render(request, "login.html",{"Weeks": Weeks})
 
-def refresh_scores(request):
-    """Manually refresh the NFL scores."""
-    if request.method == "POST":
-        try:
-            GamesToday()   # fetch today/tomorrow IDs
-            add_games()    # update/create Game entries
-        except Exception as e:
-            print("Error refreshing scores:", e)
-    return redirect('home')
+def logout_view(request):
+    logout(request)
+    return redirect("home")   
+
+# def refresh_scores(request):
+#     """Manually refresh the NFL scores."""
+#     if request.method == "POST":
+#         try:
+#             GamesToday()   # fetch today/tomorrow IDs
+#             add_games()    # update/create Game entries
+#         except Exception as e:
+#             print("Error refreshing scores:", e)
+#     return redirect('home')
 
 
 
@@ -64,10 +88,11 @@ def refresh_scores(request):
 
 
 def GameSummary(Gameid):
+   
 
 
     if not  GameData.objects.filter(GameID=Gameid).exists():
-
+        print("Fetching data from API for GameID:", Gameid)
         Gameid=str(Gameid)
         conn = http.client.HTTPSConnection("v1.american-football.api-sports.io")
         print("Loaded API_KEY:", KEY)
@@ -83,7 +108,11 @@ def GameSummary(Gameid):
 
         decoded =data.decode("utf-8")
         parsed = json.loads(decoded)
+        if parsed["results"]==0:
+           return ("CANT add game")
+        
         GameData.objects.create(GameID=Gameid, data=parsed)
+
         return (
             
             {"HomeTeam":parsed["response"][0],
@@ -95,6 +124,7 @@ def GameSummary(Gameid):
             }
             )
     else:  
+      
         data =  GameData.objects.get(GameID=Gameid).data
         
         return( 

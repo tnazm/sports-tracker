@@ -4,6 +4,10 @@
     <a href="{% url 'home' %}" class="text-2xl font-bold tracking-wider text-sky-400 hover:text-orange-500">
       HALF-TIME
     </a>
+    
+    {% if user.is_authenticated %}
+    <p style="text-align: right">Logged in as: <b>{{request.user.username}}</b></p>
+    {% endif %}
 
     <!-- Mobile menu toggle toggle -->
     <button id="menu-btn" class="lg:hidden text-gray-100 focus:outline-none">
@@ -44,7 +48,11 @@
 
   <a href="#" class="hover:text-orange-400 py-2 lg:py-0">Teams</a>
   <a href="{% url 'register' %}" class="hover:text-orange-400 py-2 lg:py-0">Register</a>
-  <a href="{% url 'login' %}" class="hover:text-orange-400 py-2 lg:py-0">Login</a>
+  {% if user.is_authenticated %}
+    <a href="{% url 'logout' %}" class="hover:text-orange-400 py-2 lg:py-0">Logout</a>
+  {% else %}
+    <a href="{% url 'login' %}" class="hover:text-orange-400 py-2 lg:py-0">Login</a>
+  {% endif %}
   </div>
 
   <!-- Mobile Menu (Dropdown for small screens) -->
@@ -65,7 +73,11 @@
 
     <a href="#" class="block hover:text-orange-400">Teams</a>
     <a href="{% url 'register' %}" class="block hover:text-orange-400">Register</a>
-    <a href="{% url 'login' %}" class="block hover:text-orange-400">Login</a>
+  {% if user.is_authenticated %}
+    <a href="{% url 'logout' %}" class="hover:text-orange-400 py-2 lg:py-0">Logout</a>
+  {% else %}
+    <a href="{% url 'login' %}" class="hover:text-orange-400 py-2 lg:py-0">Login</a>
+  {% endif %}
   </div>
 
   <!-- Toggle Script -->
@@ -83,7 +95,7 @@
 
     // Mobile menu toggle
     menuBtn.addEventListener('click', () => {
-      mobileMenu.classList.toggle('hidden');
+      mobileMenu.classList.toggle('visible');
     });
 
     // Dropdown hover delay logic

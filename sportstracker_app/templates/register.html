@@ -19,14 +19,21 @@ Register - HALF-TIME
     <h2 class="text-2xl font-semibold text-[#ff6b35] mb-4">
     <center>Register 🔐</center>
     </h2>
-    <p class="text-black-200 mb-6">
-      Register form here
-    </p>
+    <form method="post" style="color: black">
+      {% csrf_token %}
 
-    {% load static %}
-    <img src="{% static 'images/under_construction.jpg' %}" 
-         alt="Under Construction" 
-         class="w-60 sm:w-72 mx-auto rounded-xl shadow-md">
+      {{form}}
+      <br>
+
+      <button 
+        type="submit" 
+        class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg shadow-lg transition-all duration-300">
+        Register
+      </button>
+      <p class="text-black-200 mb-6">
+        Already have an account? Click <a href="{% url 'login' %}">here</a>.
+      </p>
+    </form>
   </div>
 </section>
 <p>This is the register page.</p>
