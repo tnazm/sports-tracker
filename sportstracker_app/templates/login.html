@@ -23,7 +23,12 @@ Login - HALF-TIME
     <form method="post" style="color: black">
       {% csrf_token %}
 
-      {{form}}
+      <label for="uname">User Name: </label> 
+      <input type="text" id="uname" name="username" required />
+      <br>
+
+      <label for="pass">Password: </label>
+      <input type="password" id="pass" name="password" required />
       <br>
       
       <button 

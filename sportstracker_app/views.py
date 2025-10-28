@@ -4,7 +4,7 @@ from django.conf import settings
 import json
 from django.http import JsonResponse
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
 import http.client,os
@@ -55,17 +55,21 @@ def register(request):
         form = CustomUserCreationForm()
     return render(request, "register.html", {'form': form, "Weeks": Weeks})
 
-def login(request):
+def login_view(request):
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return HttpResponse("<h1>Logged in!</h1>")
+            return redirect("home")
         else:
             messages.error(request, 'Invalid credentials')
     return render(request, "login.html",{"Weeks": Weeks})
+
+def logout_view(request):
+    logout(request)
+    return redirect("home")   
 
 # def refresh_scores(request):
 #     """Manually refresh the NFL scores."""
