@@ -9,7 +9,7 @@ HALF-TIME - American Football Analytics
   
   <!-- Main Title -->
   <div class="max-w-5xl mx-auto py-12">
-    <h1 class="text-5xl sm:text-7xl md:text-8xl font-extrabold text-[#ff6b35] mb-6 tracking-tight">
+    <h1 class="text-5xl sm:text-7xl md:text-8xl  font-extrabold text-sky-600 mb-6 tracking-tight">
       HALF-TIME
     </h1>
     <p class="text-lg sm:text-xl text-gray-200 max-w-2xl mx-auto">
@@ -18,23 +18,23 @@ HALF-TIME - American Football Analytics
   </div>
 
   <!-- Refresh Button -->
-  <form method="POST" action="/refresh/" class="mt-6">
+  <!-- <form method="POST" action="/refresh/" class="mt-6">
     {% csrf_token %}
     <button 
       type="submit" 
       class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg shadow-lg transition-all duration-300">
       🔄 Refresh Scores
     </button>
-  </form>
+  </form> -->
 
-  <!-- Last Updated -->
+  <!-- Last Updated
   {% if Games %}
   <p class="text-sm text-gray-300 mt-4 italic">
     Last updated: {{ Games.first.updated_at|date:"F j, Y, g:i a" }}
   </p>
-  {% endif %}
+  {% endif %} -->
 
-  <!-- Under Construction Box -->
+  Under Construction Box
   <div class="bg-white/10 rounded-2xl mt-12 p-8 w-full max-w-lg mx-auto backdrop-blur-sm">
     <h2 class="text-2xl font-semibold text-[#ff6b35] mb-4">
       🚧 Website Under Construction 🚧

@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}
+Login - HALF-TIME
+{% endblock %}
+
+{% block body %}
+<section class="relative bg-gradient-to-br from-[#96208b] to-[#d134c1] text-white text-center min-h-screen flex flex-col items-center justify-center px-4">
+  <div class="max-w-5xl mx-auto py-1">
+    <h1 class="text-5xl sm:text-7xl md:text-8xl font-extrabold text-[#ff6b35] mb-6 tracking-tight">
+      HALF-TIME
+    </h1>
+    <p class="text-lg sm:text-xl text-gray-200 max-w-2xl mx-auto">
+      Login to view your favorites.
+    </p>
+  </div>
+
+  <div class="bg-black/10 rounded-2xl mt-12 p-8 w-full max-w-lg mx-auto backdrop-blur-sm">
+    <h2 class="text-2xl font-semibold text-[#ff6b35] mb-4">
+    <center>Login 🔑</center>
+    </h2>
+
+    <form method="post" style="color: black">
+      {% csrf_token %}
+
+      <label for="uname">User Name: </label> 
+      <input type="text" id="uname" name="username" required />
+      <br>
+
+      <label for="pass">Password: </label>
+      <input type="password" id="pass" name="password" required />
+      <br>
+      
+      <button 
+        type="submit" 
+        class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg shadow-lg transition-all duration-300">
+        Login
+      </button>
+      <p class="text-black-200 mb-6">
+        Don't already have an account? Click <a href="{% url 'register' %}">here</a>.
+      </p>
+    </form>
+
+  </div>
+</section>
+<p>This is the login page.</p>
+{% endblock %}
