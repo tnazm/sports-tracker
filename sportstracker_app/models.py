@@ -14,6 +14,10 @@ class Game(models.Model):
     def __str__(self):
         return f'{self.HomeTeam} vs {self.AwayTeam} on {self.date}'
 
+class Team(models.Model):
+    TeamID = models.IntegerField(unique=True)
+    name = models.CharField(max_length=150)
+    code = models.CharField(max_length=10)
 
 class HoldIDs(models.Model):
     GameID = models.CharField(max_length=50,unique=True)
