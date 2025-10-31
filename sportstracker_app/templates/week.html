@@ -110,6 +110,7 @@ HALF-TIME - American Football Analytics
 <!--Game button scrpit-->
 
 <script>
+  // Funciton to call  GameSummary  python funciton and load it
   async function loadGameSummary(gameId) {
     const response = await fetch("{% url 'load_game_summary' %}", {
       method: "POST",
@@ -121,7 +122,7 @@ HALF-TIME - American Football Analytics
     });
   
     const data = await response.json();
-    console.log(data);   // For debugging purposes
+    console.log(data);  //  !DELETE IN FULL PROD ONLY HERE FOR DEBUGGING
     return data;
   
   }
@@ -131,6 +132,7 @@ HALF-TIME - American Football Analytics
 
 
 <script>
+  // function to  call openPopup function  with all needed data
   async function Load_Game(gameid) {
     const data = await loadGameSummary(gameid);
     openPopup(
@@ -168,6 +170,7 @@ HALF-TIME - American Football Analytics
 
 
 <script>
+  // Function to pass all needed data for the pop up and show it
   function openPopup(
   awayteam, 
   hometeam,
@@ -282,11 +285,7 @@ HALF-TIME - American Football Analytics
 
 
 
-<!--   OLD code
-              <div class="flex justify-between text-xl font-semibold">
-                <span id="Away-plays"></span>
-                <span id="Home-plays"></span>
-              </div> -->
+
             <div class="flex justify-between mb-1">
               <span id="Away-plays"class="text-base font-medium text-blue-700 dark:text-white"></span>
               <span class="text-base font-medium text-blue-700 dark:text-white"> Plays </span>
@@ -295,11 +294,6 @@ HALF-TIME - American Football Analytics
             <div class="w-full bg-gray-200 rounded-full h-3 dark:bg-sky-600" style="margin-bottom: 20px;">
               <div  id="playsbar" class="bg-red-600 h-3 rounded-full" style="width: 0%"></div>
             </div>
-
-              <!-- <div class="flex justify-between text-xl font-semibold">
-                <span id="Away-First-Downs"></span>
-                <span id="Home-First-Downs"></span>
-              </div> -->
 
               <div class="flex justify-between mb-1">
                 <span id="Away-First-Downs"class="text-base font-medium text-blue-700 dark:text-white"></span>
