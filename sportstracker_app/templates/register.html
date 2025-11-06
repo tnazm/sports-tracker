@@ -5,9 +5,9 @@ Register - HALF-TIME
 {% endblock %}
 
 {% block body %}
-<section class="relative bg-gradient-to-br from-[#96208b] to-[#d134c1] text-white text-center min-h-screen flex flex-col items-center justify-center px-4">
+<section class="bg-gradient-to-b from-black to-sky-700 text-white text-center min-h-screen flex flex-col items-center justify-center px-4">
   <div class="max-w-5xl mx-auto py-1">
-    <h1 class="text-5xl sm:text-7xl md:text-8xl font-extrabold text-[#ff6b35] mb-6 tracking-tight">
+    <h1 class="text-5xl sm:text-7xl md:text-8xl font-extrabold text-sky-400 mb-6 tracking-tight">
       HALF-TIME
     </h1>
     <p class="text-lg sm:text-xl text-gray-200 max-w-2xl mx-auto">
@@ -15,26 +15,73 @@ Register - HALF-TIME
     </p>
   </div>
 
-  <div class="bg-black/10 rounded-2xl mt-12 p-8 w-full max-w-lg mx-auto backdrop-blur-sm">
-    <h2 class="text-2xl font-semibold text-[#ff6b35] mb-4">
-    <center>Register 🔐</center>
-    </h2>
-    <form method="post" style="color: black">
+  <div class="rounded-2xl mt-12 p-8  bg-gradient-to-tl from-black to-sky-700 w-full max-w-lg mx-auto backdrop-blur-lg">
+ 
+    <form method="post" style="color: black" >
       {% csrf_token %}
 
-      {{form}}
+
       <br>
 
-      <button 
+      <!-- div class="w-full max-w-xs"> -->
+
+
+      <div class="mb-4">
+        <label class="block  text-lg font-bold mb-2 text-violet-300" for="id_email">
+          Email
+        </label>
+        <input class="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6"id="id_email" type="email" name="email" placeholder="123@Gmail.com"  required> 
+      </div>
+  
+    <div class="mb-4">
+      <label class="block text-violet-300 text-lg font-bold mb-2" for="id_username">
+      Username 
+      </label>
+      <input class="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6" id="id_username" type="text" name="username" placeholder="Username"  required> 
+    </div>
+
+
+    
+    <!-- passsword feild-->
+
+    <div class="mb-6">
+      <label class="block  text-violet-300 text-lg font-bold mb-2" for="id_password1">
+        Password
+      </label>
+      <input class="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6" id="id_password1" name="password1" type="password" placeholder="******************" required>
+      <p class="text-red-500 text-xs italic">Please choose a password.</p>
+    </div>
+
+
+
+    <div class="mb-4">
+      <label class="block text-violet-300 text-lg font-bold mb-2" for="id_password2">
+       Re-enter Password
+      </label>
+      <input class="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6" id="id_password2" type="password" name="password2" placeholder="******************"  required> 
+    </div>
+
+    <div class="flex items-center justify-between">
+
+
+
+      
+      <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
+        Register
+      </button>
+    </div>
+
+
+      <!-- <button 
         type="submit" 
         class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg shadow-lg transition-all duration-300">
         Register
-      </button>
-      <p class="text-black-200 mb-6">
+      </button> -->
+      <!-- <p class="text-black-200 mb-6">
         Already have an account? Click <a href="{% url 'login' %}">here</a>.
-      </p>
+      </p> -->
     </form>
   </div>
 </section>
-<p>This is the register page.</p>
+
 {% endblock %}
