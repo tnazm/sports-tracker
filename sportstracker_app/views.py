@@ -10,6 +10,7 @@ from django.views.decorators.csrf import csrf_exempt
 import http.client,os
 from dotenv import load_dotenv
 from sportstracker_app.models import GameData
+from django.contrib import messages,redirects
 load_dotenv()
 KEY = os.getenv("API_KEY")
 
@@ -50,9 +51,10 @@ def register(request):
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             form.save()
-            return render(request, "login.html", {'form': form, "Weeks": Weeks})
+            messages.success(request,"Welcome to Half-Time, your account has been created")
+            return render(request, "register.html", {'form': form})
         else:
-            print(form.errors)
+           print(form.errors)
     else:
         form = CustomUserCreationForm()
     return render(request, "register.html", {'form': form, "Weeks": Weeks})
