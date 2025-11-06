@@ -50,7 +50,7 @@ def register(request):
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponse("<h1>Registered!</h1>")
+            return render(request, "login.html", {'form': form, "Weeks": Weeks})
         else:
             print(form.errors)
     else:
