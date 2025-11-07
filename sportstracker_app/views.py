@@ -10,7 +10,7 @@ from django.views.decorators.csrf import csrf_exempt
 import http.client,os
 from dotenv import load_dotenv
 from sportstracker_app.models import GameData
-from django.contrib import messages,redirects
+from django.contrib import messages
 load_dotenv()
 KEY = os.getenv("API_KEY")
 
