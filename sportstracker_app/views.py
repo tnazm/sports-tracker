@@ -36,7 +36,41 @@ from .forms import CustomUserCreationForm
 #         pass
 
 Weeks = ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18"]
-
+#temp team holder
+nfl_teams = [
+    "Arizona Cardinals",
+    "Atlanta Falcons",
+    "Baltimore Ravens",
+    "Buffalo Bills",
+    "Carolina Panthers",
+    "Chicago Bears",
+    "Cincinnati Bengals",
+    "Cleveland Browns",
+    "Dallas Cowboys",
+    "Denver Broncos",
+    "Detroit Lions",
+    "Green Bay Packers",
+    "Houston Texans",
+    "Indianapolis Colts",
+    "Jacksonville Jaguars",
+    "Kansas City Chiefs",
+    "Las Vegas Raiders",
+    "Los Angeles Chargers",
+    "Los Angeles Rams",
+    "Miami Dolphins",
+    "Minnesota Vikings",
+    "New England Patriots",
+    "New Orleans Saints",
+    "New York Giants",
+    "New York Jets",
+    "Philadelphia Eagles",
+    "Pittsburgh Steelers",
+    "San Francisco 49ers",
+    "Seattle Seahawks",
+    "Tampa Bay Buccaneers",
+    "Tennessee Titans",
+    "Washington Commanders"
+]
 def home(request):
     Games = Game.objects.all()
     context = {"Games": Games, "Weeks": Weeks}
@@ -52,12 +86,22 @@ def register(request):
         if form.is_valid():
             form.save()
             messages.success(request,"Welcome to Half-Time, your account has been created")
-            return render(request, "register.html", {'form': form})
+            return render(request, "register.html", {'form': form,})
         else:
-           print(form.errors)
+            currenterrors=dict(form.errors)
+            errors =[]
+            for errornames in currenterrors.values():
+                for error in errornames:
+                    errors.append(error)
+            messages.error(request,"Error")
+            return render(request, "register.html", {'form': form, "Weeks": Weeks,"errors":errors})     
+            print(form.errors)
     else:
         form = CustomUserCreationForm()
     return render(request, "register.html", {'form': form, "Weeks": Weeks})
+
+def pick_team(request):
+    return render(request,"newuserhub.html",{"Weeks":Weeks,"Teams":nfl_teams})
 
 def login_view(request):
     if request.method == 'POST':

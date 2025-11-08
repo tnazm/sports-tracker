@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block title %}
+New_user_hub- HALF-TIME
+{% endblock %}
+
+{% block body %}
+
+
+
+<section class="bg-gradient-to-b from-black to-sky-700 text-white text-center min-h-screen flex flex-col py-10 px-4">
+    <div class="max-w-5xl mx-auto py-0">
+      <h1 class="text-5xl sm:text-7xl md:text-8xl font-extrabold text-sky-400 mb-6 tracking-tight">
+        Welcome! 
+      </h1>
+      <p class="text-5xl sm:text-7xl md:text-8xl font-extrabold text-sky-400 mb-6 tracking-tight">
+            
+      </p>
+      <p class="text-lg sm:text-xl text-gray-200 max-w-2xl mx-auto">
+        Please select your favorite team
+      </p>
+    </div>
+    <div>
+
+        <div class=" mt-12 p-8  w-full max-w-6xl mx-auto ">
+
+
+            <div class="grid grid-cols-[repeat(auto-fit,_minmax(10rem,_1fr))] gap-6">
+                {% for team in Teams %}
+
+                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none  focus:shadow-outline" >
+                    {{team}}
+                </button>
+
+
+
+
+
+
+                {% endfor %}
+
+            </div>
+
+
+
+
+
+
+
+        </div>
+
+
+
+
+    </section>
+
+
+
+
+
+
+
+{% endblock %}
