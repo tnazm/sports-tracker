@@ -1,448 +1,294 @@
 {% extends "base.html" %}
+{% block title %}HALF-TIME • Week {{ week_number }}{% endblock %}
 
-{% block title %}
-HALF-TIME - American Football Analytics
-{% endblock %}
-
-
-
-<!--Included Hidden Scrollbar-->
 {% block style %}
 <style>
-  body {
-    background: #0d2546ff;
-  }
-
-  /*To hide scrollbar for webkit browsers*/
-  .scrollbar-hide::-webkit-scrollbar {
-    display: none;
-  }
-  .scrollbar-hide {
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
+  .scrollbar-hide::-webkit-scrollbar{display:none}
+  .scrollbar-hide{-ms-overflow-style:none;scrollbar-width:none}
+  .edge-fade{
+    -webkit-mask-image: linear-gradient(to right, transparent 0, black 28px, black calc(100% - 28px), transparent 100%);
+            mask-image: linear-gradient(to right, transparent 0, black 28px, black calc(100% - 28px), transparent 100%);
   }
 </style>
 {% endblock %}
 
-
 {% block body %}
-<!-- HEADER -->
-<a href="{% url 'home' %}">
-  <h1 class="text-5xl sm:text-6xl md:text-8xl font-extrabold tracking-tight text-blue-500 text-center mt-8">
-    HALF-TIME
-  </h1>
-</a>
+<div class="min-h-[calc(100vh-64px-56px)] text-slate-100 bg-gradient-to-b from-[#071b2b] to-[#0a2a40] pb-16">
 
-<!--Netflix-Style Scroll wheel-->
-<div class="relative w-full mt-8 mb-12">
-  <!--Left Arrow-->
-  <button 
-    id="scroll-left"
-    onmousedown="startScroll(-1)"
-    onmouseup="stopScroll()"
-    onmouseleave="stopScroll()"
-    ontouchstart="startScroll(-1)"
-    ontouchend="stopScroll()"
-    class="absolute left-2 top-1/2 transform -translate-y-1/2 bg-gray-800 bg-opacity-50 hover:bg-opacity-75 text-white rounded-full p-2 z-10">
-    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-    </svg>
-  </button>
+  <!-- Title -->
+  <a href="/" class="block pt-10 text-center">
+    <h1 class="text-5xl sm:text-6xl md:text-7xl font-extrabold tracking-tight">
+      <span class="bg-gradient-to-r from-sky-300 via-blue-400 to-sky-500 bg-clip-text text-transparent drop-shadow">
+        HALF-TIME
+      </span>
+    </h1>
+  </a>
 
+  <!-- Week scroller -->
+  <div class="relative mt-8">
+    <button id="scroll-left"
+            onmousedown="startScroll(-1)" onmouseup="stopScroll()" onmouseleave="stopScroll()"
+            ontouchstart="startScroll(-1)" ontouchend="stopScroll()"
+            class="absolute left-2 top-1/2 -translate-y-1/2 z-10 rounded-full p-2 bg-black/40 hover:bg-black/60 text-white shadow">
+      <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+    </button>
 
-  <!--Scrollable Weeks-->
+    <div id="week-scroll" class="edge-fade scrollbar-hide overflow-x-auto scroll-snap-x scroll-smooth px-10 py-4">
+      <div class="flex gap-3 sm:gap-5 w-max">
+        {% for Week in Weeks %}
+          <a href="/week/{{Week}}/"
+             class="shrink-0 snap-start inline-flex items-center justify-center rounded-xl px-5 py-3 font-semibold
+                    text-white shadow-md transition
+                    {% if Week == week_number %}
+                      bg-sky-500 hover:bg-sky-400 ring-2 ring-sky-300/50
+                    {% else %}
+                      bg-blue-500 hover:bg-blue-600 ring-1 ring-white/10
+                    {% endif %}">
+            Week {{Week}}
+          </a>
+        {% endfor %}
+      </div>
+    </div>
 
-<div id="week-scroll"
-       class="overflow-x-auto scroll-smooth snap-x snap-mandatory flex space-x-3 sm:space-x-5 px-6 sm:px-10 py-4 scrollbar-hide">
-    {% for Week in Weeks %}
-      <a href="/week/{{Week}}/"
-         class="snap-start shrink-0 w-28 sm:w-36 md:w-40 text-center bg-blue-500 hover:bg-green-600 text-white font-bold py-3 px-4 border-b-4 border-black hover:border-gray-800 rounded-lg shadow-md transition-all duration-300 ease-in-out hover:scale-105">
-        Week {{Week}}
-      </a>
-    {% endfor %}
+    <button id="scroll-right"
+            onmousedown="startScroll(1)" onmouseup="stopScroll()" onmouseleave="stopScroll()"
+            ontouchstart="startScroll(1)" ontouchend="stopScroll()"
+            class="absolute right-2 top-1/2 -translate-y-1/2 z-10 rounded-full p-2 bg-black/40 hover:bg-black/60 text-white shadow">
+      <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+    </button>
   </div>
 
-  <!-- Right arrow -->
- <button 
-    id="scroll-right"
-    onmousedown="startScroll(1)"
-    onmouseup="stopScroll()"
-    onmouseleave="stopScroll()"
-    ontouchstart="startScroll(1)"
-    ontouchend="stopScroll()"
-    class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-gray-800 bg-opacity-50 hover:bg-opacity-75 text-white rounded-full p-2 z-10">
-    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-    </svg>
-  </button>
-</div>
-
-<!-- Continuous Scroll -->
-<script>
-  let scrollInterval;
-
-  function startScroll(direction) {
-    const container = document.getElementById('week-scroll');
-    stopScroll(); // Prevent multiple intervals
-    scrollInterval = setInterval(() => {
-      container.scrollBy({ left: direction * 10, behavior: 'smooth' });
-    }, 16); // ~60fps for smooth scroll
-  }
-
-  function stopScroll() {
-    clearInterval(scrollInterval);
-  }
-</script>
-
-
-
-<script>
-  function scrollLeft() {
-    document.getElementById('week-scroll').scrollBy({ left: -300, behavior: 'smooth' });
-  }
-  function scrollRight() {
-    document.getElementById('week-scroll').scrollBy({ left: 300, behavior: 'smooth' });
-  }
-</script>
-
-<!--Week Scroll Script end-->
-
-<!--Game button scrpit-->
-
-<script>
-  // Funciton to call  GameSummary  python funciton and load it
-  async function loadGameSummary(gameId) {
-    const response = await fetch("{% url 'load_game_summary' %}", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-CSRFToken": "{{ csrf_token }}",
-      },
-      body: JSON.stringify({ game_id: gameId }),
-    });
-  
-    const data = await response.json();
-    console.log(data);  //  !DELETE IN FULL PROD ONLY HERE FOR DEBUGGING
-    return data;
-  
-  }
-  </script>
-  <!--END of game button scrpit-->
-
-
-
-<script>
-  // function to  call openPopup function  with all needed data
-  async function Load_Game(gameid) {
-    const data = await loadGameSummary(gameid);
-    openPopup(
-      data.AwayTeam.team.name,
-      data.HomeTeam.team.name,
-      data.HomeTeam.statistics.points_against.total,
-      data.AwayTeam.statistics.points_against.total,
-      data.AwayTeam.statistics.first_downs.total,
-      data.HomeTeam.statistics.first_downs.total,
-      data.AwayTeam.statistics.turnovers.interceptions,
-      data.HomeTeam.statistics.turnovers.interceptions,
-      data.AwayTeam.statistics.turnovers.total,
-      data.HomeTeam.statistics.turnovers.total,
-      data.AwayTeam.statistics.passing.total,
-      data.HomeTeam.statistics.passing.total,
-      data.AwayTeam.statistics.rushings.total,
-      data.HomeTeam.statistics.rushings.total,
-      data.AwayTeam.statistics.yards.total,
-      data.HomeTeam.statistics.yards.total,
-      data.AwayTeam.statistics.sacks.total,
-      data.HomeTeam.statistics.sacks.total,
-      data.AwayTeam.statistics.turnovers.lost_fumbles,
-      data.HomeTeam.statistics.turnovers.lost_fumbles,
-      data.AwayTeam.statistics.plays.total,
-      data.HomeTeam.statistics.plays.total
-
-
-     
-
-
-    );
-  }
-</script>
-
-
-
-<script>
-  // Function to pass all needed data for the pop up and show it
-  function openPopup(
-  awayteam, 
-  hometeam,
-  awayscore, 
-  homescore,
-  awayfirstdowns,
-  homefirstdowns,
-  awayints,
-  homeints,
-  awayto,
-  hometo,
-  awaypassing,
-  homepassing,
-  awayrushing, 
-  homerushing,
-  awayyardstotal,
-  homeyardstotal,
-  awaysacks,
-  homesacks,
-  awayfumbles,
-  homefumbles,
-  awayplays,
-  homeplays) {   
-    document.getElementById("away-team").innerText = awayteam;
-    document.getElementById("home-team").innerText =hometeam;
-    document.getElementById("away-score").innerText =awayscore;
-    document.getElementById("home-score").innerText =homescore ;
-    document.getElementById("Away-First-Downs").innerText = awayfirstdowns;
-    document.getElementById("Home-First-Downs").innerText =homefirstdowns;
-    document.getElementById("Away-Interceptions").innerText =awayints;
-    document.getElementById("Home-Interceptions").innerText =homeints ;
-    document.getElementById("Away-Turnovers").innerText=awayto; 
-    document.getElementById("Home-Turnovers").innerText=hometo ;
-    document.getElementById("Away-passing").innerText=awaypassing ;
-    document.getElementById("Home-passing").innerText=homepassing ;
-    document.getElementById("Away-rushing").innerText=awayrushing ;
-    document.getElementById("Home-rushing").innerText=homerushing  ;
-    document.getElementById("Away-yards-total").innerText=awayyardstotal ;
-    document.getElementById("Home-yards-total").innerText=homeyardstotal  ;
-    document.getElementById("Away-sacks").innerText=awaysacks ;
-    document.getElementById("Home-sacks").innerText=homesacks ;
-    document.getElementById("Away-fumbles").innerText = awayfumbles;
-    document.getElementById("Home-fumbles").innerText = homefumbles;
-    document.getElementById("Away-plays").innerText = awayplays;
-    document.getElementById("Home-plays").innerText = homeplays;
-
-   const  playsbar =  (awayplays / (awayplays + homeplays)) * 100;
-    document.getElementById("playsbar").style.width= playsbar + "%";
-   
-
-  const firstdownbar = (awayfirstdowns /(awayfirstdowns + homefirstdowns)) * 100;
-    document.getElementById("firstdownbar").style.width= firstdownbar + "%";
-
-  const rushingbar =(awayrushing / (awayrushing + homerushing)) * 100;
-  document.getElementById("rushingbar").style.width= rushingbar + "%";
-
-
-  const passingbar = (awaypassing / (awaypassing + homepassing)) * 100;
-  document.getElementById("passingbar").style.width= passingbar + "%";
-
-  const yardsbar = (awayyardstotal / (awayyardstotal + homeyardstotal)) * 100;
-  document.getElementById("yardsbar").style.width= yardsbar + "%";
-
-  const sacksbar = (awaysacks / (awaysacks + homesacks)) * 100;
-  document.getElementById("sacksbar").style.width= sacksbar + "%";
-
-  const fumblebar = (awayfumbles / (awayfumbles + homefumbles)) * 100;
-  document.getElementById("fumblebar").style.width= fumblebar + "%";
-
-
-  const interceptionsbar = (awayints / (awayints + homeints)) * 100;
-  document.getElementById("interceptionsbar").style.width= interceptionsbar + "%";
-  
-
-  const turnoverbar = (awayto / (awayto + hometo)) * 100;
-  document.getElementById("turnoverbar").style.width= turnoverbar + "%";
-
-
-    document.getElementById("game-popup").classList.remove("hidden");
-  
-  
-  }
-
-  function closePopup() {
-    document.getElementById("game-popup").classList.add("hidden");
-  }
-</script>
-<!-- POPUP MODAL -->
-<div id="game-popup"
-     class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center  z-50">
-  <div class="bg-gray-900 text-white rounded-lg p-6 max-w-4xl h-auto w-11/12 overflow-y-auto shadow-lg  overflow-x-auto">
-    <button onclick="closePopup()" 
-            class="absolute top-4 right-4 text-gray-400 hover:text-white text-xl">&times;</button>
-            <div id="popup-body" class="text-gray-300 w-full">
-              <div class="flex justify-between text-4xl  font-bold mb-2" style="margin-bottom:50px;">
-                
-                <span id="away-team"></span>
-                <span> @ </span>
-                <span id="home-team"></span>
-              </div>
-
-
-
-            
-
-              <div class="flex justify-between text-xl font-semibold" style="margin-bottom:50px;">
-                <h1 class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white"><span class="underline underline-offset-3 decoration-8 decoration-blue-400 dark:decoration-red-600" id="away-score"></span></h1>
-                <span class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white"> Final Score </span>
-                <h1 class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white"><span class="underline underline-offset-3 decoration-8 decoration-blue-400 dark:decoration-sky-600" id="home-score"></span></h1>
-              </div>
-
-
-
-
-
-            <div class="flex justify-between mb-1">
-              <span id="Away-plays"class="text-base font-medium text-blue-700 dark:text-white"></span>
-              <span class="text-base font-medium text-blue-700 dark:text-white"> Plays </span>
-              <span id="Home-plays" class="text-sm font-medium text-blue-700 dark:text-white"></span>
-            </div>
-            <div class="w-full bg-gray-200 rounded-full h-3 dark:bg-sky-600" style="margin-bottom: 20px;">
-              <div  id="playsbar" class="bg-red-600 h-3 rounded-full" style="width: 0%"></div>
-            </div>
-
-              <div class="flex justify-between mb-1">
-                <span id="Away-First-Downs"class="text-base font-medium text-blue-700 dark:text-white"></span>
-                <span class="text-base font-medium text-blue-700 dark:text-white"> First Downs </span>
-                <span id="Home-First-Downs" class="text-sm font-medium text-blue-700 dark:text-white"></span>
-              </div>
-              <div class="w-full bg-gray-200 rounded-full h-3 dark:bg-sky-600" style="margin-bottom: 20px;">
-                <div  id="firstdownbar" class="bg-red-600 h-3 rounded-full" style="width: 0%"></div>
-              </div>
-  
-
-
-                      <!-- Passing yards bar  -->
-
-              <div class="flex justify-between mb-1">
-                <span id="Away-passing"class="text-base font-medium text-blue-700 dark:text-white"></span>
-                <span class="text-base font-medium text-blue-700 dark:text-white"> Passing Yards </span>
-                <span id="Home-passing" class="text-sm font-medium text-blue-700 dark:text-white"></span>
-              </div>
-              <div class="w-full bg-gray-200 rounded-full h-3 dark:bg-sky-600" style="margin-bottom: 20px;">
-                <div  id="passingbar" class="bg-red-600 h-3 rounded-full" style="width: 0%"></div>
-              </div>
-  
-
-                    <!-- Total Rushing bar  -->
-
-              <div class="flex justify-between mb-1">
-                <span id="Away-rushing"class="text-base font-medium text-blue-700 dark:text-white"></span>
-                <span class="text-base font-medium text-blue-700 dark:text-white"> Rushing Yards </span>
-                <span id="Home-rushing" class="text-sm font-medium text-blue-700 dark:text-white"></span>
-              </div>
-              <div class="w-full bg-gray-200 rounded-full h-3 dark:bg-sky-600" style="margin-bottom: 20px;">
-                <div  id="rushingbar" class="bg-red-600 h-3 rounded-full" style="width: 0%"></div>
-              </div>
-  
-                      <!-- Total yards bar  -->
-
-
-              <div class="flex justify-between mb-1">
-                <span id="Away-yards-total"class="text-base font-medium text-blue-700 dark:text-white"></span>
-                <span class="text-base font-medium text-blue-700 dark:text-white">  Total Yards  </span>
-                <span id="Home-yards-total" class="text-sm font-medium text-blue-700 dark:text-white"></span>
-              </div>
-              <div class="w-full bg-gray-200 rounded-full h-3 dark:bg-sky-600" style="margin-bottom: 20px;">
-                <div  id="yardsbar" class="bg-red-600 h-3 rounded-full" style="width: 0%"></div>
-              </div>
-  
-
-                      <!-- Total sacks bar  -->
-
-
-              <div class="flex justify-between mb-1">
-                <span id="Away-sacks"class="text-base font-medium text-blue-700 dark:text-white"></span>
-                <span class="text-base font-medium text-blue-700 dark:text-white">  Total Sacks  </span>
-                <span id="Home-sacks" class="text-sm font-medium text-blue-700 dark:text-white"></span>
-              </div>
-              <div class="w-full bg-gray-200 rounded-full h-3 dark:bg-sky-600" style="margin-bottom: 20px;">
-                <div  id="sacksbar" class="bg-red-600 h-3 rounded-full" style="width: 0%"></div>
-              </div>
-  
-                      <!-- Total fumbles bar  -->
-
-              <div class="flex justify-between mb-1">
-                <span id="Away-fumbles"class="text-base font-medium text-blue-700 dark:text-white"></span>
-                <span class="text-base font-medium text-blue-700 dark:text-white">  Fumbles  </span>
-                <span id="Home-fumbles" class="text-sm font-medium text-blue-700 dark:text-white"></span>
-              </div>
-              <div class="w-full bg-gray-200 rounded-full h-3 dark:bg-sky-600" style="margin-bottom: 20px;">
-                <div  id="fumblebar" class="bg-red-600 h-3 rounded-full" style="width: 0%"></div>
-              </div>
-
-                      <!-- Total interceptions bar  -->
-
-
-              <div class="flex justify-between mb-1">
-                <span id="Away-Interceptions"class="text-base font-medium text-blue-700 dark:text-white"></span>
-                <span class="text-base font-medium text-blue-700 dark:text-white"> Interceptions  </span>
-                <span id="Home-Interceptions" class="text-sm font-medium text-blue-700 dark:text-white"></span>
-              </div>
-              <div class="w-full bg-gray-200 rounded-full h-3 dark:bg-sky-600" style="margin-bottom: 20px;">
-                <div  id="interceptionsbar" class="bg-red-600 h-3 rounded-full" style="width: 0%"></div>
-              </div>
-              
-                      <!-- Total turnovers bar  --> 
- 
-              <div class="flex justify-between mb-1">
-                <span id="Away-Turnovers"class="text-base font-medium text-blue-700 dark:text-white"></span>
-                <span class="text-base font-medium text-blue-700 dark:text-white"> Turnovers  </span>
-                <span id="Home-Turnovers" class="text-sm font-medium text-blue-700 dark:text-white"></span>
-              </div>
-              <div class="w-full bg-gray-200 rounded-full h-3 dark:bg-sky-600" style="margin-bottom: 20px;">
-                <div  id="turnoverbar" class="bg-red-600 h-3 rounded-full" style="width: 0%"></div>
-              </div>
-              
-           
-            </div>
- 
+  <!-- Week title -->
+  <div class="mx-auto w-[90%] sm:w-fit mt-8">
+    <div class="rounded-xl px-6 sm:px-10 py-4 text-center bg-gradient-to-b from-black/70 to-sky-700/70 border border-white/10 shadow-xl">
+      <h2 class="text-4xl sm:text-5xl md:text-6xl font-extrabold font-serif bg-gradient-to-r from-blue-300 via-blue-500 to-sky-400 bg-clip-text text-transparent">
+        Week {{ week_number }}
+      </h2>
+    </div>
   </div>
+
+  <!-- Games grid -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10">
+    <div class="rounded-2xl p-4 sm:p-6 bg-black/40 border border-white/10 shadow-2xl">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        {% for Game in Games %}
+          <button type="button" onclick="Load_Game('{{ Game.GameID }}')" class="group w-full text-left">
+            <div class="rounded-xl p-4 bg-white/5 border border-white/10 backdrop-blur-md shadow-xl hover:bg-white/10 transition">
+              <div class="flex justify-between items-center text-sm sm:text-base">
+                {% if Game.AwayScore > Game.HomeScore %}
+                  <p class="font-serif group-hover:text-emerald-400">{{ Game.AwayTeam }}</p>
+                  <span class="px-2">@</span>
+                  <p class="font-serif">{{ Game.HomeTeam }}</p>
+                {% elif Game.AwayScore < Game.HomeScore %}
+                  <p class="font-serif">{{ Game.AwayTeam }}</p>
+                  <span class="px-2">@</span>
+                  <p class="font-serif group-hover:text-emerald-400">{{ Game.HomeTeam }}</p>
+                {% else %}
+                  <p class="font-serif group-hover:text-emerald-400">{{ Game.AwayTeam }}</p>
+                  <span class="px-2">@</span>
+                  <p class="font-serif group-hover:text-emerald-400">{{ Game.HomeTeam }}</p>
+                {% endif %}
+              </div>
+              <div class="flex justify-between items-center mt-4">
+                <span class="font-serif font-bold text-xl sm:text-2xl {% if Game.AwayScore > Game.HomeScore %}text-emerald-400{% endif %}">
+                  {{ Game.AwayScore }}
+                </span>
+                <span class="text-xs sm:text-sm text-slate-300">{{ Game.date }}</span>
+                <span class="font-serif font-bold text-xl sm:text-2xl {% if Game.HomeScore > Game.AwayScore %}text-emerald-400{% endif %}">
+                  {{ Game.HomeScore }}
+                </span>
+              </div>
+            </div>
+          </button>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
 </div>
 
+<!-- Scroll helpers -->
+<script>
+  let _scrollInt;
+  function startScroll(dir){
+    const el = document.getElementById('week-scroll');
+    stopScroll();
+    _scrollInt = setInterval(()=> el.scrollBy({left: dir*12, behavior:'smooth'}), 16);
+  }
+  function stopScroll(){ clearInterval(_scrollInt); }
+</script>
 
-<!-- WEEK TITLE -->
-<div class="bg-gradient-to-b from-black to-sky-700 py-4 rounded-lg shadow-lg mx-auto w-[90%] sm:w-fit px-4 sm:px-8 text-center">
-  <h1 class="text-5xl sm:text-6xl md:text-7xl font-extrabold font-serif py-6 bg-gradient-to-r from-blue-400 via-blue-700 to-sky-600 text-transparent bg-clip-text drop-shadow-[0_4px_8px_rgba(0,0,0,0.5)]">
-    Week {{week_number}}
-  </h1>
-</div>
-  <div class=" bg-gradient-to-b from-black-400  to-sky-500 p-4 rounded-xl block mx-auto">
+<!-- Modal -->
+<div id="game-popup" class="hidden fixed inset-0 z-50">
+  <div id="overlay" class="absolute inset-0 bg-black/60"></div>
+  <div class="relative mx-auto mt-12 max-w-4xl w-[92%] bg-slate-900 text-white rounded-2xl shadow-2xl border border-white/10 p-6">
+    <button onclick="closePopup()" class="absolute top-3 right-3 text-slate-400 hover:text-white text-2xl leading-none">&times;</button>
 
-<!-- GAMES GRID -->
-<div class="container mx-auto py-10 px-4">
-  <div class="bg-gradient-to-b from-black to-sky-700 p-4 sm:p-6 rounded-xl">
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-      {% for Game in Games %}
-      <button type="button" onclick="Load_Game('{{ Game.GameID }}')">
-        <div class="group p-4 bg-gray-800 border border-gray-700 rounded-lg shadow-md hover:bg-gray-700 transition duration-300">
-          <!-- TEAMS -->
-          <div class="flex justify-between items-center text-white text-sm sm:text-base">
-            {% if Game.AwayScore > Game.HomeScore %}
-              <p class="group-hover:text-green-400 font-serif">{{Game.AwayTeam}}</p>
-              <h1 class="px-2">@</h1>
-              <p class="font-serif">{{Game.HomeTeam}}</p>
-            {% elif Game.AwayScore < Game.HomeScore %}
-              <p class="font-serif">{{Game.AwayTeam}}</p>
-              <h1 class="px-2">@</h1>
-              <p class="group-hover:text-green-400 font-serif">{{Game.HomeTeam}}</p>
-            {% else %}
-              <p class="group-hover:text-green-400 font-serif">{{Game.AwayTeam}}</p>
-              <h1 class="px-2">@</h1>
-              <p class="group-hover:text-green-400 font-serif">{{Game.HomeTeam}}</p>
-            {% endif %}
+    <div id="popup-body" class="text-slate-200">
+      <div class="flex justify-between items-center font-bold text-3xl sm:text-4xl mb-8">
+        <span id="away-team"></span><span>@</span><span id="home-team"></span>
+      </div>
+
+      <div class="flex justify-between items-center text-3xl sm:text-4xl font-extrabold mb-8">
+        <span id="away-score" class="underline decoration-8 decoration-sky-500"></span>
+        <span class="text-slate-300 text-xl sm:text-2xl">Final Score</span>
+        <span id="home-score" class="underline decoration-8 decoration-sky-500"></span>
+      </div>
+
+      <!-- Repeated bar rows (no macros) -->
+      <div class="space-y-5">
+        <!-- Plays -->
+        <div>
+          <div class="flex justify-between text-sm sm:text-base mb-1">
+            <span id="Away-plays"></span><span class="text-slate-300">Plays</span><span id="Home-plays"></span>
           </div>
-
-          <!-- SCORES -->
-          <div class="flex justify-between items-center mt-4 text-white text-xl sm:text-2xl">
-            <h1 class="{% if Game.AwayScore > Game.HomeScore %}group-hover:text-green-400{% endif %} font-serif font-bold">
-              {{Game.AwayScore}}
-            </h1>
-            <p class="text-center text-sm sm:text-base font-serif">{{Game.date}}</p>
-            <h1 class="{% if Game.HomeScore > Game.AwayScore %}group-hover:text-green-400{% endif %} font-serif font-bold">
-              {{Game.HomeScore}}
-            </h1>
+          <div class="w-full h-3 rounded-full bg-slate-700 overflow-hidden">
+            <div id="playsbar" class="h-3 rounded-full bg-sky-500" style="width:0%"></div>
           </div>
         </div>
-        
-      </button>
-      {% endfor %}
-      
+
+        <!-- First Downs -->
+        <div>
+          <div class="flex justify-between text-sm sm:text-base mb-1">
+            <span id="Away-First-Downs"></span><span class="text-slate-300">First Downs</span><span id="Home-First-Downs"></span>
+          </div>
+          <div class="w-full h-3 rounded-full bg-slate-700 overflow-hidden">
+            <div id="firstdownbar" class="h-3 rounded-full bg-sky-500" style="width:0%"></div>
+          </div>
+        </div>
+
+        <!-- Passing -->
+        <div>
+          <div class="flex justify-between text-sm sm:text-base mb-1">
+            <span id="Away-passing"></span><span class="text-slate-300">Passing Yards</span><span id="Home-passing"></span>
+          </div>
+          <div class="w-full h-3 rounded-full bg-slate-700 overflow-hidden">
+            <div id="passingbar" class="h-3 rounded-full bg-sky-500" style="width:0%"></div>
+          </div>
+        </div>
+
+        <!-- Rushing -->
+        <div>
+          <div class="flex justify-between text-sm sm:text-base mb-1">
+            <span id="Away-rushing"></span><span class="text-slate-300">Rushing Yards</span><span id="Home-rushing"></span>
+          </div>
+          <div class="w-full h-3 rounded-full bg-slate-700 overflow-hidden">
+            <div id="rushingbar" class="h-3 rounded-full bg-sky-500" style="width:0%"></div>
+          </div>
+        </div>
+
+        <!-- Total Yards -->
+        <div>
+          <div class="flex justify-between text-sm sm:text-base mb-1">
+            <span id="Away-yards-total"></span><span class="text-slate-300">Total Yards</span><span id="Home-yards-total"></span>
+          </div>
+          <div class="w-full h-3 rounded-full bg-slate-700 overflow-hidden">
+            <div id="yardsbar" class="h-3 rounded-full bg-sky-500" style="width:0%"></div>
+          </div>
+        </div>
+
+        <!-- Sacks -->
+        <div>
+          <div class="flex justify-between text-sm sm:text-base mb-1">
+            <span id="Away-sacks"></span><span class="text-slate-300">Total Sacks</span><span id="Home-sacks"></span>
+          </div>
+          <div class="w-full h-3 rounded-full bg-slate-700 overflow-hidden">
+            <div id="sacksbar" class="h-3 rounded-full bg-sky-500" style="width:0%"></div>
+          </div>
+        </div>
+
+        <!-- Fumbles -->
+        <div>
+          <div class="flex justify-between text-sm sm:text-base mb-1">
+            <span id="Away-fumbles"></span><span class="text-slate-300">Fumbles</span><span id="Home-fumbles"></span>
+          </div>
+          <div class="w-full h-3 rounded-full bg-slate-700 overflow-hidden">
+            <div id="fumblebar" class="h-3 rounded-full bg-sky-500" style="width:0%"></div>
+          </div>
+        </div>
+
+        <!-- Interceptions -->
+        <div>
+          <div class="flex justify-between text-sm sm:text-base mb-1">
+            <span id="Away-Interceptions"></span><span class="text-slate-300">Interceptions</span><span id="Home-Interceptions"></span>
+          </div>
+          <div class="w-full h-3 rounded-full bg-slate-700 overflow-hidden">
+            <div id="interceptionsbar" class="h-3 rounded-full bg-sky-500" style="width:0%"></div>
+          </div>
+        </div>
+
+        <!-- Turnovers -->
+        <div>
+          <div class="flex justify-between text-sm sm:text-base mb-1">
+            <span id="Away-Turnovers"></span><span class="text-slate-300">Turnovers</span><span id="Home-Turnovers"></span>
+          </div>
+          <div class="w-full h-3 rounded-full bg-slate-700 overflow-hidden">
+            <div id="turnoverbar" class="h-3 rounded-full bg-sky-500" style="width:0%"></div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
+
+<script>
+  async function loadGameSummary(gameId) {
+    const response = await fetch("{% url 'load_game_summary' %}", {
+      method: "POST",
+      headers: {"Content-Type": "application/json","X-CSRFToken": "{{ csrf_token }}"},
+      body: JSON.stringify({ game_id: gameId }),
+    });
+    return await response.json();
+  }
+
+  async function Load_Game(gameid) {
+    const d = await loadGameSummary(gameid);
+    openPopup(
+      d.AwayTeam.team.name, d.HomeTeam.team.name,
+      d.HomeTeam.statistics.points_against.total, d.AwayTeam.statistics.points_against.total,
+      d.AwayTeam.statistics.first_downs.total, d.HomeTeam.statistics.first_downs.total,
+      d.AwayTeam.statistics.turnovers.interceptions, d.HomeTeam.statistics.turnovers.interceptions,
+      d.AwayTeam.statistics.turnovers.total, d.HomeTeam.statistics.turnovers.total,
+      d.AwayTeam.statistics.passing.total, d.HomeTeam.statistics.passing.total,
+      d.AwayTeam.statistics.rushings.total, d.HomeTeam.statistics.rushings.total,
+      d.AwayTeam.statistics.yards.total, d.HomeTeam.statistics.yards.total,
+      d.AwayTeam.statistics.sacks.total, d.HomeTeam.statistics.sacks.total,
+      d.AwayTeam.statistics.turnovers.lost_fumbles, d.HomeTeam.statistics.turnovers.lost_fumbles,
+      d.AwayTeam.statistics.plays.total, d.HomeTeam.statistics.plays.total
+    );
+  }
+
+  function openPopup(...vals){
+    const map = {
+      "away-team": vals[0], "home-team": vals[1],
+      "home-score": vals[3], "away-score": vals[2],
+      "Away-First-Downs": vals[4], "Home-First-Downs": vals[5],
+      "Away-Interceptions": vals[6], "Home-Interceptions": vals[7],
+      "Away-Turnovers": vals[8], "Home-Turnovers": vals[9],
+      "Away-passing": vals[10], "Home-passing": vals[11],
+      "Away-rushing": vals[12], "Home-rushing": vals[13],
+      "Away-yards-total": vals[14], "Home-yards-total": vals[15],
+      "Away-sacks": vals[16], "Home-sacks": vals[17],
+      "Away-fumbles": vals[18], "Home-fumbles": vals[19],
+      "Away-plays": vals[20], "Home-plays": vals[21],
+    };
+    for (const k in map){ document.getElementById(k).textContent = map[k]; }
+
+    const pct = (a,b)=> (a/(a+b))*100 || 0;
+    document.getElementById("playsbar").style.width = pct(vals[20], vals[21]) + "%";
+    document.getElementById("firstdownbar").style.width = pct(vals[4], vals[5]) + "%";
+    document.getElementById("rushingbar").style.width = pct(vals[12], vals[13]) + "%";
+    document.getElementById("passingbar").style.width = pct(vals[10], vals[11]) + "%";
+    document.getElementById("yardsbar").style.width = pct(vals[14], vals[15]) + "%";
+    document.getElementById("sacksbar").style.width = pct(vals[16], vals[17]) + "%";
+    document.getElementById("fumblebar").style.width = pct(vals[18], vals[19]) + "%";
+    document.getElementById("interceptionsbar").style.width = pct(vals[6], vals[7]) + "%";
+    document.getElementById("turnoverbar").style.width = pct(vals[8], vals[9]) + "%";
+
+    const modal = document.getElementById("game-popup");
+    modal.classList.remove("hidden");
+    document.getElementById("overlay").onclick = closePopup;
+    document.addEventListener("keydown", e => { if(e.key === "Escape") closePopup(); }, { once:true });
+  }
+  function closePopup(){ document.getElementById("game-popup").classList.add("hidden"); }
+</script>
 {% endblock %}
