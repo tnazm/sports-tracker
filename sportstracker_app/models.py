@@ -15,9 +15,12 @@ class Game(models.Model):
         return f'{self.HomeTeam} vs {self.AwayTeam} on {self.date}'
 
 class Team(models.Model):
-    TeamID = models.IntegerField(unique=True)
-    name = models.CharField(max_length=150)
     code = models.CharField(max_length=10)
+    TeamID = models.AutoField(db_column='TeamID', primary_key=True)  # <-- key change
+    name = models.CharField(max_length=100, unique=True)
+    abbr = models.CharField(max_length=4, unique=True, null=True, blank=True)
+    logo_path = models.CharField(max_length=200, blank=True)
+
 
 class HoldIDs(models.Model):
     GameID = models.CharField(max_length=50,unique=True)

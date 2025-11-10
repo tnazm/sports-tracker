@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static team_tags %}
 {% block title %}HALF-TIME • Week {{ week_number }}{% endblock %}
 
 {% block style %}
@@ -36,7 +37,7 @@
     <div id="week-scroll" class="edge-fade scrollbar-hide overflow-x-auto scroll-snap-x scroll-smooth px-10 py-4">
       <div class="flex gap-3 sm:gap-5 w-max">
         {% for Week in Weeks %}
-          <a href="/week/{{Week}}/"
+          <a href="/week/{{ Week }}/"
              class="shrink-0 snap-start inline-flex items-center justify-center rounded-xl px-5 py-3 font-semibold
                     text-white shadow-md transition
                     {% if Week == week_number %}
@@ -44,7 +45,7 @@
                     {% else %}
                       bg-blue-500 hover:bg-blue-600 ring-1 ring-white/10
                     {% endif %}">
-            Week {{Week}}
+            Week {{ Week }}
           </a>
         {% endfor %}
       </div>
@@ -74,21 +75,34 @@
         {% for Game in Games %}
           <button type="button" onclick="Load_Game('{{ Game.GameID }}')" class="group w-full text-left">
             <div class="rounded-xl p-4 bg-white/5 border border-white/10 backdrop-blur-md shadow-xl hover:bg-white/10 transition">
+
+              <!-- Team row: transparent logos -->
               <div class="flex justify-between items-center text-sm sm:text-base">
-                {% if Game.AwayScore > Game.HomeScore %}
-                  <p class="font-serif group-hover:text-emerald-400">{{ Game.AwayTeam }}</p>
-                  <span class="px-2">@</span>
-                  <p class="font-serif">{{ Game.HomeTeam }}</p>
-                {% elif Game.AwayScore < Game.HomeScore %}
-                  <p class="font-serif">{{ Game.AwayTeam }}</p>
-                  <span class="px-2">@</span>
-                  <p class="font-serif group-hover:text-emerald-400">{{ Game.HomeTeam }}</p>
-                {% else %}
-                  <p class="font-serif group-hover:text-emerald-400">{{ Game.AwayTeam }}</p>
-                  <span class="px-2">@</span>
-                  <p class="font-serif group-hover:text-emerald-400">{{ Game.HomeTeam }}</p>
-                {% endif %}
+                {% team_by_name Game.AwayTeam as away %}
+                {% team_by_name Game.HomeTeam as home %}
+
+                <div class="flex items-center gap-2 {% if Game.AwayScore > Game.HomeScore %}text-emerald-400{% endif %}">
+                  <div class="h-8 w-8 md:h-9 md:w-9 rounded-full ring-1 ring-white/20 grid place-items-center">
+                    <img src="{% static away.logo_path|default:'img/nfl/placeholder.svg' %}"
+                         alt="{{ away.abbr|default:'AWY' }} logo"
+                         class="max-h-6 max-w-6 md:max-h-7 md:max-w-7 object-contain drop-shadow" />
+                  </div>
+                  <span class="font-serif font-semibold tracking-wide">{{ away.abbr|default:'AWY' }}</span>
+                </div>
+
+                <span class="px-2">@</span>
+
+                <div class="flex items-center gap-2 {% if Game.HomeScore > Game.AwayScore %}text-emerald-400{% endif %}">
+                  <div class="h-8 w-8 md:h-9 md:w-9 rounded-full ring-1 ring-white/20 grid place-items-center">
+                    <img src="{% static home.logo_path|default:'img/nfl/placeholder.svg' %}"
+                         alt="{{ home.abbr|default:'HOM' }} logo"
+                         class="max-h-6 max-w-6 md:max-h-7 md:max-w-7 object-contain drop-shadow" />
+                  </div>
+                  <span class="font-serif font-semibold tracking-wide">{{ home.abbr|default:'HOM' }}</span>
+                </div>
               </div>
+
+              <!-- Score row -->
               <div class="flex justify-between items-center mt-4">
                 <span class="font-serif font-bold text-xl sm:text-2xl {% if Game.AwayScore > Game.HomeScore %}text-emerald-400{% endif %}">
                   {{ Game.AwayScore }}
@@ -98,6 +112,7 @@
                   {{ Game.HomeScore }}
                 </span>
               </div>
+
             </div>
           </button>
         {% endfor %}
@@ -122,7 +137,6 @@
   <div id="overlay" class="absolute inset-0 bg-black/60"></div>
   <div class="relative mx-auto mt-12 max-w-4xl w-[92%] bg-slate-900 text-white rounded-2xl shadow-2xl border border-white/10 p-6">
     <button onclick="closePopup()" class="absolute top-3 right-3 text-slate-400 hover:text-white text-2xl leading-none">&times;</button>
-
     <div id="popup-body" class="text-slate-200">
       <div class="flex justify-between items-center font-bold text-3xl sm:text-4xl mb-8">
         <span id="away-team"></span><span>@</span><span id="home-team"></span>
@@ -134,7 +148,7 @@
         <span id="home-score" class="underline decoration-8 decoration-sky-500"></span>
       </div>
 
-      <!-- Repeated bar rows (no macros) -->
+      <!-- Stats bars (expanded, Django-safe) -->
       <div class="space-y-5">
         <!-- Plays -->
         <div>
@@ -149,10 +163,10 @@
         <!-- First Downs -->
         <div>
           <div class="flex justify-between text-sm sm:text-base mb-1">
-            <span id="Away-First-Downs"></span><span class="text-slate-300">First Downs</span><span id="Home-First-Downs"></span>
+            <span id="Away-first_downs"></span><span class="text-slate-300">First Downs</span><span id="Home-first_downs"></span>
           </div>
           <div class="w-full h-3 rounded-full bg-slate-700 overflow-hidden">
-            <div id="firstdownbar" class="h-3 rounded-full bg-sky-500" style="width:0%"></div>
+            <div id="first_downsbar" class="h-3 rounded-full bg-sky-500" style="width:0%"></div>
           </div>
         </div>
 
@@ -179,7 +193,7 @@
         <!-- Total Yards -->
         <div>
           <div class="flex justify-between text-sm sm:text-base mb-1">
-            <span id="Away-yards-total"></span><span class="text-slate-300">Total Yards</span><span id="Home-yards-total"></span>
+            <span id="Away-yards"></span><span class="text-slate-300">Total Yards</span><span id="Home-yards"></span>
           </div>
           <div class="w-full h-3 rounded-full bg-slate-700 overflow-hidden">
             <div id="yardsbar" class="h-3 rounded-full bg-sky-500" style="width:0%"></div>
@@ -209,7 +223,7 @@
         <!-- Interceptions -->
         <div>
           <div class="flex justify-between text-sm sm:text-base mb-1">
-            <span id="Away-Interceptions"></span><span class="text-slate-300">Interceptions</span><span id="Home-Interceptions"></span>
+            <span id="Away-interceptions"></span><span class="text-slate-300">Interceptions</span><span id="Home-interceptions"></span>
           </div>
           <div class="w-full h-3 rounded-full bg-slate-700 overflow-hidden">
             <div id="interceptionsbar" class="h-3 rounded-full bg-sky-500" style="width:0%"></div>
@@ -219,16 +233,20 @@
         <!-- Turnovers -->
         <div>
           <div class="flex justify-between text-sm sm:text-base mb-1">
-            <span id="Away-Turnovers"></span><span class="text-slate-300">Turnovers</span><span id="Home-Turnovers"></span>
+            <span id="Away-turnovers"></span><span class="text-slate-300">Turnovers</span><span id="Home-turnovers"></span>
           </div>
           <div class="w-full h-3 rounded-full bg-slate-700 overflow-hidden">
-            <div id="turnoverbar" class="h-3 rounded-full bg-sky-500" style="width:0%"></div>
+            <div id="turnoversbar" class="h-3 rounded-full bg-sky-500" style="width:0%"></div>
           </div>
         </div>
       </div>
+      <!-- /space-y-5 -->
     </div>
+    <!-- /#popup-body -->
   </div>
+  <!-- /.relative -->
 </div>
+<!-- /#game-popup -->
 
 <script>
   async function loadGameSummary(gameId) {
@@ -261,12 +279,12 @@
     const map = {
       "away-team": vals[0], "home-team": vals[1],
       "home-score": vals[3], "away-score": vals[2],
-      "Away-First-Downs": vals[4], "Home-First-Downs": vals[5],
-      "Away-Interceptions": vals[6], "Home-Interceptions": vals[7],
-      "Away-Turnovers": vals[8], "Home-Turnovers": vals[9],
+      "Away-first_downs": vals[4], "Home-first_downs": vals[5],
+      "Away-interceptions": vals[6], "Home-interceptions": vals[7],
+      "Away-turnovers": vals[8], "Home-turnovers": vals[9],
       "Away-passing": vals[10], "Home-passing": vals[11],
       "Away-rushing": vals[12], "Home-rushing": vals[13],
-      "Away-yards-total": vals[14], "Home-yards-total": vals[15],
+      "Away-yards": vals[14], "Home-yards": vals[15],
       "Away-sacks": vals[16], "Home-sacks": vals[17],
       "Away-fumbles": vals[18], "Home-fumbles": vals[19],
       "Away-plays": vals[20], "Home-plays": vals[21],
@@ -275,14 +293,14 @@
 
     const pct = (a,b)=> (a/(a+b))*100 || 0;
     document.getElementById("playsbar").style.width = pct(vals[20], vals[21]) + "%";
-    document.getElementById("firstdownbar").style.width = pct(vals[4], vals[5]) + "%";
+    document.getElementById("first_downsbar").style.width = pct(vals[4], vals[5]) + "%";
     document.getElementById("rushingbar").style.width = pct(vals[12], vals[13]) + "%";
     document.getElementById("passingbar").style.width = pct(vals[10], vals[11]) + "%";
     document.getElementById("yardsbar").style.width = pct(vals[14], vals[15]) + "%";
     document.getElementById("sacksbar").style.width = pct(vals[16], vals[17]) + "%";
     document.getElementById("fumblebar").style.width = pct(vals[18], vals[19]) + "%";
     document.getElementById("interceptionsbar").style.width = pct(vals[6], vals[7]) + "%";
-    document.getElementById("turnoverbar").style.width = pct(vals[8], vals[9]) + "%";
+    document.getElementById("turnoversbar").style.width = pct(vals[8], vals[9]) + "%";
 
     const modal = document.getElementById("game-popup");
     modal.classList.remove("hidden");
