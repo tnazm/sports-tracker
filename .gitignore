@@ -216,3 +216,40 @@ node_modules
 env
 *.env
 .DS_Store
+
+
+# ----------------------------
+# Django additions
+# ----------------------------
+
+# Ignore the static build output created by collectstatic
+staticfiles/
+
+# Local media / uploads (if added later)
+media/
+
+# Ignore local SQLite database
+db.sqlite3
+db.sqlite3-journal
+
+# macOS and VSCode junk
+.DS_Store
+.vscode/
+# ----------------------------
+# Django additions
+# ----------------------------
+
+# Ignore the static build output created by collectstatic
+staticfiles/
+
+# Local media / uploads (if added later)
+media/
+
+# Ignore local SQLite database
+db.sqlite3
+db.sqlite3-journal
+
+# macOS and VSCode junk
+.DS_Store
+.vscode/
+

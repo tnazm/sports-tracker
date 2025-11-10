@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load static team_tags %}
-{% block title %}HALF-TIME • Week {{ week_number }}{% endblock %}
+
+{% block title %}HALF-TIME • Week {{ week_number }}{% endblock title %}
 
 {% block style %}
 <style>
@@ -11,7 +12,7 @@
             mask-image: linear-gradient(to right, transparent 0, black 28px, black calc(100% - 28px), transparent 100%);
   }
 </style>
-{% endblock %}
+{% endblock style %}
 
 {% block body %}
 <div class="min-h-[calc(100vh-64px-56px)] text-slate-100 bg-gradient-to-b from-[#071b2b] to-[#0a2a40] pb-16">
@@ -107,7 +108,7 @@
                 <span class="font-serif font-bold text-xl sm:text-2xl {% if Game.AwayScore > Game.HomeScore %}text-emerald-400{% endif %}">
                   {{ Game.AwayScore }}
                 </span>
-                <span class="text-xs sm:text-sm text-slate-300">{{ Game.date }}</span>
+                <span class="text-xs sm:text-sm text-slate-3 00">{{ Game.date }}</span>
                 <span class="font-serif font-bold text-xl sm:text-2xl {% if Game.HomeScore > Game.AwayScore %}text-emerald-400{% endif %}">
                   {{ Game.HomeScore }}
                 </span>
@@ -249,11 +250,20 @@
 <!-- /#game-popup -->
 
 <script>
+  // --- CSRF helper ---
+  function getCookie(name){
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+  }
+  const CSRFTOKEN = getCookie('csrftoken');
+
   async function loadGameSummary(gameId) {
     const response = await fetch("{% url 'load_game_summary' %}", {
       method: "POST",
-      headers: {"Content-Type": "application/json","X-CSRFToken": "{{ csrf_token }}"},
+      headers: { "Content-Type": "application/json", "X-CSRFToken": CSRFTOKEN },
       body: JSON.stringify({ game_id: gameId }),
+      credentials: "same-origin"
     });
     return await response.json();
   }
@@ -308,5 +318,16 @@
     document.addEventListener("keydown", e => { if(e.key === "Escape") closePopup(); }, { once:true });
   }
   function closePopup(){ document.getElementById("game-popup").classList.add("hidden"); }
+
+  // --- Scroll helpers (single declaration) ---
+  let scrollTimer = null; // renamed to avoid underscore-lint complaints
+  function startScroll(dir){
+    const el = document.getElementById('week-scroll');
+    stopScroll();
+    scrollTimer = setInterval(()=> el.scrollBy({left: dir*12, behavior:'smooth'}), 16);
+  }
+  function stopScroll(){
+    if (scrollTimer !== null) { clearInterval(scrollTimer); scrollTimer = null; }
+  }
 </script>
-{% endblock %}
+{% endblock body %}
