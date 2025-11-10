@@ -15,6 +15,18 @@ Login - HALF-TIME
     </p>
   </div>
 
+  {% if messages %}
+    <div class="rounded-2xl mt-12 p-8  bg-gradient-to-tl from-black to-red-700 w-full max-w-lg mx-auto backdrop-blur-lg alert alert-info">
+      <ul class="messages">
+        {% for message in messages %}
+          <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>
+            {{ message }}
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+
   <div class="rounded-2xl mt-12 p-8  bg-gradient-to-tl from-black to-sky-700 w-full max-w-lg mx-auto backdrop-blur-lg">
  
     <form method="post" style="color: black" >
