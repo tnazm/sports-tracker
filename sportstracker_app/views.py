@@ -112,7 +112,9 @@ def login_view(request):
             login(request, user)
             return redirect("home")
         else:
-            messages.error(request, 'Invalid credentials')
+            messages.error(request, 'The username or password (or both) is invaild. Please enter the correct credentials.')
+            return redirect('login')
+
     return render(request, "login.html",{"Weeks": Weeks})
 
 def logout_view(request):
