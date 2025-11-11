@@ -130,6 +130,24 @@ def pick_team(request):
         return redirect('pickteam')
     return render(request, "newuserhub.html", {"Weeks": Weeks, "Teams": nfl_teams, "Favorites": favorites,"currentuser":current_user})
 
+def user_account(request):
+    favorites = request.session.get('favorite_teams')
+    user=request.user
+    
+    return render(request, 'account.html',{
+        'user':user,
+        'favorites':favorites,
+        'weeks':Weeks,
+        
+        
+    })
+
+
+
+
+
+
+
 
 
 
