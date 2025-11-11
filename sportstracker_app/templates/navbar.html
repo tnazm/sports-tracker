@@ -44,9 +44,9 @@
     {% endfor %}
   </div>
 </div>
-
-  <a href="#" class="hover:text-orange-400 py-2 lg:py-0">Teams</a>
-  <a href="{% url 'account' %}" class="block hover:text-orange-400">Account</a>
+  {% if user.is_authenticated %}
+  <a href="{% url 'pickteam' %}" class="hover:text-orange-400 py-2 lg:py-0"> Favorite Teams</a>
+  {% endif %}
   <a href="{% url 'register' %}" class="hover:text-orange-400 py-2 lg:py-0">Register</a>
   {% if user.is_authenticated %}
     <a href="{% url 'logout' %}" class="hover:text-orange-400 py-2 lg:py-0">Logout</a>

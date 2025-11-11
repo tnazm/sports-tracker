@@ -14,3 +14,18 @@ urlpatterns = [
     # path('refresh/', views.refresh_scores, name='refresh_scores'),
     # path("admin-dashboard/", views.admin_dashboard, name="dashboard"),
 ]
+
+# Was for testing adding fav teams
+
+# from sportstracker_app.models import Profile
+# # Profile.objects.all().update(favorite_team={"fav_teams":[]})
+# # count = Profile.objects.filter(favorite_team={"fav_teams":[]}).count()
+# # print(f"Updated {count} profiles")
+
+# Profile.objects.all().update(new=True)
+
+# for profile in Profile.objects.all():
+#     print(f"User: {profile.user.username}")
+#     print(profile.new)
+#     print(f"Bio: {profile.favorite_team}")
+#     print("---")

@@ -12,6 +12,7 @@ from dotenv import load_dotenv
 from sportstracker_app.models import GameData,Profile
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+import json
 load_dotenv()
 KEY = os.getenv("API_KEY")
 
@@ -106,29 +107,42 @@ def register(request):
 def pick_team(request):
     if request.user.is_authenticated:
         current_user = Profile.objects.get(id=request.user.id)
-    favorites=request.session.get('favorite_teams', [])
-    if request.method == 'POST':
-        selected_team = request.POST.get('team')
-        action = request.POST.get('action')
-        if selected_team:
-            if action == 'add':
-                if selected_team not in favorites:
-                    favorites.append(selected_team)
-                    request.session['favorite_teams'] = favorites
-                    messages.success(request, f'You have added {selected_team} to your favorite teams.')
-                else:
-                    messages.info(request, f'{selected_team} is already in your favorite teams.')
+        user_favteam = current_user.favorite_team["fav_teams"]
+        
+        favorites=request.session.get('favorite_teams', user_favteam)
+        
+
+        if request.method == 'POST':
+            selected_team = request.POST.get('team')
+            action = request.POST.get('action')
+            if selected_team:
+                if action == 'add':
+                    if selected_team not in favorites:
+                        favorites.append(selected_team)
+                        request.session['favorite_teams'] = favorites
+                        # messages.success(request, f'You have added {selected_team} to your favorite teams.')
+                    else:
+                        pass
+                        # messages.info(request, f'{selected_team} is already in your favorite teams.')
+                
+                elif action == 'remove':
+                    if selected_team in favorites:
+                        favorites.remove(selected_team)
+                        request.session['favorite_teams'] = favorites
+                        # messages.success(request, f'You have removed {selected_team} from your favorite teams.')
+                    else:
+                        pass
+                        # messages.info(request, f'{selected_team} is not in your favorite teams.')
             
-            elif action == 'remove':
-                if selected_team in favorites:
-                    favorites.remove(selected_team)
-                    request.session['favorite_teams'] = favorites
-                    messages.success(request, f'You have removed {selected_team} from your favorite teams.')
-                else:
-                    messages.info(request, f'{selected_team} is not in your favorite teams.')
-        request.session['favorite_teams'] = favorites
-        return redirect('pickteam')
-    return render(request, "newuserhub.html", {"Weeks": Weeks, "Teams": nfl_teams, "Favorites": favorites,"currentuser":current_user})
+            
+            request.session['favorite_teams'] = favorites
+            return redirect('pickteam')
+        Profile.objects.filter(user=current_user.user).update(favorite_team={"fav_teams":favorites})
+        Profile.objects.filter(user=current_user.user).update(new=False)
+
+        return render(request, "newuserhub.html", {"Weeks": Weeks, "Teams": nfl_teams, "Favorites": favorites,"currentuser":current_user})
+    else:
+        return render(request, "newuserhub.html", {"Weeks": Weeks, "Teams": nfl_teams})
 
 def user_account(request):
     favorites = request.session.get('favorite_teams')
@@ -157,12 +171,22 @@ def login_view(request):
         username = request.POST['username']
         password = request.POST['password']
         user = authenticate(request, username=username, password=password)
+        
         if user is not None:
             login(request, user)
-            return redirect("home")
+            current_user = Profile.objects.get(id=request.user.id)
+            current_user_status = current_user.new
+
+            if current_user_status == True:
+                return redirect("pickteam")
+            else:
+
+                return redirect("home")
         else:
             messages.error(request, 'The username or password (or both) is invaild. Please enter the correct credentials.')
             return redirect('login')
+    
+
 
     return render(request, "login.html",{"Weeks": Weeks})
 

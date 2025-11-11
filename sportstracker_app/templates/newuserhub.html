@@ -9,16 +9,38 @@ New_user_hub- HALF-TIME
 
 
 <section class="bg-gradient-to-b from-black to-sky-700 text-white text-center min-h-screen flex flex-col py-10 px-4">
+
+    {% if user.is_authenticated %}
     <div class="max-w-5xl mx-auto py-0">
+
+
+      {% if current.user.new == True %}
       <h1 class="text-5xl sm:text-7xl md:text-8xl font-extrabold text-sky-400 mb-6 tracking-tight">
         Welcome! 
       </h1>
       <p class="text-5xl sm:text-7xl md:text-8xl font-extrabold text-sky-400 mb-6 tracking-tight">
           {{ currentuser.user}}
       </p>
+      {% else %}
+      <h1 class="text-5xl sm:text-7xl md:text-8xl font-extrabold text-sky-400 mb-6 tracking-tight">
+        Update your favorite teams
+      </h1>
+
+      {% endif %}
+
+
+      {% if current.user.new == True %}
       <p class="text-lg sm:text-xl text-gray-200 max-w-2xl mx-auto">
-        Please select your favorite team
+            Please select  your favorite teams to get started !
       </p>
+
+      {% else %}
+      <p class="text-lg sm:text-xl text-gray-200 max-w-2xl mx-auto">
+        select below to update your favorite teams
+  </p>
+
+  {% endif %}
+
     </div>
 
   <!--Team Selection Code-->
@@ -58,33 +80,49 @@ New_user_hub- HALF-TIME
           {% else %}
             <input type="hidden" name="action" value="add">
             <button
-              class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 rounded focus:outline-none focus:shadow-outline transition-all duration-200 transform hover:scale-105">
+              class="w-full bg-blue-500 hover:bg-blue-700  text-white font-bold py-3 rounded focus:outline-none focus:shadow-outline transition-all duration-200 transform hover:scale-105">
               {{ team }}
             </button>
           {% endif %}
+         
         </form>
       {% endfor %}
+
+
+      <button  id="go-next"
+      class="w-full bg-green-500 hover:bg-blue-700 text-white font-bold py-3 rounded focus:outline-none focus:shadow-outline transition-all duration-200 transform hover:scale-105">
+      Done
+    </button>
+
     </div>
   </div>
 
   
+<script>
+   document.getElementById("go-next").onclick =
+   function gonext(){
+
+    window.location.href = "{% url 'home' %}";
+   }
 
 
 
 
 
+</script>
 
 
+{% else %}
+<div class="max-w-5xl mx-auto py-0">
 
 
+    <h1 class="text-5xl sm:text-7xl md:text-8xl font-extrabold text-sky-400 mb-6 tracking-tight">
+      YOU'RE NOT ALLOWED HERE LEAVE NOW
+    </h1>
 
+</div>
 
-
-
-
-
-
-
+{% endif %}
 
 
 
