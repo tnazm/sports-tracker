@@ -73,11 +73,13 @@ nfl_teams = [
 ]
 def home(request):
     Games = Game.objects.all()
-    context = {"Games": Games, "Weeks": Weeks}
+    last_saved_week = request.session.get('saved_week') #Retrieve the last viewed week
+    context = {"Games": Games, "Weeks": Weeks, "saved" : last_saved_week}
     return render(request, 'main.html', context)
 
 def week(request, num):
     Games = Game.objects.filter(Week=f"Week {num}")
+    request.session['saved_week'] = num #Save the last viewed week into request
     return render(request, 'week.html', {"Games": Games, "week_number": num, "Weeks": Weeks})
 
 def register(request):
