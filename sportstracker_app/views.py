@@ -11,6 +11,7 @@ import http.client,os
 from dotenv import load_dotenv
 from sportstracker_app.models import GameData
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 load_dotenv()
 KEY = os.getenv("API_KEY")
 
@@ -101,7 +102,33 @@ def register(request):
     return render(request, "register.html", {'form': form, "Weeks": Weeks})
 
 def pick_team(request):
-    return render(request,"newuserhub.html",{"Weeks":Weeks,"Teams":nfl_teams})
+    favorites=request.session.get('favorite_teams', [])
+    if request.method == 'POST':
+        selected_team = request.POST.get('team')
+        action = request.POST.get('action')
+        if selected_team:
+            if action == 'add':
+                if selected_team not in favorites:
+                    favorites.append(selected_team)
+                    request.session['favorite_teams'] = favorites
+                    messages.success(request, f'You have added {selected_team} to your favorite teams.')
+                else:
+                    messages.info(request, f'{selected_team} is already in your favorite teams.')
+            
+            elif action == 'remove':
+                if selected_team in favorites:
+                    favorites.remove(selected_team)
+                    request.session['favorite_teams'] = favorites
+                    messages.success(request, f'You have removed {selected_team} from your favorite teams.')
+                else:
+                    messages.info(request, f'{selected_team} is not in your favorite teams.')
+        request.session['favorite_teams'] = favorites
+        return redirect('pickteam')
+    return render(request, "newuserhub.html", {"Weeks": Weeks, "Teams": nfl_teams, "Favorites": favorites})
+
+
+
+
 
 def login_view(request):
     if request.method == 'POST':

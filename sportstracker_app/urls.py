@@ -8,6 +8,7 @@ urlpatterns = [
     path('logout/', views.logout_view, name="logout"),
     path('week/<int:num>/', views.week, name='week'),
     path('newuserwelcome/',views.pick_team,name='pickteam')
+    #path('teams/', views.teams, name='teams'),
     # path('refresh/', views.refresh_scores, name='refresh_scores'),
     # path("admin-dashboard/", views.admin_dashboard, name="dashboard"),
 ]
