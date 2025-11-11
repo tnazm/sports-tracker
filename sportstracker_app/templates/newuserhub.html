@@ -20,44 +20,75 @@ New_user_hub- HALF-TIME
         Please select your favorite team
       </p>
     </div>
-    <div>
 
-        <div class=" mt-12 p-8  w-full max-w-6xl mx-auto ">
+  <!--Team Selection Code-->
 
-
-            <div class="grid grid-cols-[repeat(auto-fit,_minmax(10rem,_1fr))] gap-6">
-                {% for team in Teams %}
-
-                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none  focus:shadow-outline" >
-                    {{team}}
-                </button>
-
-
-
-
-
-
-                {% endfor %}
-
-            </div>
+  <!-- Favorite Teams Display -->
+  {% if Favorites %}
+    <div class="mt-12 bg-gray-800 bg-opacity-70 p-8 rounded-2xl shadow-xl">
+      <h2 class="text-3xl font-semibold text-sky-400 mb-6">Your Favorite Teams</h2>
+      <ul class="flex flex-wrap justify-center gap-4">
+        {% for team in Favorites %}
+          <li class="bg-sky-600 px-6 py-3 rounded-lg shadow-md text-white font-semibold hover:bg-sky-500 transition-all duration-200 w-[12rem] text-center">
+            {{ team }}
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% else %}
+    <p class="mt-10 text-gray-300">No favorite teams selected yet.</p>
+  {% endif %}
 
 
 
 
 
+  <div class="mt-12 p-8 w-full max-w-6xl mx-auto">
+    <div class="grid grid-cols-[repeat(auto-fit,_minmax(12rem,_1fr))] gap-6">
+      {% for team in Teams %}
+        <form method="POST" class="inline w-full">
+          {% csrf_token %}
+          <input type="hidden" name="team" value="{{ team }}">
+          {% if team in Favorites %}
+            <input type="hidden" name="action" value="remove">
+            <button
+              class="w-full bg-red-500 hover:bg-red-700 text-white font-bold py-3 rounded focus:outline-none focus:shadow-outline transition-all duration-200 transform hover:scale-105">
+              Remove {{ team }}
+            </button>
+          {% else %}
+            <input type="hidden" name="action" value="add">
+            <button
+              class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 rounded focus:outline-none focus:shadow-outline transition-all duration-200 transform hover:scale-105">
+              {{ team }}
+            </button>
+          {% endif %}
+        </form>
+      {% endfor %}
+    </div>
+  </div>
+
+  
 
 
-        </div>
-
-
-
-
-    </section>
 
 
 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+</section>
 
 {% endblock %}
