@@ -1,63 +1,70 @@
 {% extends "base.html" %}
+{% load static %}
 
-{% block title %}
-New_user_hub- HALF-TIME
-{% endblock %}
+{% block title %}New_user_hub - HALF-TIME{% endblock %}
 
 {% block body %}
-
-
-
 <section class="bg-gradient-to-b from-black to-sky-700 text-white text-center min-h-screen flex flex-col py-10 px-4">
-    <div class="max-w-5xl mx-auto py-0">
-      <h1 class="text-5xl sm:text-7xl md:text-8xl font-extrabold text-sky-400 mb-6 tracking-tight">
-        Welcome! 
-      </h1>
-      <p class="text-5xl sm:text-7xl md:text-8xl font-extrabold text-sky-400 mb-6 tracking-tight">
-            
-      </p>
-      <p class="text-lg sm:text-xl text-gray-200 max-w-2xl mx-auto">
-        Please select your favorite team
-      </p>
-    </div>
-    <div>
+  <div class="max-w-5xl mx-auto">
+    <h1 class="text-5xl sm:text-7xl md:text-8xl font-extrabold text-sky-400 mb-6 tracking-tight">Welcome!</h1>
+    <p class="text-lg sm:text-xl text-gray-200 max-w-2xl mx-auto">Please select your favorite team</p>
+  </div>
 
-        <div class=" mt-12 p-8  w-full max-w-6xl mx-auto ">
+  <div class="mt-12 p-8 w-full max-w-7xl mx-auto">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
 
-
-            <div class="grid grid-cols-[repeat(auto-fit,_minmax(10rem,_1fr))] gap-6">
-                {% for team in Teams %}
-
-                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none  focus:shadow-outline" >
-                    {{team}}
-                </button>
-
-
-
-
-
-
-                {% endfor %}
-
-            </div>
-
-
-
-
-
-
-
+      {% for team in Teams %}
+      {% with name=team.name|default:team abbr=team.abbr %}
+      <button 
+        class="group bg-blue-500 hover:bg-blue-600 active:bg-blue-700 text-white font-bold rounded-lg flex items-center justify-start gap-4 
+               shadow-lg hover:shadow-2xl transition-all duration-200 py-3 px-5 w-full text-left"
+        data-team-name="{{ name }}">
+        
+        <div class="flex-shrink-0 w-16 h-16 flex items-center justify-center overflow-hidden transition-transform duration-200 group-hover:scale-110">
+          <img
+            {% if abbr %}
+              src="{% static 'sportstracker_app/img/nfl/' %}{{ abbr }}.svg"
+            {% else %}
+              data-team-logo
+            {% endif %}
+            alt="{{ name }} logo"
+            class="max-w-full max-h-full object-contain select-none pointer-events-none"
+            onerror="this.style.display='none'">
         </div>
+        
+        <span class="text-lg font-semibold flex-1 text-left transition-colors duration-200 group-hover:text-sky-200">
+          {{ name }}
+        </span>
+      </button>
+      {% endwith %}
+      {% empty %}
+        <p class="col-span-full text-gray-200">No teams found in context.</p>
+      {% endfor %}
 
+    </div>
+  </div>
+</section>
 
-
-
-    </section>
-
-
-
-
-
-
-
+<script>
+  (function() {
+    const STATIC_PREFIX = "{% static 'sportstracker_app/img/nfl/' %}";
+    const TEAM_ABBR = {
+      "Arizona Cardinals":"ARI","Atlanta Falcons":"ATL","Baltimore Ravens":"BAL","Buffalo Bills":"BUF",
+      "Carolina Panthers":"CAR","Chicago Bears":"CHI","Cincinnati Bengals":"CIN","Cleveland Browns":"CLE",
+      "Dallas Cowboys":"DAL","Denver Broncos":"DEN","Detroit Lions":"DET","Green Bay Packers":"GB",
+      "Houston Texans":"HOU","Indianapolis Colts":"IND","Jacksonville Jaguars":"JAX","Kansas City Chiefs":"KC",
+      "Las Vegas Raiders":"LV","Los Angeles Chargers":"LAC","Los Angeles Rams":"LAR","Miami Dolphins":"MIA",
+      "Minnesota Vikings":"MIN","New England Patriots":"NE","New Orleans Saints":"NO","New York Giants":"NYG",
+      "New York Jets":"NYJ","Philadelphia Eagles":"PHI","Pittsburgh Steelers":"PIT","San Francisco 49ers":"SF",
+      "Seattle Seahawks":"SEA","Tampa Bay Buccaneers":"TB","Tennessee Titans":"TEN","Washington Commanders":"WAS"
+    };
+    document.querySelectorAll('[data-team-logo]').forEach(img => {
+      const btn = img.closest('[data-team-name]');
+      if (!btn) return;
+      const name = btn.getAttribute('data-team-name');
+      const abbr = TEAM_ABBR[name];
+      if (abbr) img.src = STATIC_PREFIX + abbr + ".svg";
+    });
+  })();
+</script>
 {% endblock %}

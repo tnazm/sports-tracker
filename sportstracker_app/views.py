@@ -2,41 +2,27 @@ import sys
 from pathlib import Path
 from django.conf import settings
 import json
-from django.http import JsonResponse
-from django.contrib.auth.forms import UserCreationForm
+from django.http import JsonResponse, HttpResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
-import http.client,os
+import http.client, os
 from dotenv import load_dotenv
+from django.shortcuts import render, redirect
 from sportstracker_app.models import GameData
-from django.contrib import messages
+from .models import Game
+from .forms import CustomUserCreationForm
+
 load_dotenv()
 KEY = os.getenv("API_KEY")
 
 BACKEND_PATH = Path(settings.BASE_DIR) / "Backend" / "BackendDB"
 BACKEND_PATH_STR = str(BACKEND_PATH.resolve())
-
 if BACKEND_PATH_STR not in sys.path:
     sys.path.insert(0, BACKEND_PATH_STR)
 
-from django.shortcuts import render, redirect, HttpResponse
-from .models import Game
-from .forms import CustomUserCreationForm
-
-# Try to import backend scripts (don’t crash if they’re missing)
-# try:
-#     from AddGameObject import main as add_games
-#     from GetGameIds import GamesToday
-# except ImportError as e:
-#     print("⚠️ Could not import backend scripts from Backend/BackendDB:", e)
-#     def add_games(): 
-#         pass
-#     def GamesToday(): 
-#         pass
-
 Weeks = ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18"]
-#temp team holder
+
 nfl_teams = [
     "Arizona Cardinals",
     "Atlanta Falcons",
@@ -71,6 +57,46 @@ nfl_teams = [
     "Tennessee Titans",
     "Washington Commanders"
 ]
+
+TEAM_ABBR = {
+    "Arizona Cardinals": "ARI",
+    "Atlanta Falcons": "ATL",
+    "Baltimore Ravens": "BAL",
+    "Buffalo Bills": "BUF",
+    "Carolina Panthers": "CAR",
+    "Chicago Bears": "CHI",
+    "Cincinnati Bengals": "CIN",
+    "Cleveland Browns": "CLE",
+    "Dallas Cowboys": "DAL",
+    "Denver Broncos": "DEN",
+    "Detroit Lions": "DET",
+    "Green Bay Packers": "GB",
+    "Houston Texans": "HOU",
+    "Indianapolis Colts": "IND",
+    "Jacksonville Jaguars": "JAX",
+    "Kansas City Chiefs": "KC",
+    "Las Vegas Raiders": "LV",
+    "Los Angeles Chargers": "LAC",
+    "Los Angeles Rams": "LAR",
+    "Miami Dolphins": "MIA",
+    "Minnesota Vikings": "MIN",
+    "New England Patriots": "NE",
+    "New Orleans Saints": "NO",
+    "New York Giants": "NYG",
+    "New York Jets": "NYJ",
+    "Philadelphia Eagles": "PHI",
+    "Pittsburgh Steelers": "PIT",
+    "San Francisco 49ers": "SF",
+    "Seattle Seahawks": "SEA",
+    "Tampa Bay Buccaneers": "TB",
+    "Tennessee Titans": "TEN",
+    "Washington Commanders": "WAS"
+}
+
+def pick_team(request):
+    teams_ctx = [{"name": n, "abbr": TEAM_ABBR[n]} for n in nfl_teams]
+    return render(request, "newuserhub.html", {"Weeks": Weeks, "Teams": teams_ctx})
+
 def home(request):
     Games = Game.objects.all()
     context = {"Games": Games, "Weeks": Weeks}
@@ -85,23 +111,19 @@ def register(request):
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             form.save()
-            messages.success(request,"Welcome to Half-Time, your account has been created")
-            return render(request, "register.html", {'form': form,})
+            messages.success(request, "Welcome to Half-Time, your account has been created")
+            return render(request, "register.html", {'form': form})
         else:
-            currenterrors=dict(form.errors)
-            errors =[]
+            currenterrors = dict(form.errors)
+            errors = []
             for errornames in currenterrors.values():
                 for error in errornames:
                     errors.append(error)
-            messages.error(request,"Error")
-            return render(request, "register.html", {'form': form, "Weeks": Weeks,"errors":errors})     
-            print(form.errors)
+            messages.error(request, "Error")
+            return render(request, "register.html", {'form': form, "Weeks": Weeks, "errors": errors})
     else:
         form = CustomUserCreationForm()
     return render(request, "register.html", {'form': form, "Weeks": Weeks})
-
-def pick_team(request):
-    return render(request,"newuserhub.html",{"Weeks":Weeks,"Teams":nfl_teams})
 
 def login_view(request):
     if request.method == 'POST':
@@ -114,98 +136,48 @@ def login_view(request):
         else:
             messages.error(request, 'The username or password (or both) is invaild. Please enter the correct credentials.')
             return redirect('login')
-
-    return render(request, "login.html",{"Weeks": Weeks})
+    return render(request, "login.html", {"Weeks": Weeks})
 
 def logout_view(request):
     logout(request)
-    return redirect("home")   
-
-# def refresh_scores(request):
-#     """Manually refresh the NFL scores."""
-#     if request.method == "POST":
-#         try:
-#             GamesToday()   # fetch today/tomorrow IDs
-#             add_games()    # update/create Game entries
-#         except Exception as e:
-#             print("Error refreshing scores:", e)
-#     return redirect('home')
-
-
-
-
-
-
+    return redirect("home")
 
 def GameSummary(Gameid):
-   
-
-
-    if not  GameData.objects.filter(GameID=Gameid).exists():
-        print("Fetching data from API for GameID:", Gameid)
-        Gameid=str(Gameid)
+    if not GameData.objects.filter(GameID=Gameid).exists():
+        Gameid = str(Gameid)
         conn = http.client.HTTPSConnection("v1.american-football.api-sports.io")
-        print("Loaded API_KEY:", KEY)
         headers = {
             'x-rapidapi-host': "v1.american-football.api-sports.io",
             'x-rapidapi-key': KEY
-            }
-
+        }
         conn.request("GET", f"/games/statistics/teams?id={Gameid}", headers=headers)
-
         res = conn.getresponse()
         data = res.read()
-
-        decoded =data.decode("utf-8")
+        decoded = data.decode("utf-8")
         parsed = json.loads(decoded)
-        if parsed["results"]==0:
-           return ("CANT add game")
-        
+        if parsed["results"] == 0:
+            return "CANT add game"
         GameData.objects.create(GameID=Gameid, data=parsed)
-
-        return (
-            
-            {"HomeTeam":parsed["response"][0],
-            
-            
-            "AwayTeam":parsed["response"][1]
-            
-            
-            }
-            )
-    else:  
-      
-        data =  GameData.objects.get(GameID=Gameid).data
-        
-        return( 
-              
-            {"HomeTeam":data["response"][0],
-            
-            
-            "AwayTeam":data["response"][1]
-            }
-    )
-    
- 
-
-        ## sends json data back
+        return {
+            "HomeTeam": parsed["response"][0],
+            "AwayTeam": parsed["response"][1]
+        }
+    else:
+        data = GameData.objects.get(GameID=Gameid).data
+        return {
+            "HomeTeam": data["response"][0],
+            "AwayTeam": data["response"][1]
+        }
 
 def load_game_summary(request):
     if request.method == "POST":
         data = json.loads(request.body.decode("utf-8"))
         game_id = data.get("game_id")
-  
-
         if not game_id:
             return JsonResponse({"error": "Missing game_id"}, status=400)
-
         try:
             summary = GameSummary(game_id)
-    
-            return JsonResponse(summary)
+            return JsonResponse(summary if isinstance(summary, dict) else {"error": summary}, status=200 if isinstance(summary, dict) else 400)
         except Exception as e:
-            print("❌ ERROR in load_game_summary:")
-
             return JsonResponse({"error": str(e)}, status=500)
-
     return JsonResponse({"error": "Invalid request"}, status=400)
