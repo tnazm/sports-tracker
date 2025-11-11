@@ -70,7 +70,7 @@ def normalize_key(value) -> str:
     s = re.sub(r"[^A-Z0-9 ]+", "", s)
     return s
 
-def resolve_code(value) -> str | None:
+def resolve_code(value) -> str:
     key = normalize_key(value)
     if key in INDEX:
         return INDEX[key]

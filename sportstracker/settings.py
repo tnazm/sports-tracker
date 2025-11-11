@@ -31,7 +31,6 @@ INSTALLED_APPS = [
 # -----------------------------------------------------------
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # serve static files when DEBUG=False
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -97,10 +96,10 @@ USE_TZ = True
 STATIC_URL = '/static/'
 # collectstatic will copy everything here
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-# remove STATICFILES_DIRS because Django auto-detects each app's static/ folder
-
-# WhiteNoise compressed manifest storage (for cache-busting and gzip)
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATIC_ROOT = "/var/www/static"
+STATICFILES_DIRS = [
+        BASE_DIR / "static",
+]
 
 # -----------------------------------------------------------
 # DEFAULTS
