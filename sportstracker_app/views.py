@@ -9,7 +9,7 @@ from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
 import http.client,os
 from dotenv import load_dotenv
-from sportstracker_app.models import GameData
+from sportstracker_app.models import GameData,Profile
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 load_dotenv()
@@ -104,6 +104,8 @@ def register(request):
     return render(request, "register.html", {'form': form, "Weeks": Weeks})
 
 def pick_team(request):
+    if request.user.is_authenticated:
+        current_user = Profile.objects.get(id=request.user.id)
     favorites=request.session.get('favorite_teams', [])
     if request.method == 'POST':
         selected_team = request.POST.get('team')
@@ -126,7 +128,7 @@ def pick_team(request):
                     messages.info(request, f'{selected_team} is not in your favorite teams.')
         request.session['favorite_teams'] = favorites
         return redirect('pickteam')
-    return render(request, "newuserhub.html", {"Weeks": Weeks, "Teams": nfl_teams, "Favorites": favorites})
+    return render(request, "newuserhub.html", {"Weeks": Weeks, "Teams": nfl_teams, "Favorites": favorites,"currentuser":current_user})
 
 
 
