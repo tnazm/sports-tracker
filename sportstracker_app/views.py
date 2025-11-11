@@ -74,7 +74,7 @@ nfl_teams = [
 ]
 def home(request):
     Games = Game.objects.all()
-    last_saved_week = request.session.get('saved_week') #Retrieve the last viewed week
+    last_saved_week = request.session.get('saved_week', 1) #Retrieve the last viewed week, otherwise use default week
     context = {"Games": Games, "Weeks": Weeks, "saved" : last_saved_week}
     return render(request, 'main.html', context)
 
