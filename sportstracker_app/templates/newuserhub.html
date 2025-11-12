@@ -14,7 +14,7 @@ New_user_hub- HALF-TIME
     <div class="max-w-5xl mx-auto py-0">
 
 
-      {% if current.user.new == True %}
+        {% if currentuser.login_count == 1 %}
       <h1 class="text-5xl sm:text-7xl md:text-8xl font-extrabold text-sky-400 mb-6 tracking-tight">
         Welcome! 
       </h1>
@@ -29,7 +29,7 @@ New_user_hub- HALF-TIME
       {% endif %}
 
 
-      {% if current.user.new == True %}
+      {% if currentuser.login_count == 1 %}
       <p class="text-lg sm:text-xl text-gray-200 max-w-2xl mx-auto">
             Please select  your favorite teams to get started !
       </p>

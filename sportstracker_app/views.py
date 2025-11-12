@@ -106,7 +106,7 @@ def register(request):
 
 def pick_team(request):
     if request.user.is_authenticated:
-        current_user = Profile.objects.get(id=request.user.id)
+        current_user = Profile.objects.get(user=request.user.id)
         user_favteam = current_user.favorite_team["fav_teams"]
         
         favorites=request.session.get('favorite_teams', user_favteam)
@@ -138,7 +138,6 @@ def pick_team(request):
             request.session['favorite_teams'] = favorites
             return redirect('pickteam')
         Profile.objects.filter(user=current_user.user).update(favorite_team={"fav_teams":favorites})
-        Profile.objects.filter(user=current_user.user).update(new=False)
 
         return render(request, "newuserhub.html", {"Weeks": Weeks, "Teams": nfl_teams, "Favorites": favorites,"currentuser":current_user})
     else:
@@ -174,12 +173,14 @@ def login_view(request):
         
         if user is not None:
             login(request, user)
-            current_user = Profile.objects.get(id=request.user.id)
-            current_user_status = current_user.new
+            current_user = Profile.objects.get(user=request.user.id)
+            current_login_count = current_user.login_count 
 
-            if current_user_status == True:
+            if current_login_count == 0:
+                Profile.objects.filter(user=request.user.id).update(login_count=current_login_count+1)
                 return redirect("pickteam")
             else:
+                Profile.objects.filter(user=request.user.id).update(login_count=current_login_count+1)
 
                 return redirect("home")
         else:

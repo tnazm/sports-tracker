@@ -41,6 +41,6 @@ class GameData(models.Model):
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     bio = models.TextField(blank=True)
-    new = models.BooleanField(default=True)
-    favorite_team = models.JSONField(default={"fav_teams":[]})
+    favorite_team = models.JSONField(default=dict({"fav_teams":[]}))
+    login_count = models.IntegerField(default=0)
     
