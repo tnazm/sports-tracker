@@ -144,16 +144,21 @@ def pick_team(request):
         return render(request, "newuserhub.html", {"Weeks": Weeks, "Teams": nfl_teams})
 
 def user_account(request):
-    current_user = Profile.objects.get(user=request.user.id)
 
-    
-    return render(request, 'account.html',{
-        'user':current_user.user,
-        'favorites':current_user.favorite_team["fav_teams"],
-        'weeks':Weeks,
+    if request.user.is_authenticated:
+
+        current_user = Profile.objects.get(user=request.user.id)
+
         
+        return render(request, 'account.html',{
+            'user':current_user.user,
+            'favorites':current_user.favorite_team["fav_teams"],
+            'Weeks':Weeks,
+            
         
     })
+    else:
+        return render(request, 'account.html',{"Weeks":Weeks})
 
 
 
