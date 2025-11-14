@@ -20,16 +20,29 @@
                 bg-cyan-400 text-slate-900 hover:bg-cyan-300 focus:outline-none focus:ring-4 focus:ring-cyan-300/50">
         View Weekly Games
       </a>
+      {% if user.is_authenticated  == False %}
       <a href="/register/"
          class="inline-flex items-center gap-2 rounded-2xl px-4 py-2 font-medium shadow-md
                 bg-violet-400 text-slate-900 hover:bg-violet-300 focus:outline-none focus:ring-4 focus:ring-violet-300/50">
         Create Account
       </a>
+     
       <a href="/login/"
          class="inline-flex items-center gap-2 rounded-2xl px-4 py-2 font-medium shadow-md
                 bg-white/10 text-slate-200 hover:bg-white/20 focus:outline-none focus:ring-4 focus:ring-cyan-300/40">
         🔑 Log In
       </a>
+      {% endif %}
+
+      {% if user.is_authenticated %}
+      <a href="#"
+      class="inline-flex items-center gap-2 rounded-2xl px-4 py-2 font-medium shadow-md
+             bg-white/10 text-slate-200 hover:bg-white/20 focus:outline-none focus:ring-4 focus:ring-cyan-300/40">
+     View Favorites Games
+   </a>
+   {% endif %}
+
+      
     </div>
   </section>
 
