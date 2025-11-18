@@ -25,7 +25,7 @@ if BACKEND_PATH_STR not in sys.path:
 
 from django.shortcuts import render, redirect, HttpResponse
 from .models import Game
-from .forms import CustomUserCreationForm
+from .forms import CustomUserCreationForm, ProfileForm
 
 # Try to import backend scripts (don’t crash if they’re missing)
 # try:
@@ -128,20 +128,15 @@ def register(request):
 def pick_team(request):
     if request.user.is_authenticated:
         current_user = Profile.objects.get(user=request.user.id)
-        fav_teams = current_user.favorite_team["fav_teams"]
-       
-        if fav_teams== []:
-            team = 1
-        else:
-            team = fav_teams[0]
+        fav_teams = current_user.favorite_team.get("fav_teams", [])
+        team = fav_teams[0] if fav_teams else 1
     else:
-        team=None
+        team = None
+
     if request.user.is_authenticated:
         current_user = Profile.objects.get(user=request.user.id)
-        user_favteam = current_user.favorite_team["fav_teams"]
-        
-        favorites=request.session.get('favorite_teams', user_favteam)
-        
+        user_favteam = current_user.favorite_team.get("fav_teams", [])
+        favorites = request.session.get('favorite_teams', user_favteam)
 
         if request.method == 'POST':
             selected_team = request.POST.get('team')
@@ -151,26 +146,17 @@ def pick_team(request):
                     if selected_team not in favorites:
                         favorites.append(selected_team)
                         request.session['favorite_teams'] = favorites
-                        # messages.success(request, f'You have added {selected_team} to your favorite teams.')
-                    else:
-                        pass
-                        # messages.info(request, f'{selected_team} is already in your favorite teams.')
-                
                 elif action == 'remove':
                     if selected_team in favorites:
                         favorites.remove(selected_team)
                         request.session['favorite_teams'] = favorites
-                        # messages.success(request, f'You have removed {selected_team} from your favorite teams.')
-                    else:
-                        pass
-                        # messages.info(request, f'{selected_team} is not in your favorite teams.')
-            
-            
+
             request.session['favorite_teams'] = favorites
             return redirect('pickteam')
-        Profile.objects.filter(user=current_user.user).update(favorite_team={"fav_teams":favorites})
 
-        return render(request, "newuserhub.html", {"Weeks": Weeks, "Teams": nfl_teams, "Favorites": favorites,"currentuser":current_user,"Team":team})
+        Profile.objects.filter(user=current_user.user).update(favorite_team={"fav_teams": favorites})
+
+        return render(request, "newuserhub.html", {"Weeks": Weeks, "Teams": nfl_teams, "Favorites": favorites, "currentuser": current_user, "Team": team})
     else:
         return render(request, "newuserhub.html", {"Weeks": Weeks, "Teams": nfl_teams})
 
@@ -190,16 +176,49 @@ def user_account(request):
 
         current_user = Profile.objects.get(user=request.user.id)
 
-        
-        return render(request, 'account.html',{
-            'user':current_user.user,
-            'favorites':current_user.favorite_team["fav_teams"],
-            'Weeks':Weeks,"Team":team
-            
-        
-    })
+        return render(request, 'account.html', {
+            'user': current_user.user,
+            'favorites': current_user.favorite_team.get("fav_teams", []),
+            'Weeks': Weeks,
+            'Team': team,
+            'profile': current_user,
+            'profile_form': ProfileForm(instance=current_user),
+        })
     else:
         return render(request, 'account.html',{"Weeks":Weeks,"Team":team})
+
+
+
+@login_required
+def update_account(request):
+    if request.method == 'POST':
+        prof = Profile.objects.get(user=request.user.id)
+        form = ProfileForm(request.POST, instance=prof)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Profile updated.')
+        else:
+            messages.error(request, 'There was a problem saving your profile.')
+    return redirect('account')
+
+
+@login_required
+def delete_account(request):
+    if request.method == 'POST':
+        confirm = request.POST.get('confirm')
+        if confirm == 'DELETE':
+            user = request.user
+            logout(request)
+            try:
+                user.delete()
+            except Exception:
+                messages.error(request, 'Unable to delete account.')
+                return redirect('account')
+            messages.success(request, 'Your account has been deleted.')
+            return redirect('home')
+        else:
+            messages.error(request, 'Please confirm account deletion.')
+    return redirect('account')
 
 
 

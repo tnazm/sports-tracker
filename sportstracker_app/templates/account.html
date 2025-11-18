@@ -9,13 +9,41 @@
   <!-- Logged in -->
   <div class="bg-gray-900 bg-opacity-80 p-10 rounded-3xl shadow-2xl max-w-2xl w-full text-center">
     <h1 class="text-4xl font-bold text-sky-400 mb-6">Your Account</h1>
-    
+
     <div class="space-y-4 text-lg text-gray-200">
       <p><span class="font-semibold text-sky-300">Username:</span> {{ user.username }}</p>
       <p><span class="font-semibold text-sky-300">Email:</span> {{ user.email|default:"(not provided)" }}</p>
+
+      <div id="bio-section" class="mt-8 max-w-md mx-auto text-left bg-gray-800 p-3 rounded text-gray-300">
+        <h2 class="text-2xl font-semibold text-sky-400 mb-3">Biography</h2>
+
+        <div id="bio-view" class="space-y-2">
+          {% if profile and profile.bio %}
+            <!-- larger, higher-contrast text for viewing -->
+            <p id="bio-text" class="whitespace-pre-wrap text-lg leading-relaxed text-white">{{ profile.bio|linebreaksbr }}</p>
+          {% else %}
+            <p id="bio-text" class="text-gray-300 text-lg leading-relaxed">You haven't added a bio yet.</p>
+          {% endif %}
+          <div class="mt-2">
+            <button id="edit-bio-btn" type="button" class="bg-sky-600 hover:bg-sky-500 px-3 py-1.5 rounded font-semibold text-sm">Edit</button>
+          </div>
+        </div>
+
+        <form id="bio-form" method="post" action="{% url 'update_account' %}" class="mt-2" style="display:none;">
+          {% csrf_token %}
+          <div class="w-full">
+            {{ profile_form.bio }}
+          </div>
+
+          <div class="mt-3 flex gap-3">
+            <button type="submit" class="bg-sky-600 hover:bg-sky-500 px-3 py-1.5 rounded font-semibold text-sm">Save</button>
+            <button id="cancel-bio-btn" type="button" class="bg-gray-600 hover:bg-gray-500 px-3 py-1.5 rounded font-semibold text-sm">Cancel</button>
+          </div>
+        </form>
+      </div>
     </div>
 
-    <div class="mt-10">
+    <div class="mt-8">
       <h2 class="text-2xl font-semibold text-sky-400 mb-4">Favorite Teams</h2>
       {% if favorites %}
         <ul class="flex flex-wrap justify-center gap-4">
@@ -34,6 +62,15 @@
       <a href="{% url 'pick_team' %}" class="bg-blue-500 hover:bg-blue-700 px-6 py-3 rounded-lg font-semibold transition">Edit Favorites</a>
       <a href="{% url 'logout' %}" class="bg-red-500 hover:bg-red-700 px-6 py-3 rounded-lg font-semibold transition">Logout</a>
     </div>
+
+    <!-- Delete account moved to bottom -->
+    <div class="mt-10 mb-4 flex justify-center">
+      <form method="post" action="{% url 'delete_account' %}" onsubmit="return confirm('Are you sure you want to delete your account? This action cannot be undone.');">
+        {% csrf_token %}
+        <input type="hidden" name="confirm" value="DELETE">
+        <button type="submit" class="bg-red-600 hover:bg-red-700 px-5 py-2 rounded font-semibold">Delete Account</button>
+      </form>
+    </div>
   </div>
 
   {% else %}
@@ -50,5 +87,71 @@
   {% endif %}
 
 </section>
+
+<!-- styles to improve visibility of typed characters -->
+<style>
+  /* make viewed bio text easier to read */
+  #bio-section #bio-text {
+    font-size: 1.05rem;       /* slightly larger */
+    line-height: 1.6;         /* more breathing room */
+    letter-spacing: 0.2px;
+    color: #f8fafc;           /* bright white-ish */
+  }
+
+  /* style the edit textarea / input rendered by the form so typed chars stand out */
+  #bio-section textarea,
+  #bio-section input[type="text"] {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #0f172a;          /* dark text for contrast on light background */
+    background: #f8fafc;     /* light background for the editing field */
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.375rem;
+    border: 1px solid #cbd5e1;
+    width: 100%;
+    min-height: 6rem;        /* taller editing area */
+    resize: vertical;
+    box-sizing: border-box;
+  }
+
+  /* placeholder color for clarity */
+  #bio-section textarea::placeholder,
+  #bio-section input[type="text"]::placeholder {
+    color: #94a3b8;
+  }
+
+  /* ensure the edit form field contrasts with the surrounding dark bg */
+  #bio-section form {
+    margin-top: 0.5rem;
+  }
+</style>
+
+<script>
+  (function(){
+    const editBtn = document.getElementById('edit-bio-btn');
+    const cancelBtn = document.getElementById('cancel-bio-btn');
+    const bioView = document.getElementById('bio-view');
+    const bioForm = document.getElementById('bio-form');
+
+    if (!editBtn || !cancelBtn || !bioView || !bioForm) return;
+
+    editBtn.addEventListener('click', () => {
+      bioView.style.display = 'none';
+      bioForm.style.display = 'block';
+      const textarea = bioForm.querySelector('textarea, input[type="text"]');
+      if (textarea) {
+        textarea.focus();
+        const val = textarea.value;
+        textarea.value = '';
+        textarea.value = val;
+      }
+    });
+
+    cancelBtn.addEventListener('click', () => {
+      bioForm.style.display = 'none';
+      bioView.style.display = 'block';
+    });
+  })();
+</script>
 {% endblock %}
 

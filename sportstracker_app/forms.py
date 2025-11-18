@@ -1,6 +1,16 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
+from .models import Profile
+
+
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['bio']
+        widgets = {
+            'bio': forms.Textarea(attrs={'rows':4, 'cols':40, 'placeholder':'Tell other users a little about yourself...'}),
+        }
 
 class CustomUserCreationForm(UserCreationForm):
     email = forms.EmailField(required=True)
