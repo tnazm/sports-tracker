@@ -13,6 +13,7 @@ from sportstracker_app.models import GameData,Profile
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 import json
+from django.db.models import Q
 load_dotenv()
 KEY = os.getenv("API_KEY")
 
@@ -76,7 +77,13 @@ nfl_teams = [
 def home(request):
     Games = Game.objects.all()
     last_saved_week = request.session.get('saved_week', 1) #Retrieve the last viewed week, otherwise use default week
-    context = {"Games": Games, "Weeks": Weeks, "saved" : last_saved_week}
+    if request.user.is_authenticated:
+        current_user = Profile.objects.get(user=request.user.id)
+        fav_teams = current_user.favorite_team["fav_teams"]
+        team=fav_teams[0]
+    else:
+        team=None
+    context = {"Games": Games, "Weeks": Weeks, "saved" : last_saved_week,"Team":team}
     return render(request, 'main.html', context)
 
 def week(request, num):
@@ -166,7 +173,15 @@ def user_account(request):
 
 
 
+def fav_team_games(request,team):
 
+    current_user=Profile.objects.get(user=request.user.id)
+    fav_teams = current_user.favorite_team["fav_teams"]
+    Games= Game.objects.filter(Q(HomeTeam=f"{team}") | Q(AwayTeam=f"{team}"))
+    
+    return render(request, "favteamgames.html", {"Games": Games,  "Weeks": Weeks,"Favs":fav_teams,"Current_Team":team})
+
+  
 
 
 

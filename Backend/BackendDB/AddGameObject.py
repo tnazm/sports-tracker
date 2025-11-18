@@ -21,8 +21,9 @@ ids = HoldIDs.objects.all().values_list('GameID',flat=True)
 for id in ids: # loop to add each game based on ID to the data base
     ## MOST LIKELY WILL NEED TO CHANGE TO CHECK FOR WEEK
     if not Game.objects.filter(GameID=id).exists():
+        print(id)
         Game_Info = Get_Game_Info(id)
-        if Game_Info["game"]["status"]["long"]!="Finished" and  Game_Info["game"]["status"]["long"]!="Final/OT":
+        if Game_Info["game"]["status"]["long"]!="Finished" and  Game_Info["game"]["status"]["long"]!="Final/OT"and  Game_Info["game"]["status"]["long"]!="After Over Time":
             continue
         else:
             gameid = id

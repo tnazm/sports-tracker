@@ -40,11 +40,11 @@ def GameSummary(Gameid):
 
     return parsed
 
-for game in Games:
-    if game not in Gamedata:
-        GameData.objects.create(GameID=game, data=GameSummary(game))
-        time.sleep(6)
-        print("Added data for game:",game)
+# for game in Games:
+#     if game not in Gamedata:
+#         GameData.objects.create(GameID=game, data=GameSummary(game))
+#         time.sleep(6)
+#         print("Added data for game:",game)
     
 
 
@@ -62,3 +62,31 @@ for game in Games:
 #     away_score=Game_Info["scores"]["away"]["total"]
 #     Game.objects.create(GameID=gameid, HomeTeam=home_team, AwayTeam=away_team, HomeScore=home_score, AwayScore=away_score, Week=week, date=date)
 #     print(f"{home_team} vs {away_team}    {week} added to database.")
+
+
+
+for game in Games:
+    if game  in Ids:
+        print(game)
+
+
+
+GameData.objects.create(GameID=17450, data=GameSummary(17450))
+time.sleep(6)
+print("Added data for game:",game)
+
+
+
+Game_Info = Get_Game_Info(17427)
+if Game_Info["game"]["status"]["long"]!="Finished" and  Game_Info["game"]["status"]["long"]!="Final/OT":
+        pass
+    else:
+    gameid = id
+    week=  Game_Info["game"]["week"]
+    date = Game_Info["game"]["date"]["date"]
+    home_team=Game_Info["teams"]["home"]["name"] 
+    away_team=Game_Info["teams"]["away"]["name"]
+    home_score=Game_Info["scores"]["home"]["total"]
+    away_score=Game_Info["scores"]["away"]["total"]
+    Game.objects.create(GameID=gameid, HomeTeam=home_team, AwayTeam=away_team, HomeScore=home_score, AwayScore=away_score, Week=week, date=date)
+    print(f"{home_team} vs {away_team}    {week} added to database.")
