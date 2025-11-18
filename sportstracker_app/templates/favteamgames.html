@@ -17,6 +17,29 @@
 {% block body %}
 <div class="min-h-[calc(100vh-64px-56px)] text-slate-100 bg-gradient-to-b from-[#071b2b] to-[#0a2a40] pb-16">
 
+  {% if Current_Team ==  '1' %}
+  <a href="/newuserwelcome/" class="block pt-10 text-center">
+    <h1 class="text-5xl sm:text-6xl md:text-7xl font-extrabold tracking-tight">
+      <span class="bg-gradient-to-r from-sky-300 via-blue-400 to-sky-500 bg-clip-text text-transparent drop-shadow">
+        Please select a favorite team
+      </span>
+    </h1>
+  </a>
+  <p class="mx-auto mt-10 max-w-2xl text-slate-200 text-2xl">
+    Once you selesct a favorite team their games will appear here!
+  </p>
+  <p style="text-align:center" class="mx-auto mt-10">
+  <a href="/newuserwelcome/"
+  class="inline-flex items-center gap-2 rounded-2xl px-4 py-2 font-medium shadow-md
+  bg-cyan-400 text-slate-900 hover:bg-cyan-300 focus:outline-none focus:ring-4 focus:ring-cyan-300/50">
+      Select Teams
+</a>
+
+</p>
+  {% else %}
+
+
+
   <!-- Title -->
   <a href="/" class="block pt-10 text-center">
     <h1 class="text-5xl sm:text-6xl md:text-7xl font-extrabold tracking-tight">
@@ -240,6 +263,8 @@
   <!-- /.relative -->
 </div>
 <!-- /#game-popup -->
+
+{% endif %}
 
 <script>
   // --- CSRF helper ---

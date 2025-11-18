@@ -80,7 +80,11 @@ def home(request):
     if request.user.is_authenticated:
         current_user = Profile.objects.get(user=request.user.id)
         fav_teams = current_user.favorite_team["fav_teams"]
-        team=fav_teams[0]
+       
+        if fav_teams== []:
+            team = 1
+        else:
+            team = fav_teams[0]
     else:
         team=None
     context = {"Games": Games, "Weeks": Weeks, "saved" : last_saved_week,"Team":team}
@@ -89,7 +93,17 @@ def home(request):
 def week(request, num):
     Games = Game.objects.filter(Week=f"Week {num}")
     request.session['saved_week'] = num #Save the last viewed week into request
-    return render(request, 'week.html', {"Games": Games, "week_number": num, "Weeks": Weeks})
+    if request.user.is_authenticated:
+        current_user = Profile.objects.get(user=request.user.id)
+        fav_teams = current_user.favorite_team["fav_teams"]
+       
+        if fav_teams== []:
+            team = 1
+        else:
+            team = fav_teams[0]
+    else:
+        team=None
+    return render(request, 'week.html', {"Games": Games, "week_number": num, "Weeks": Weeks,"Team":team})
 
 def register(request):
     if request.method == 'POST':
@@ -112,6 +126,16 @@ def register(request):
     return render(request, "register.html", {'form': form, "Weeks": Weeks})
 
 def pick_team(request):
+    if request.user.is_authenticated:
+        current_user = Profile.objects.get(user=request.user.id)
+        fav_teams = current_user.favorite_team["fav_teams"]
+       
+        if fav_teams== []:
+            team = 1
+        else:
+            team = fav_teams[0]
+    else:
+        team=None
     if request.user.is_authenticated:
         current_user = Profile.objects.get(user=request.user.id)
         user_favteam = current_user.favorite_team["fav_teams"]
@@ -146,11 +170,21 @@ def pick_team(request):
             return redirect('pickteam')
         Profile.objects.filter(user=current_user.user).update(favorite_team={"fav_teams":favorites})
 
-        return render(request, "newuserhub.html", {"Weeks": Weeks, "Teams": nfl_teams, "Favorites": favorites,"currentuser":current_user})
+        return render(request, "newuserhub.html", {"Weeks": Weeks, "Teams": nfl_teams, "Favorites": favorites,"currentuser":current_user,"Team":team})
     else:
         return render(request, "newuserhub.html", {"Weeks": Weeks, "Teams": nfl_teams})
 
 def user_account(request):
+    if request.user.is_authenticated:
+        current_user = Profile.objects.get(user=request.user.id)
+        fav_teams = current_user.favorite_team["fav_teams"]
+       
+        if fav_teams== []:
+            team = 1
+        else:
+            team = fav_teams[0]
+    else:
+        team=None
 
     if request.user.is_authenticated:
 
@@ -160,12 +194,12 @@ def user_account(request):
         return render(request, 'account.html',{
             'user':current_user.user,
             'favorites':current_user.favorite_team["fav_teams"],
-            'Weeks':Weeks,
+            'Weeks':Weeks,"Team":team
             
         
     })
     else:
-        return render(request, 'account.html',{"Weeks":Weeks})
+        return render(request, 'account.html',{"Weeks":Weeks,"Team":team})
 
 
 
@@ -174,7 +208,7 @@ def user_account(request):
 
 
 def fav_team_games(request,team):
-
+        
     current_user=Profile.objects.get(user=request.user.id)
     fav_teams = current_user.favorite_team["fav_teams"]
     Games= Game.objects.filter(Q(HomeTeam=f"{team}") | Q(AwayTeam=f"{team}"))
