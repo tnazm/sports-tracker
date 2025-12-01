@@ -75,23 +75,21 @@
       </div>
     </details>
 
-    <a href="#" class="block hover:text-orange-400">Teams</a>
+  
 
     <a href="{% url 'account' %}" class="block hover:text-orange-400">Account</a>
 
     <a href="{% url 'register' %}" class="block hover:text-orange-400">Register</a>
   {% if user.is_authenticated %}
   
-    <a href="{% url 'logout' %}" class="hover:text-orange-400 py-2 lg:py-0">Logout</a>
+    <a href="{% url 'logout' %}" class="block px-3 py-1 hover:text-orange-400">Logout</a>
+    <a href="/favteamgames/{{Team}}/" class="block px-3 py-1 hover:text-orange-400">View Favorite Teams</a>
 
   {% else %}
     <a href="{% url 'login' %}" class="hover:text-orange-400 py-2 lg:py-0">Login</a>
   {% endif %}
 
-  {% if user.is_authenticated %}
-  <a href="/favteamgames/{{Team}}/" class="hover:text-orange-400 py-2 lg:py-0">View Favorite Teams</a>
 
-  {% endif %}
   </div>
 
   <!-- Toggle Script -->
