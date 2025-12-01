@@ -46,21 +46,21 @@
   </div>
 </div>
 {% if user.is_authenticated %}
-  <a href="{% url 'pickteam' %}" class="hover:text-orange-400 py-2 lg:py-0"> Favorite Teams</a>
+  <a href="{% url 'pickteam' %}" class="block lg:inline-block px-3 py-1 lg:py-0 hover:text-orange-400"> Favorite Teams</a>
   {% endif %}
   {% if user.is_authenticated == False %}
   <a href="{% url 'register' %}" class="hover:text-orange-400 py-2 lg:py-0">Register</a>
   {% endif %}
   {% if user.is_authenticated %}
-  <a href="/favteamgames/{{Team}}/" class="hover:text-orange-400 py-2 lg:py-0">Favorite Teams Games </a>
-    <a href="{% url 'logout' %}" class="hover:text-orange-400 py-2 lg:py-0">Logout</a>
+  <a href="/favteamgames/{{Team}}/" class="block lg:inline-block px-3 py-1 lg:py-0 hover:text-orange-400">Favorite Teams Games</a>
+    <a href="{% url 'logout' %}" class="block lg:inline-block px-3 py-1 lg:py-0 hover:text-orange-400">Logout</a>
   {% else %}
-    <a href="{% url 'login' %}" class="hover:text-orange-400 py-2 lg:py-0">Login</a>
+    <a href="{% url 'login' %}" class="block lg:inline-block px-3 py-1 lg:py-0 hover:text-orange-400">Login</a>
   {% endif %}
   </div>
 
   <!-- Mobile Menu (Dropdown for small screens) -->
-  <div id="mobile-menu" class="hidden flex-col space-y-2 mt-3 text-lg lg:hidden">
+  <div id="mobile-menu" class="hidden flex-col space-y-1 mt-3 text-lg lg:hidden">
     <a href="{% url 'home' %}" class="block hover:text-orange-400">Home</a>
 
     <details class="bg-indigo-800 rounded-md">
@@ -75,23 +75,21 @@
       </div>
     </details>
 
-    <a href="#" class="block hover:text-orange-400">Teams</a>
+  
 
     <a href="{% url 'account' %}" class="block hover:text-orange-400">Account</a>
 
     <a href="{% url 'register' %}" class="block hover:text-orange-400">Register</a>
   {% if user.is_authenticated %}
   
-    <a href="{% url 'logout' %}" class="hover:text-orange-400 py-2 lg:py-0">Logout</a>
+    <a href="{% url 'logout' %}" class="block px-3 py-1 hover:text-orange-400">Logout</a>
+    <a href="/favteamgames/{{Team}}/" class="block px-3 py-1 hover:text-orange-400">View Favorite Teams</a>
 
   {% else %}
     <a href="{% url 'login' %}" class="hover:text-orange-400 py-2 lg:py-0">Login</a>
   {% endif %}
 
-  {% if user.is_authenticated %}
-  <a href="/favteamgames/{{Team}}/" class="hover:text-orange-400 py-2 lg:py-0">View Favorite Teams</a>
 
-  {% endif %}
   </div>
 
   <!-- Toggle Script -->
