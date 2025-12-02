@@ -1,15 +1,13 @@
 <nav class="bg-indigo-900 text-gray-100 px-4 py-3 shadow-md">
   <div class="flex justify-between items-center">
-    <!-- Logo / Site Name -->
     <a href="{% url 'home' %}" class="text-2xl font-bold tracking-wider text-sky-400 hover:text-orange-500">
       HALF-TIME
     </a>
     
     {% if user.is_authenticated %}
-    <p style="text-align: right">Logged in as: <b>{{request.user.username}}</b></p>
+      <p style="text-align: right">Logged in as: <b>{{request.user.username}}</b></p>
     {% endif %}
 
-    <!-- Mobile menu toggle toggle -->
     <button id="menu-btn" class="lg:hidden text-gray-100 focus:outline-none">
       <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -18,100 +16,94 @@
     </button>
   </div>
 
-  <!-- Desktop Navigation Links -->
+  <!-- Desktop Navigation -->
   <div id="menu" class="hidden lg:flex flex-col lg:flex-row mt-3 lg:mt-0 lg:space-x-6 text-lg lg:text-base">
     <a href="{% url 'home' %}" class="hover:text-orange-400 py-2 lg:py-0">Home</a>
-    <a href="{% url 'account' %}" class="block hover:text-orange-400">Account</a>
 
-    <!-- Dropdown -->
+    <a href="{% url 'standings' %}" class="hover:text-orange-400 py-2 lg:py-0">Standings</a>
+
+    <!-- Weeks Dropdown -->
     <div id="week-dropdown" class="relative group">
-  <button class="flex items-center hover:text-orange-400 py-2 lg:py-0">
-    <a href="/week/1/">Weeks</a>
-    <svg class="w-4 h-4 ml-1 mt-[2px]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-    </svg>
-  </button>
+      <button class="flex items-center hover:text-orange-400 py-2 lg:py-0">
+        <a href="/week/1/">Weeks</a>
+        <svg class="w-4 h-4 ml-1 mt-[2px]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+        </svg>
+      </button>
 
-  <!-- Compact, scrollable dropdown -->
-  <div id="week-menu"
-       class="absolute left-0 mt-2 w-44 max-h-64 overflow-y-auto
-              bg-indigo-800/95 backdrop-blur-sm rounded-lg shadow-lg ring-1 ring-white/10 p-1
-              invisible group-hover:visible opacity-0 group-hover:opacity-100 transition duration-200 z-20">
-    {% for Week in Weeks %}
-      <a href="/week/{{Week}}/"
-         class="block rounded-md px-3 py-2 text-gray-200 hover:bg-indigo-500 hover:text-white">
-        Week {{Week}}
-      </a>
-    {% endfor %}
-  </div>
-</div>
-{% if user.is_authenticated %}
-  <a href="{% url 'pickteam' %}" class="block lg:inline-block px-3 py-1 lg:py-0 hover:text-orange-400"> Favorite Teams</a>
-  {% endif %}
-  {% if user.is_authenticated == False %}
-  <a href="{% url 'register' %}" class="hover:text-orange-400 py-2 lg:py-0">Register</a>
-  {% endif %}
-  {% if user.is_authenticated %}
-  <a href="/favteamgames/{{Team}}/" class="block lg:inline-block px-3 py-1 lg:py-0 hover:text-orange-400">Favorite Teams Games</a>
-    <a href="{% url 'logout' %}" class="block lg:inline-block px-3 py-1 lg:py-0 hover:text-orange-400">Logout</a>
-  {% else %}
-    <a href="{% url 'login' %}" class="block lg:inline-block px-3 py-1 lg:py-0 hover:text-orange-400">Login</a>
-  {% endif %}
+      <div id="week-menu"
+           class="absolute left-0 mt-2 w-44 max-h-64 overflow-y-auto
+                  bg-indigo-800/95 backdrop-blur-sm rounded-lg shadow-lg ring-1 ring-white/10 p-1
+                  invisible group-hover:visible opacity-0 group-hover:opacity-100 transition duration-200 z-20">
+        {% for Week in Weeks %}
+          <a href="/week/{{Week}}/"
+             class="block rounded-md px-3 py-2 text-gray-200 hover:bg-indigo-500 hover:text-white">
+            Week {{Week}}
+          </a>
+        {% endfor %}
+      </div>
+    </div>
+
+    <a href="{% url 'account' %}" class="hover:text-orange-400 py-2 lg:py-0">Account</a>
+
+    {% if user.is_authenticated %}
+      <a href="{% url 'pickteam' %}" class="hover:text-orange-400 py-2 lg:py-0">Favorite Teams</a>
+    {% endif %}
+
+    {% if not user.is_authenticated %}
+      <a href="{% url 'register' %}" class="hover:text-orange-400 py-2 lg:py-0">Register</a>
+    {% endif %}
+
+    {% if user.is_authenticated %}
+      <a href="/favteamgames/{{Team}}/" class="hover:text-orange-400 py-2 lg:py-0">Favorite Teams Games</a>
+      <a href="{% url 'logout' %}" class="hover:text-orange-400 py-2 lg:py-0">Logout</a>
+    {% else %}
+      <a href="{% url 'login' %}" class="hover:text-orange-400 py-2 lg:py-0">Login</a>
+    {% endif %}
   </div>
 
-  <!-- Mobile Menu (Dropdown for small screens) -->
+  <!-- Mobile Navigation -->
   <div id="mobile-menu" class="hidden flex-col space-y-1 mt-3 text-lg lg:hidden">
     <a href="{% url 'home' %}" class="block hover:text-orange-400">Home</a>
+
+    <a href="{% url 'standings' %}" class="block hover:text-orange-400">Standings</a>
 
     <details class="bg-indigo-800 rounded-md">
       <summary class="px-3 py-2 cursor-pointer hover:text-orange-400">Weeks</summary>
       <div class="pl-4 pb-2">
         {% for Week in Weeks %}
-        <a href="/week/{{Week}}/"
-           class="block py-1 text-gray-300 hover:text-orange-300 transition">
-          Week {{Week}}
-        </a>
+          <a href="/week/{{Week}}/"
+             class="block py-1 text-gray-300 hover:text-orange-300 transition">
+            Week {{Week}}
+          </a>
         {% endfor %}
       </div>
     </details>
 
-  
-
     <a href="{% url 'account' %}" class="block hover:text-orange-400">Account</a>
 
-  {% if user.is_authenticated %}
-  
-    <a href="{% url 'logout' %}" class="block px-3 py-1 hover:text-orange-400">Logout</a>
-    <a href="{% url 'pickteam' %}" class="block lg:inline-block px-3 py-1 lg:py-0 hover:text-orange-400">View Favorite Teams</a>
-    <a href="/favteamgames/{{Team}}/" class="block lg:inline-block px-3 py-1 lg:py-0 hover:text-orange-400">Favorite Teams Games</a>
-
-  {% else %}
-    <a href="{% url 'register' %}" class="block hover:text-orange-400">Register</a>
-    <a href="{% url 'login' %}" class="hover:text-orange-400 py-2 lg:py-0">Login</a>
-  {% endif %}
-
-
+    {% if user.is_authenticated %}
+      <a href="{% url 'pickteam' %}" class="block hover:text-orange-400">Favorite Teams</a>
+      <a href="/favteamgames/{{Team}}/" class="block hover:text-orange-400">Favorite Teams Games</a>
+      <a href="{% url 'logout' %}" class="block hover:text-orange-400">Logout</a>
+    {% else %}
+      <a href="{% url 'register' %}" class="block hover:text-orange-400">Register</a>
+      <a href="{% url 'login' %}" class="hover:text-orange-400">Login</a>
+    {% endif %}
   </div>
 
-  <!-- Toggle Script -->
+  <!-- Navbar Scripts -->
   <script>
     const menuBtn = document.getElementById('menu-btn');
     const mobileMenu = document.getElementById('mobile-menu');
     const weekDropdown = document.getElementById('week-dropdown');
     const weekMenu = document.getElementById('week-menu');
 
-
-
     menuBtn.addEventListener('click', () => {
       mobileMenu.classList.toggle('hidden');
-    });
-
-    // Mobile menu toggle
-    menuBtn.addEventListener('click', () => {
       mobileMenu.classList.toggle('visible');
     });
 
-    // Dropdown hover delay logic
     let dropdownTimeout;
     weekDropdown.addEventListener('mouseenter', () => {
       clearTimeout(dropdownTimeout);
@@ -123,7 +115,7 @@
       dropdownTimeout = setTimeout(() => {
         weekMenu.classList.remove('visible', 'opacity-100');
         weekMenu.classList.add('invisible', 'opacity-0');
-      }, 200); // small delay for smooth hover
+      }, 200);
     });
   </script>
 </nav>

@@ -16,10 +16,13 @@ class Game(models.Model):
 
 class Team(models.Model):
     code = models.CharField(max_length=10)
-    TeamID = models.AutoField(db_column='TeamID', primary_key=True)  # <-- key change
+    TeamID = models.AutoField(db_column='TeamID', primary_key=True)
     name = models.CharField(max_length=100, unique=True)
     abbr = models.CharField(max_length=4, unique=True, null=True, blank=True)
     logo_path = models.CharField(max_length=200, blank=True)
+    conference = models.CharField(max_length=3, blank=True, null=True)
+    division = models.CharField(max_length=10, blank=True, null=True)   
+
 
 
 class HoldIDs(models.Model):

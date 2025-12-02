@@ -7,16 +7,18 @@ urlpatterns = [
     path('login/', views.login_view, name="login"),
     path('logout/', views.logout_view, name="logout"),
     path('week/<int:num>/', views.week, name='week'),
-    path('newuserwelcome/',views.pick_team,name='pickteam'),
-    path('account/',views.user_account,name='account'),
+    path('newuserwelcome/', views.pick_team, name='pickteam'),
+    path('account/', views.user_account, name='account'),
     path('account/update/', views.update_account, name='update_account'),
     path('account/delete/', views.delete_account, name='delete_account'),
     path('pick-team/', views.pick_team, name='pick_team'),
-    path('favteamgames/<str:team>/',views.fav_team_games,name="fav_team_games")
+    path('favteamgames/<str:team>/', views.fav_team_games, name="fav_team_games"),
+    path("standings/", views.standings_view, name="standings"),
+]
+
     #path('teams/', views.teams, name='teams'),
     # path('refresh/', views.refresh_scores, name='refresh_scores'),
     # path("admin-dashboard/", views.admin_dashboard, name="dashboard"),
-]
 
 # Was for testing adding fav teams
 
