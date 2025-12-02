@@ -1,76 +1,84 @@
 {% extends "base.html" %}
-{% load static %}
 
 {% block title %}
-Standings - HALF-TIME
+Login - HALF-TIME
 {% endblock %}
 
 {% block body %}
-<section class="bg-gradient-to-b from-black to-slate-900 text-white min-h-screen py-8 px-4">
-  <div class="max-w-6xl mx-auto">
-    <h1 class="text-3xl md:text-4xl font-extrabold mb-4 tracking-tight">
-      NFL Standings
+<section class="relative bg-gradient-to-br  from-black to-sky-700  text-white text-center min-h-screen flex flex-col items-center justify-center px-4">
+  <div class="max-w-5xl mx-auto py-1">
+    <h1 class="text-5xl sm:text-7xl md:text-8xl font-extrabold text-sky-400 mb-6 tracking-tight">
+      HALF-TIME
     </h1>
+    <p class="text-lg sm:text-xl text-gray-200 max-w-2xl mx-auto">
+      Login to view your favorites.
+    </p>
+  </div>
 
-    <div class="grid gap-6 lg:grid-cols-2">
-      {% for conf in conferences %}
-        <div class="bg-slate-900/70 rounded-2xl border border-slate-700 shadow">
-          <div class="px-4 py-3 border-b border-slate-800">
-            <h2 class="text-lg font-bold">{{ conf.name }}</h2>
-          </div>
-
-          {% for div in conf.divisions %}
-            <div class="mt-2 mb-3">
-              <div class="px-4 py-1 text-xs font-semibold uppercase text-gray-300">
-                {{ conf.key }} {{ div.name }}
-              </div>
-
-              <div class="overflow-x-auto">
-                <table class="min-w-full text-xs">
-                  <thead class="bg-slate-800/80">
-                    <tr class="text-left">
-                      <th class="px-3 py-2">Team</th>
-                      <th class="px-2 py-2 text-center">W</th>
-                      <th class="px-2 py-2 text-center">L</th>
-                      <th class="px-2 py-2 text-center">T</th>
-                      <th class="px-2 py-2 text-center">PCT</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {% if div.teams %}
-                      {% for t in div.teams %}
-                        <tr class="border-t border-slate-800">
-                          <td class="px-3 py-1.5">
-                            <div class="flex items-center gap-2">
-                              {% if t.logo %}
-                                <img src="{% static t.logo %}" class="h-5 w-5" alt="{{ t.name }}">
-                              {% endif %}
-                              <span class="text-xs md:text-sm">{{ t.name }}</span>
-                            </div>
-                          </td>
-                          <td class="px-2 py-1.5 text-center">{{ t.wins }}</td>
-                          <td class="px-2 py-1.5 text-center">{{ t.losses }}</td>
-                          <td class="px-2 py-1.5 text-center">{{ t.ties }}</td>
-                          <td class="px-2 py-1.5 text-center">
-                            {{ t.pct|floatformat:3 }}
-                          </td>
-                        </tr>
-                      {% endfor %}
-                    {% else %}
-                      <tr>
-                        <td colspan="5" class="px-3 py-2 text-center text-gray-400 text-[11px]">
-                          No games for this division yet.
-                        </td>
-                      </tr>
-                    {% endif %}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          {% endfor %}
-        </div>
-      {% endfor %}
+  {% if messages %}
+    <div class="rounded-2xl mt-12 p-8  bg-gradient-to-tl from-black to-red-700 w-full max-w-lg mx-auto backdrop-blur-lg alert alert-info">
+      <ul class="messages">
+        {% for message in messages %}
+          <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>
+            {{ message }}
+          </li>
+        {% endfor %}
+      </ul>
     </div>
+  {% endif %}
+
+  <div class="rounded-2xl mt-12 p-8  bg-gradient-to-tl from-black to-sky-700 w-full max-w-lg mx-auto backdrop-blur-lg">
+ 
+    <form method="post" style="color: black" >
+      {% csrf_token %}
+
+
+      <br>
+
+      <!-- div class="w-full max-w-xs"> -->
+
+
+    <div class="mb-4">
+      <label class="block text-violet-300 text-lg font-bold mb-2" for="id_username">
+      Username 
+      </label>
+      <input class="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6" id="id_username" type="text" name="username" placeholder="Username"  required> 
+    </div>
+
+
+    
+    <!-- passsword feild-->
+
+    <div class="mb-6">
+      <label class="block  text-violet-300 text-lg font-bold mb-2" for="id_password">
+        Password
+      </label>
+      <input class="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6" id="id_password" name="password" type="password" placeholder="******************" required>
+      
+    </div>
+
+
+    <div class="flex items-center justify-between">
+
+
+
+      
+      <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
+       Log in
+      </button>
+
+
+
+      <a style="text-align: right;" href="{% url 'register' %}" class="text-blue-300">
+        Create Account
+      </a>
+    </div>
+
+
+      </p> 
+    </form>
   </div>
 </section>
+</section>
+
 {% endblock %}
