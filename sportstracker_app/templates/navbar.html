@@ -79,13 +79,14 @@
 
     <a href="{% url 'account' %}" class="block hover:text-orange-400">Account</a>
 
-    <a href="{% url 'register' %}" class="block hover:text-orange-400">Register</a>
   {% if user.is_authenticated %}
   
     <a href="{% url 'logout' %}" class="block px-3 py-1 hover:text-orange-400">Logout</a>
-    <a href="/favteamgames/{{Team}}/" class="block px-3 py-1 hover:text-orange-400">View Favorite Teams</a>
+    <a href="{% url 'pickteam' %}" class="block lg:inline-block px-3 py-1 lg:py-0 hover:text-orange-400">View Favorite Teams</a>
+    <a href="/favteamgames/{{Team}}/" class="block lg:inline-block px-3 py-1 lg:py-0 hover:text-orange-400">Favorite Teams Games</a>
 
   {% else %}
+    <a href="{% url 'register' %}" class="block hover:text-orange-400">Register</a>
     <a href="{% url 'login' %}" class="hover:text-orange-400 py-2 lg:py-0">Login</a>
   {% endif %}
 
