@@ -232,7 +232,7 @@ def fav_team_games(request,team):
     fav_teams = current_user.favorite_team["fav_teams"]
     Games= Game.objects.filter(Q(HomeTeam=f"{team}") | Q(AwayTeam=f"{team}"))
     
-    return render(request, "favteamgames.html", {"Games": Games,  "Weeks": Weeks,"Favs":fav_teams,"Current_Team":team})
+    return render(request, "favteamgames.html", {"Games": Games,  "Weeks": Weeks,"Favs":fav_teams,"Current_Team":team,"Team":team})
 
   
 
