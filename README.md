@@ -17,11 +17,12 @@
 
 ### Track your favorite team's scores
 Select favorite teams so that you can quickly glance at them in the
-favorite team score display views.
+favorite team score display views.  Teams are saved and stored
+uniquely per logged-in user.
 
-[[./static/favorite team updating view.png]]
+![View of updating a user's list favorite teams.](/static/favorite team updating view.png)
 
-[[./static/favorite team score display view.png]]
+![View of viewing the scores of a user's favorite team.](/static/favorite team score display view.png)
 
 ## Installation
 Obtain an API key for [[https://api-sports.io]].  Replace the stock
