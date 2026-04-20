@@ -8,6 +8,9 @@
 * Tailwind frontend
 
 ## Installation
+Obtain an API key for [[https://api-sports.io]].  Replace the stock
+value in [[./env.template]] and rename it as ```.env```.
+
 Running locally (for test purposes):
 
 ``` shell
